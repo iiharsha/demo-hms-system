@@ -1,0 +1,57 @@
+<!-- Reports Page -->
+<div class="page-content" id="reports-page">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon blue">📊</div>
+      <div class="stat-value">₹2.5M</div>
+      <div class="stat-label">Monthly Revenue</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">📈</div>
+      <div class="stat-value">342</div>
+      <div class="stat-label">Total Consultations</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon yellow">⭐</div>
+      <div class="stat-value">4.8</div>
+      <div class="stat-label">Patient Satisfaction</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon red">🏨</div>
+      <div class="stat-value">85%</div>
+      <div class="stat-label">Bed Occupancy</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Generate Reports</h3>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Report Type</label>
+        <select id="reportType">
+          <option>Patient Summary</option>
+          <option>Revenue Report</option>
+          <option>Admission Statistics</option>
+          <option>Inventory Report</option>
+          <option>Doctor Performance</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>From Date</label>
+        <input type="date" id="reportFromDate">
+      </div>
+      <div class="form-group">
+        <label>To Date</label>
+        <input type="date" id="reportToDate">
+      </div>
+    </div>
+    <div style="margin-top: 20px;">
+      <button class="btn btn-primary" onclick="generateReport()">Generate Report</button>
+      <button class="btn btn-outline" onclick="exportReport()">Export PDF</button>
+    </div>
+  </div>
+</div>
+</div>
+</div>

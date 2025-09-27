@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>medicare pro - clinic management system</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- Login Screen -->
+  <div class="login-container" id="loginScreen">
+    <div class="login-box">
+      <div class="login-header">
+        <h1>🏥 MediCare Pro</h1>
+        <p>Clinic Management System</p>
+      </div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="username" placeholder="Enter your username" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="password" placeholder="Enter your password" required>
+        </div>
+        <div class="form-group">
+          <label>Role</label>
+          <select id="role">
+            <option value="admin">Administrator</option>
+            <option value="doctor">Doctor</option>
+            <option value="nurse">Nurse</option>
+            <option value="receptionist">Receptionist</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+          Login
+        </button>
+      </form>
+      <p style="margin-top: 20px; text-align: center; color: #6b7280; font-size: 12px;">
+        Demo: Use any username/password to login
+      </p>
+    </div>
+  </div>
+  <!-- main application -->
+  <div class="main-container" id="mainApp">
+    <!-- sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h2>🏥 <span>medicare pro</span></h2>
+      </div>
+      <nav class="nav-menu">
+        <button class="nav-item active" data-page="dashboard.html">
+          <i class="ri-home-heart-fill"></i>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-page="patients.html">
+          <i class="ri-team-fill"></i>
+          <span>Patients</span>
+        </button>
+        <button class="nav-item" data-page="appointments.html">
+          <i class="ri-todo-fill"></i>
+          <span>Appointments</span>
+        </button>
+        <button class="nav-item" data-page="consultations.html">
+          <i class="ri-stethoscope-line"></i>
+          <span>Consultations</span>
+        </button>
+        <button class="nav-item" data-page="admissions.html">
+          <i class="ri-hospital-fill"></i>
+          <span>Admissions</span>
+        </button>
+        <button class="nav-item" data-page="rooms-beds.html">
+          <i class="ri-hotel-bed-fill"></i>
+          <span>Rooms & Beds</span>
+        </button>
+        <button class="nav-item" data-page="billing.html">
+          <i class="ri-money-rupee-circle-fill"></i>
+          <span>Billing</span>
+        </button>
+        <button class="nav-item" data-page="inventory.html">
+          <i class="ri-capsule-fill"></i>
+          <span>Inventory</span>
+        </button>
+        <button class="nav-item" data-page="reports.html">
+          <i class="ri-bar-chart-2-line"></i>
+          <span>Reports</span>
+        </button>
+        <button class="nav-item-logout" onclick="logout()">
+          <i class="ri-logout-box-line"></i>
+          <span>Log Out</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- content area -->
+    <div class="content">
+      <div class="header">
+        <h1 class="header-title">Dashboard</h1>
+        <div class="user-info">
+          <div>
+            <div style="font-weight: 600;" id="userDisplay">admin user</div>
+            <div style="font-size: 12px; color: #6b7280;" id="roleDisplay">administrator</div>
+          </div>
+          <div class="user-avatar" id="userAvatar">a</div>
+        </div>
+      </div>
+      <div class="page-content"></div> <!-- only this gets replaced -->
+    </div>
+  </div>
+
+  <!-- js files -->
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/script.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+  <script src="assets/js/patients.js"></script>
+  <script src="assets/js/appointments.js"></script>
+  <script src="assets/js/consultations.js"></script>
+  <script src="assets/js/admissions.js"></script>
+  <script src="assets/js/rooms.js"></script>
+  <script src="assets/js/billing.js"></script>
+  <script src="assets/js/inventory.js"></script>
+  <script src="assets/js/reports.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,32 @@
+<!-- Billing Page -->
+<div class="page-content" id="billing-page">
+  <div class="search-bar">
+    <input type="text" placeholder="Search bills..." id="billSearch">
+    <select id="billStatusFilter">
+      <option value="">All Status</option>
+      <option value="pending">Pending</option>
+      <option value="paid">Paid</option>
+      <option value="partial">Partial</option>
+    </select>
+    <button class="btn btn-primary" onclick="filterBills()">Filter</button>
+    <button class="btn btn-secondary" onclick="openNewBillModal()">+ Create Bill</button>
+  </div>
+
+  <div class="card">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Bill ID</th>
+          <th>Patient</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="billsTable">
+        <!-- Dynamic content
+      </tbody>
+    </table>
+  </div>
+</div>

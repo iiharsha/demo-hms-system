@@ -1,0 +1,101 @@
+<!-- Rooms & Beds Page -->
+<div class="page-content" id="rooms-page">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon blue">🏥</div>
+      <div class="stat-value" id="totalRooms">24</div>
+      <div class="stat-label">Total Rooms</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">✓</div>
+      <div class="stat-value" id="availableRooms">15</div>
+      <div class="stat-label">Available Beds</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon yellow">👥</div>
+      <div class="stat-value" id="occupiedRooms">18</div>
+      <div class="stat-label">Occupied Beds</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon red">📊</div>
+      <div class="stat-value" id="occupancyRate">55%</div>
+      <div class="stat-label">Occupancy Rate</div>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <select id="wardFilter" onchange="filterRooms()">
+      <option value="">All Wards</option>
+      <option value="general">General Ward</option>
+      <option value="private">Private Rooms</option>
+      <option value="semi-private">Semi-Private</option>
+      <option value="icu">ICU</option>
+      <option value="pediatric">Pediatric Ward</option>
+      <option value="maternity">Maternity Ward</option>
+    </select>
+    <select id="floorFilter" onchange="filterRooms()">
+      <option value="">All Floors</option>
+      <option value="1">1st Floor</option>
+      <option value="2">2nd Floor</option>
+      <option value="3">3rd Floor</option>
+    </select>
+    <select id="statusFilter" onchange="filterRooms()">
+      <option value="">All Status</option>
+      <option value="available">Available</option>
+      <option value="occupied">Occupied</option>
+      <option value="maintenance">Under Maintenance</option>
+      <option value="reserved">Reserved</option>
+    </select>
+    <button class="btn btn-primary" onclick="filterRooms()">Apply Filters</button>
+    <button class="btn btn-secondary" onclick="openRoomManagementModal()">⚙ Manage Rooms</button>
+  </div>
+
+  <div class="room-grid" id="roomGrid">
+    <!-- Dynamic room cards will be inserted here -->
+  </div>
+
+  <div class="card" style="margin-top: 20px;">
+    <div class="card-header">
+      <h3 class="card-title">Room Occupancy Details</h3>
+      <button class="btn btn-outline" onclick="exportRoomData()">Export Report</button>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Room No.</th>
+          <th>Ward Type</th>
+          <th>Floor</th>
+          <th>Total Beds</th>
+          <th>Occupied</th>
+          <th>Available</th>
+          <th>Patient(s)</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="roomsTable">
+        <!-- Dynamic content -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Room Details Modal -->
+<div class="modal" id="roomDetailsModal">
+  <div class="modal-content" style="max-width: 700px;">
+    <div class="modal-header">
+      <h3>Room Details</h3>
+      <button class="close-btn" onclick="closeModal('roomDetailsModal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="roomDetailsContent">
+        <!-- Dynamic room details -->
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('roomDetailsModal')">Close</button>
+      <button class="btn btn-secondary" onclick="assignPatientToRoom()">Assign Patient</button>
+      <button class="btn btn-primary" onclick="dischargeFromRoom()">Discharge Patient</button>
+    </div>
+  </div>
+</div>

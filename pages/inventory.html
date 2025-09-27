@@ -1,0 +1,33 @@
+<!-- Inventory Page -->
+<div class="page-content" id="inventory-page">
+  <div class="search-bar">
+    <input type="text" placeholder="Search inventory..." id="inventorySearch">
+    <select id="categoryFilter">
+      <option value="">All Categories</option>
+      <option value="medicine">Medicine</option>
+      <option value="equipment">Equipment</option>
+      <option value="supplies">Supplies</option>
+    </select>
+    <button class="btn btn-primary" onclick="filterInventory()">Filter</button>
+    <button class="btn btn-secondary" onclick="openAddInventoryModal()">+ Add Item</button>
+  </div>
+
+  <div class="card">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Item Code</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Quantity</th>
+          <th>Unit</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="inventoryTable">
+        <!-- Dynamic content -->
+      </tbody>
+    </table>
+  </div>
+</div>

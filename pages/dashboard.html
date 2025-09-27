@@ -1,0 +1,98 @@
+<!-- Dashboard Page -->
+<div class="page-content" id="dashboard-page">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon blue" id="totalPatientsCard">
+          <i class="ri-team-fill"></i>
+        </div>
+        <div class="stat-title">Patients</div>
+      </div>
+      <div class="stat-value">
+        <span id="totalPatients">0</span>
+        <span class="stat-unit">Total Patients</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon green">
+          <i class="ri-todo-fill"></i>
+        </div>
+        <div class="stat-title">Appointments</div>
+      </div>
+      <div class="stat-value">
+        <span id="todayAppointments">0</span>
+        <span class="stat-unit">Appointments Today</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon yellow">
+          <i class="ri-hospital-fill"></i>
+        </div>
+        <div class="stat-title">Admissions</div>
+      </div>
+      <div class="stat-value">
+        <span id="activeAdmissions">0</span>
+        <span class="stat-unit">Active Admissions</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon red">
+          <i class="ri-money-rupee-circle-fill"></i>
+        </div>
+        <div class="stat-title">Bills</div>
+      </div>
+      <div class="stat-value">
+        <span id="pendingBills">0</span>
+        <span class="stat-unit">Pending Bills</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Recent Appointments</h3>
+      <button class="btn btn-primary" onclick="showPage('appointments')">View All</button>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Patient</th>
+          <th>Doctor</th>
+          <th>Type</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="recentAppointmentsTable">
+        <!-- Dynamic content -->
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Recent Admissions</h3>
+      <button class="btn btn-primary" onclick="showPage('admissions')">View All</button>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Admission ID</th>
+          <th>Patient</th>
+          <th>Room</th>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="recentAdmissionsTable">
+        <!-- Dynamic content -->
+      </tbody>
+    </table>
+  </div>
+</div>
