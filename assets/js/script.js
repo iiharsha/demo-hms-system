@@ -5,8 +5,8 @@ document.querySelectorAll(".nav-item[data-page]").forEach((item) => {
   item.addEventListener("click", function() {
     const page = this.getAttribute("data-page");
     console.log(`page is ${page}`)
-    loadPage(page);
-    loadPageData(page);
+    showPage(page);
+    // loadPageData(page);
   });
 });
 
@@ -30,13 +30,32 @@ async function loadPage(page) {
   }
 }
 
-function showPage(pageName) {
+async function showPage(page) {
+  const container = document.querySelector(".page-content");
+  if (!container) {
+    console.error("page container not found.");
+    return;
+  }
+
+  try {
+    const response = await fetch(`pages/${page}`); // no leading "./" needed
+    if (!response.ok) throw new Error(`Failed to load ${page}: ${response.status}`);
+
+    const html = await response.text();
+    container.innerHTML = html;
+
+  } catch (err) {
+    container.innerHTML = "<p>Error Loading Page.</p>";
+    console.error("Page load error:", err);
+  }
+
+  page = page.replace(/\.html$/, "") // remove .html from
   // Update active nav
   document.querySelectorAll(".nav-item").forEach((item) => {
     item.classList.remove("active");
   });
   document
-    .querySelector(`.nav-item[data-page="${pageName}"]`)
+    .querySelector(`.nav-item[data-page="${page}"]`)
     .classList.add("active");
 
   // Hide all pages
@@ -45,14 +64,14 @@ function showPage(pageName) {
   });
 
   // Show selected page
-  document.getElementById(`${pageName}-page`).classList.remove("hide");
+  document.getElementById(`${page}-page`).classList.remove("hide");
 
   // Update header
   document.getElementById("pageTitle").textContent =
-    pageName.charAt(0).toUpperCase() + pageName.slice(1);
+    pageName.charAt(0).toUpperCase() + page.slice(1);
 
   // Load page data
-  loadPageData(pageName);
+  loadPageData(page);
 }
 
 function loadPageData(pageName) {
@@ -60,22 +79,22 @@ function loadPageData(pageName) {
     case "patients.html":
       loadPatients();
       break;
-    case "appointments":
+    case "appointments.html":
       loadAppointments();
       break;
-    case "consultations":
+    case "consultations.html":
       loadConsultations();
       break;
-    case "admissions":
+    case "admissions.html":
       loadAdmissions();
       break;
-    case "rooms":
+    case "rooms-bed.html":
       loadRooms();
       break;
-    case "billing":
+    case "billing.html":
       loadBills();
       break;
-    case "inventory":
+    case "inventory.html":
       loadInventory();
       break;
   }

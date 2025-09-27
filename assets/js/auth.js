@@ -1,5 +1,5 @@
 /* only for dev purpose change skipLogin to false to revert back to normal */
-const skipLogin = false;
+const skipLogin = true;
 
 let currentUser = "";
 let currentRole = "";
