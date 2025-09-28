@@ -1,14 +1,14 @@
 /* main script i guess */
 
 // Navigation
-document.querySelectorAll(".nav-item[data-page]").forEach((item) => {
-  item.addEventListener("click", function() {
-    const page = this.getAttribute("data-page");
-    console.log(`page is ${page}`)
-    showPage(page);
-    // loadPageData(page);
-  });
-});
+// document.querySelectorAll(".nav-item[data-page]").forEach((item) => {
+//   item.addEventListener("click", function() {
+//     const page = this.getAttribute("data-page");
+//     console.log(`page is ${page}`)
+//     showPage(page);
+//     // loadPageData(page);
+//   });
+// });
 
 async function loadPage(page) {
   const container = document.querySelector(".page-content");
@@ -30,48 +30,72 @@ async function loadPage(page) {
   }
 }
 
-async function showPage(page) {
+document.addEventListener("DOMContentLoaded", () => {
+  // attach listeners to nav items that have data-page
+  document.querySelectorAll(".nav-menu .nav-item[data-page]").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const page = btn.dataset.page; // might be "dashboard" or "dashboard.html"
+      showPage(page);
+    });
+  });
+
+  // load initial page (use the nav-item that already has .active, or fallback)
+  const initial = document.querySelector(".nav-menu .nav-item.active");
+  const startPage = initial ? initial.dataset.page : "dashboard.html";
+  showPage(startPage);
+});
+
+async function showPage(pageParam) {
   const container = document.querySelector(".page-content");
   if (!container) {
     console.error("page container not found.");
     return;
   }
 
+  // Normalize page name (strip .html if present)
+  const pageName = pageParam.replace(/\.html$/i, ""); // e.g. "dashboard"
+
+  // Build fetch URL (ensure you request the .html file)
+  const fetchUrl = `pages/${pageName}.html`;
+
   try {
-    const response = await fetch(`pages/${page}`); // no leading "./" needed
-    if (!response.ok) throw new Error(`Failed to load ${page}: ${response.status}`);
-
-    const html = await response.text();
+    const res = await fetch(fetchUrl);
+    if (!res.ok) throw new Error(`Failed to load ${fetchUrl}: ${res.status}`);
+    const html = await res.text();
     container.innerHTML = html;
-
   } catch (err) {
-    container.innerHTML = "<p>Error Loading Page.</p>";
+    container.innerHTML = `<p>Error loading page "${pageName}".</p>`;
     console.error("Page load error:", err);
   }
 
-  page = page.replace(/\.html$/, "") // remove .html from
-  // Update active nav
-  document.querySelectorAll(".nav-item").forEach((item) => {
-    item.classList.remove("active");
-  });
-  document
-    .querySelector(`.nav-item[data-page="${page}"]`)
-    .classList.add("active");
-
-  // Hide all pages
-  document.querySelectorAll(".page-content").forEach((page) => {
-    page.classList.add("hide");
+  // Update nav active classes (works whether data-page is "dashboard" or "dashboard.html")
+  document.querySelectorAll(".nav-menu .nav-item[data-page]").forEach((item) => {
+    const itemPageName = (item.dataset.page || "").replace(/\.html$/i, "");
+    item.classList.toggle("active", itemPageName === pageName);
   });
 
-  // Show selected page
-  document.getElementById(`${page}-page`).classList.remove("hide");
+  // Update header title (your markup has <h1 class="header-title">)
+  const titleEl = document.querySelector(".header-title") || document.getElementById("pageTitle");
+  if (titleEl) {
+    titleEl.textContent = pageName.charAt(0).toUpperCase() + pageName.slice(1);
+  }
 
-  // Update header
-  document.getElementById("pageTitle").textContent =
-    pageName.charAt(0).toUpperCase() + page.slice(1);
+  // Optionally call initialize<Page>() if you defined it, e.g. initializeDashboard()
+  const initFnName = "initialize" + pageName.charAt(0).toUpperCase() + pageName.slice(1);
+  const initFn = window[initFnName];
+  if (typeof initFn === "function") {
+    requestAnimationFrame(() => initFn())
+  }
 
-  // Load page data
-  loadPageData(page);
+  // Optionally call loadPageData(pageName) if you use it
+  if (typeof window.loadPageData === "function") {
+    try { window.loadPageData(pageName); } catch (e) { console.error("loadPageData error:", e); }
+  }
+
+  // Optional: push history state so URL can reflect the page without .html
+  // history.pushState({}, "", `/${pageName}`);
+  // NOTE: pushing a clean URL requires server routing to handle direct loads.
 }
 
 function loadPageData(pageName) {
