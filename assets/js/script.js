@@ -10,26 +10,27 @@
 //   });
 // });
 
-async function loadPage(page) {
-  const container = document.querySelector(".page-content");
-  if (!container) {
-    console.error("page container not found.");
-    return;
-  }
+// async function loadPage(page) {
+//   const container = document.querySelector(".page-content");
+//   if (!container) {
+//     console.error("page container not found.");
+//     return;
+//   }
+//
+//   try {
+//     const response = await fetch(`pages/${page}`); // no leading "./" needed
+//     if (!response.ok) throw new Error(`Failed to load ${page}: ${response.status}`);
+//
+//     const html = await response.text();
+//     container.innerHTML = html;
+//
+//   } catch (err) {
+//     container.innerHTML = "<p>Error Loading Page.</p>";
+//     console.error("Page load error:", err);
+//   }
+// }
 
-  try {
-    const response = await fetch(`pages/${page}`); // no leading "./" needed
-    if (!response.ok) throw new Error(`Failed to load ${page}: ${response.status}`);
-
-    const html = await response.text();
-    container.innerHTML = html;
-
-  } catch (err) {
-    container.innerHTML = "<p>Error Loading Page.</p>";
-    console.error("Page load error:", err);
-  }
-}
-
+/* navigation and rendering of pages */
 document.addEventListener("DOMContentLoaded", () => {
   // attach listeners to nav items that have data-page
   document.querySelectorAll(".nav-menu .nav-item[data-page]").forEach((btn) => {
@@ -92,33 +93,29 @@ async function showPage(pageParam) {
   if (typeof window.loadPageData === "function") {
     try { window.loadPageData(pageName); } catch (e) { console.error("loadPageData error:", e); }
   }
-
-  // Optional: push history state so URL can reflect the page without .html
-  // history.pushState({}, "", `/${pageName}`);
-  // NOTE: pushing a clean URL requires server routing to handle direct loads.
 }
 
 function loadPageData(pageName) {
   switch (pageName) {
-    case "patients.html":
+    case "patients":
       loadPatients();
       break;
-    case "appointments.html":
+    case "appointments":
       loadAppointments();
       break;
-    case "consultations.html":
+    case "consultations":
       loadConsultations();
       break;
-    case "admissions.html":
+    case "admissions":
       loadAdmissions();
       break;
-    case "rooms-bed.html":
+    case "rooms-bed":
       loadRooms();
       break;
-    case "billing.html":
+    case "billing":
       loadBills();
       break;
-    case "inventory.html":
+    case "inventory":
       loadInventory();
       break;
   }
