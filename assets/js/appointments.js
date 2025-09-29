@@ -28,6 +28,15 @@ const appointments = [
     type: "Follow-up",
     status: "Scheduled",
   },
+  {
+    id: "A004",
+    date: "2025-01-15",
+    time: "12:00",
+    patient: "Micheal Jackson",
+    doctor: "Dr. Williams",
+    type: "Follow-up",
+    status: "Scheduled",
+  },
 ];
 
 function loadAppointments() {
@@ -42,13 +51,11 @@ function loadAppointments() {
                     <td>${apt.patient}</td>
                     <td>${apt.doctor}</td>
                     <td>${apt.type}</td>
-                    <td><span class="badge badge-${
-                      apt.status === "Completed" ? "success" : "primary"
-                    }">${apt.status}</span></td>
+                    <td><span class="badge badge-${apt.status === "Completed" ? "success" : "primary"
+        }">${apt.status}</span></td>
                     <td>
-                        <button class="btn btn-primary" onclick="viewAppointment('${
-                          apt.id
-                        }')" style="padding: 6px 12px; font-size: 12px;">View</button>
+                        <button class="btn btn-primary" onclick="viewAppointment('${apt.id
+        }')" style="padding: 6px 12px; font-size: 12px;">View</button>
                     </td>
                 </tr>
             `
@@ -80,13 +87,11 @@ function renderAppointments(filtered) {
                 <td>${apt.patient}</td>
                 <td>${apt.doctor}</td>
                 <td>${apt.type}</td>
-                <td><span class="badge badge-${
-                  apt.status === "Completed" ? "success" : "primary"
-                }">${apt.status}</span></td>
+                <td><span class="badge badge-${apt.status === "Completed" ? "success" : "primary"
+        }">${apt.status}</span></td>
                 <td>
-                    <button class="btn btn-primary" onclick="viewAppointment('${
-                      apt.id
-                    }')" style="padding: 6px 12px; font-size: 12px;">View</button>
+                    <button class="btn btn-primary" onclick="viewAppointment('${apt.id
+        }')" style="padding: 6px 12px; font-size: 12px;">View</button>
                 </td>
             </tr>`
     )
@@ -99,8 +104,7 @@ function filterAppointments() {
 
   let filtered = appointments;
 
-  /* TODO: fix filtering not working with date */
-  /* filtered = filterAppointmentsByDate(filtered, date); */
+  filtered = filterAppointmentsByDate(filtered, date);
 
   filtered = filterAppointmentsByDoctor(filtered, doctor);
 

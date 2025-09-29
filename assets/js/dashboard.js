@@ -56,3 +56,14 @@ function loadRecentAdmissions() {
     )
     .join("");
 }
+
+/*Auto - refresh dashboard stats every 30 seconds */
+document.addEventListener("DOMContentLoaded", () => {
+  setInterval(() => {
+    const dashboardPage = document.getElementById("dashboard-page");
+    if (dashboardPage && !dashboardPage.classList.contains("hide")) {
+      initializeDashboard();
+    }
+  }, 30000);
+})
+

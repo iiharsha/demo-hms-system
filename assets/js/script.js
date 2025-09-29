@@ -1,35 +1,5 @@
 /* main script i guess */
 
-// Navigation
-// document.querySelectorAll(".nav-item[data-page]").forEach((item) => {
-//   item.addEventListener("click", function() {
-//     const page = this.getAttribute("data-page");
-//     console.log(`page is ${page}`)
-//     showPage(page);
-//     // loadPageData(page);
-//   });
-// });
-
-// async function loadPage(page) {
-//   const container = document.querySelector(".page-content");
-//   if (!container) {
-//     console.error("page container not found.");
-//     return;
-//   }
-//
-//   try {
-//     const response = await fetch(`pages/${page}`); // no leading "./" needed
-//     if (!response.ok) throw new Error(`Failed to load ${page}: ${response.status}`);
-//
-//     const html = await response.text();
-//     container.innerHTML = html;
-//
-//   } catch (err) {
-//     container.innerHTML = "<p>Error Loading Page.</p>";
-//     console.error("Page load error:", err);
-//   }
-// }
-
 /* navigation and rendering of pages */
 document.addEventListener("DOMContentLoaded", () => {
   // attach listeners to nav items that have data-page
@@ -109,7 +79,7 @@ function loadPageData(pageName) {
     case "admissions":
       loadAdmissions();
       break;
-    case "rooms-bed":
+    case "rooms":
       loadRooms();
       break;
     case "billing":
@@ -117,6 +87,9 @@ function loadPageData(pageName) {
       break;
     case "inventory":
       loadInventory();
+      break;
+    case "reports":
+      loadReports();
       break;
   }
 }
@@ -159,12 +132,6 @@ function switchTab(tabName) {
   document.getElementById(`${tabName}-tab`).classList.add("active");
 }
 
-/*Auto - refresh dashboard stats every 30 seconds */
-setInterval(() => {
-  if (!document.getElementById("dashboard-page").classList.contains("hide")) {
-    initializeDashboard();
-  }
-}, 30000);
 
 /* Responsive sidebar toggle for mobile */
 function toggleSidebar() {

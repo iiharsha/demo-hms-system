@@ -95,7 +95,6 @@ function openNewConsultationModal() {
 function viewConsultation(id) {
   // showNotification(`Viewing consultation ${id}`);
   const consultation = consultations.find((a) => a.id === id);
-  console.log(consultation);
   if (!consultation) {
     console.error("Appointment not found", id);
     return;

@@ -301,15 +301,14 @@ function viewRoomDetails(roomId) {
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                     <div>
                         <label style="color: #6b7280; font-size: 12px;">Room Number</label>
-                        <p style="font-size: 24px; font-weight: 600; color: var(--primary);">${
-                          room.id
-                        }</p>
+                        <p style="font-size: 24px; font-weight: 600; color: var(--primary);">${room.id
+    }</p>
                     </div>
                     <div>
                         <label style="color: #6b7280; font-size: 12px;">Ward Type</label>
                         <p style="font-size: 18px;">${formatRoomType(
-                          room.type
-                        )}</p>
+      room.type
+    )}</p>
                     </div>
                     <div>
                         <label style="color: #6b7280; font-size: 12px;">Floor</label>
@@ -317,9 +316,8 @@ function viewRoomDetails(roomId) {
                     </div>
                     <div>
                         <label style="color: #6b7280; font-size: 12px;">Daily Rate</label>
-                        <p style="font-size: 18px; font-weight: 600;">₹${
-                          room.rate
-                        }</p>
+                        <p style="font-size: 18px; font-weight: 600;">₹${room.rate
+    }</p>
                     </div>
                 </div>
                 
@@ -327,9 +325,8 @@ function viewRoomDetails(roomId) {
                     <h4 style="margin-bottom: 15px;">Occupancy Status</h4>
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
                         <div style="text-align: center;">
-                            <div style="font-size: 24px; font-weight: 600; color: var(--primary);">${
-                              room.totalBeds
-                            }</div>
+                            <div style="font-size: 24px; font-weight: 600; color: var(--primary);">${room.totalBeds
+    }</div>
                             <div style="font-size: 12px; color: #6b7280;">Total Beds</div>
                         </div>
                         <div style="text-align: center;">
@@ -346,50 +343,47 @@ function viewRoomDetails(roomId) {
                 <h4 style="margin-bottom: 15px;">Bed Details</h4>
                 <div style="display: grid; gap: 10px;">
                     ${room.occupiedBeds
-                      .map((bed) => {
-                        const isOccupied = bed.patient !== null;
-                        const bgColor = isOccupied
-                          ? "var(--warning)"
-                          : "var(--secondary)";
-                        const textColor = "white";
+      .map((bed) => {
+        const isOccupied = bed.patient !== null;
+        const bgColor = isOccupied
+          ? "var(--warning)"
+          : "var(--secondary)";
+        const textColor = "white";
 
-                        return `
-                            <div style="background: ${
-                              isOccupied ? "#fef3c7" : "#d1fae5"
-                            }; padding: 15px; border-radius: 8px; border-left: 4px solid ${bgColor};">
+        return `
+                            <div style="background: ${isOccupied ? "#fef3c7" : "#d1fae5"
+          }; padding: 15px; border-radius: 8px; border-left: 4px solid ${bgColor};">
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
                                     <div>
                                         <div style="font-weight: 600; font-size: 16px; margin-bottom: 5px;">
                                             Bed ${bed.bed}
                                         </div>
-                                        ${
-                                          isOccupied
-                                            ? `
+                                        ${isOccupied
+            ? `
                                             <div style="color: #6b7280; font-size: 14px;">
                                                 <strong>Patient:</strong> ${bed.patient}<br>
                                                 <strong>ID:</strong> ${bed.patientId}<br>
                                                 <strong>Admission:</strong> ${bed.admissionDate}
                                             </div>
                                         `
-                                            : `
+            : `
                                             <div style="color: var(--secondary); font-weight: 500;">
                                                 Available for admission
                                             </div>
                                         `
-                                        }
+          }
                                     </div>
                                     <div>
-                                        ${
-                                          isOccupied
-                                            ? '<span class="badge badge-warning">Occupied</span>'
-                                            : '<span class="badge badge-success">Available</span>'
-                                        }
+                                        ${isOccupied
+            ? '<span class="badge badge-warning">Occupied</span>'
+            : '<span class="badge badge-success">Available</span>'
+          }
                                     </div>
                                 </div>
                             </div>
                         `;
-                      })
-                      .join("")}
+      })
+      .join("")}
                 </div>
             `;
   document.getElementById("roomDetailsContent").innerHTML = html;
@@ -441,24 +435,21 @@ function loadRoomGrid() {
         }
 
         html += `
-                        <div class="room-card ${statusClass}" onclick="viewRoomDetails('${
-          room.id
-        }')">
+                        <div class="room-card ${statusClass}" onclick="viewRoomDetails('${room.id
+          }')">
                             <div class="room-header">
                                 <div>
-                                    <div class="room-number">Room ${
-                                      room.id
-                                    }</div>
+                                    <div class="room-number">Room ${room.id
+          }</div>
                                     <div class="room-type">${formatRoomType(
-                                      room.type
-                                    )}</div>
+            room.type
+          )}</div>
                                 </div>
                                 <div style="text-align: right;">
-                                    <div style="font-size: 20px; font-weight: 600; color: ${
-                                      occupiedCount === room.totalBeds
-                                        ? "var(--warning)"
-                                        : "var(--secondary)"
-                                    }">
+                                    <div style="font-size: 20px; font-weight: 600; color: ${occupiedCount === room.totalBeds
+            ? "var(--warning)"
+            : "var(--secondary)"
+          }">
                                         ${occupancyPercent}%
                                     </div>
                                 </div>
@@ -466,22 +457,20 @@ function loadRoomGrid() {
                             
                             <div class="bed-indicators">
                                 ${room.occupiedBeds
-                                  .map((bed, index) => {
-                                    let bedClass = bed.patient
-                                      ? "occupied"
-                                      : "available";
-                                    if (
-                                      room.status === "reserved" &&
-                                      !bed.patient
-                                    )
-                                      bedClass = "reserved";
-                                    return `<div class="bed-indicator ${bedClass}" title="Bed ${
-                                      bed.bed
-                                    }: ${bed.patient || "Available"}">${
-                                      bed.bed
-                                    }</div>`;
-                                  })
-                                  .join("")}
+            .map((bed, _) => {
+              let bedClass = bed.patient
+                ? "occupied"
+                : "available";
+              if (
+                room.status === "reserved" &&
+                !bed.patient
+              )
+                bedClass = "reserved";
+              return `<div class="bed-indicator ${bedClass}" title="Bed ${bed.bed
+                }: ${bed.patient || "Available"}">${bed.bed
+                }</div>`;
+            })
+            .join("")}
                             </div>
                             
                             <div class="room-stats">
@@ -494,9 +483,8 @@ function loadRoomGrid() {
                                     <div class="room-stat-label">Available</div>
                                 </div>
                                 <div class="room-stat">
-                                    <div class="room-stat-value">₹${
-                                      room.rate
-                                    }</div>
+                                    <div class="room-stat-value">₹${room.rate
+          }</div>
                                     <div class="room-stat-label">Per Day</div>
                                 </div>
                             </div>
@@ -545,14 +533,12 @@ function loadRoomTable() {
                         <td>${room.totalBeds}</td>
                         <td>${occupiedCount}</td>
                         <td>${availableCount}</td>
-                        <td>${
-                          patients.length > 0 ? patients.join(", ") : "-"
-                        }</td>
+                        <td>${patients.length > 0 ? patients.join(", ") : "-"
+        }</td>
                         <td>${statusBadge}</td>
                         <td>
-                            <button class="btn btn-primary" onclick="viewRoomDetails('${
-                              room.id
-                            }')" style="padding: 6px 12px; font-size: 12px;">View</button>
+                            <button class="btn btn-primary" onclick="viewRoomDetails('${room.id
+        }')" style="padding: 6px 12px; font-size: 12px;">View</button>
                         </td>
                     </tr>
                 `;

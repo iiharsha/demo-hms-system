@@ -7,3 +7,9 @@ function generateReport() {
 
   showNotification(`Generating ${reportType} from ${fromDate} to ${toDate}`);
 }
+
+//loadReportsPage
+function loadReports() {
+  const occupancyRate = getOccupancyRate(rooms);
+  console.log("occupancyRate from reports page", +occupancyRate);
+}
