@@ -43,7 +43,7 @@ function login(username, role) {
   document.getElementById("userAvatar").textContent = username.charAt(0).toUpperCase();
 
   // Load default page
-  loadPage("dashboard.html");
+  // loadPage("dashboard.html");
 
   // Call init data if exists
   if (typeof loadData === "function") {

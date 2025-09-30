@@ -2,9 +2,16 @@
 <div class="page-content" id="reports-page">
   <div class="stats-grid">
     <div class="stat-card">
-      <div class="stat-icon blue">📊</div>
-      <div class="stat-value">₹2.5M</div>
-      <div class="stat-label">Monthly Revenue</div>
+      <div class="stat-header">
+        <div class="stat-icon blue">
+          <i class="ri-bar-chart-fill"></i>
+        </div>
+        <div class="stat-title">Revenue</div>
+      </div>
+      <div class="stat-value">
+        <span id="revenueReportValue"></span>
+        <span class="stat-unit">Monthly</span>
+      </div>
     </div>
     <div class="stat-card">
       <div class="stat-header">
@@ -14,7 +21,7 @@
         <div class="stat-title">Consultations</div>
       </div>
       <div class="stat-value">
-        <span id="consultationsReportCount"></span>
+        <span id="consultationsReportValue"></span>
         <span class="stat-unit">Consultations in total</span>
       </div>
     </div>
@@ -38,7 +45,7 @@
         <div class="stat-title">Occupancy</div>
       </div>
       <div class="stat-value">
-        <span id="occupancyReport">0%</span>
+        <span id="occupancyReportValue">0%</span>
         <span class="stat-unit">Occupied</span>
       </div>
     </div>

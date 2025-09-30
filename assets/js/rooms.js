@@ -282,8 +282,8 @@ function loadRooms() {
   document.getElementById("occupiedRooms").textContent = occupiedBedsCount;
   document.getElementById("occupancyRate").textContent = occupancyRate + "%";
 
-  // Load room grid
-  loadRoomGrid();
+  /* Load room grid */
+  renderRoomGrid();
 
   // Load room table
   loadRoomTable();
@@ -300,14 +300,11 @@ function viewRoomDetails(roomId) {
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
                     <div>
                         <label style="color: #6b7280; font-size: 12px;">Room Number</label>
-                        <p style="font-size: 24px; font-weight: 600; color: var(--primary);">${room.id
-    }</p>
+                        <p style="font-size: 24px; font-weight: 600; color: var(--primary);">${room.id}</p>
                     </div>
                     <div>
                         <label style="color: #6b7280; font-size: 12px;">Ward Type</label>
-                        <p style="font-size: 18px;">${formatRoomType(
-      room.type
-    )}</p>
+                        <p style="font-size: 18px;">${formatRoomType(room.type)}</p>
                     </div>
                     <div>
                         <label style="color: #6b7280; font-size: 12px;">Floor</label>
@@ -315,8 +312,7 @@ function viewRoomDetails(roomId) {
                     </div>
                     <div>
                         <label style="color: #6b7280; font-size: 12px;">Daily Rate</label>
-                        <p style="font-size: 18px; font-weight: 600;">₹${room.rate
-    }</p>
+                        <p style="font-size: 18px; font-weight: 600;">₹${room.rate}</p>
                     </div>
                 </div>
                 
@@ -324,8 +320,7 @@ function viewRoomDetails(roomId) {
                     <h4 style="margin-bottom: 15px;">Occupancy Status</h4>
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
                         <div style="text-align: center;">
-                            <div style="font-size: 24px; font-weight: 600; color: var(--primary);">${room.totalBeds
-    }</div>
+                            <div style="font-size: 24px; font-weight: 600; color: var(--primary);">${room.totalBeds}</div>
                             <div style="font-size: 12px; color: #6b7280;">Total Beds</div>
                         </div>
                         <div style="text-align: center;">
@@ -389,8 +384,8 @@ function viewRoomDetails(roomId) {
   openModal("roomDetailsModal");
 }
 
-/* render  the dynamic room card */
-function loadRoomGrid(roomList = rooms) {
+/* render the dynamic room card */
+function renderRoomGrid(roomList = rooms) {
   const roomGrid = document.getElementById("roomGrid");
 
   if (!roomGrid) {
@@ -405,13 +400,6 @@ function loadRoomGrid(roomList = rooms) {
     if (!roomsByFloor[floorKey]) roomsByFloor[floorKey] = [];
     roomsByFloor[floorKey].push(room);
   })
-
-  // rooms.forEach((room) => {
-  //   if (!roomsByFloor[room.floor]) {
-  //     roomsByFloor[room.floor] = [];
-  //   }
-  //   roomsByFloor[room.floor].push(room);
-  // });
 
   const floorKeys = Object.keys(roomsByFloor)
     .map((k) => Number(k)).sort((a, b) => a - b);
@@ -463,9 +451,15 @@ function loadRoomGrid(roomList = rooms) {
               <div class="room-type">${typeof formatRoomType === 'function' ? formatRoomType(room.type) : room.type}</div>
             </div>
             <div style="text-align: right;">
-              <div style="font-size: 20px; font-weight: 600; color: ${occupiedCount === totalBeds ? "var(--warning)" : "var(--secondary)"}">
+              <div style="font-size: 20px; font-weight: 600; color: ${occupiedCount === 0
+          ? "var(--secondary)"
+          : occupiedCount === totalBeds
+            ? "var(--danger)"
+            : "var(--warning)"
+        }">
                 ${occupiedCount}/${totalBeds}
               </div>
+
             </div>
           </div>
 
@@ -556,6 +550,9 @@ function formatRoomType(type) {
   return types[type] || type;
 }
 
+/**
+ * Filter the rooms based on Ward, Floor, and Room Status
+ */
 function filterRooms() {
   const wardFilter = document.getElementById("wardFilter").value;
   const floorFilter = document.getElementById("floorFilter").value;
@@ -587,7 +584,9 @@ function filterRooms() {
     }
   }
 
-  loadRoomGrid(filteredRooms);
+  console.log(filteredRooms);
+
+  renderRoomGrid(filteredRooms);
 }
 
 function openRoomManagementModal() {
@@ -616,42 +615,8 @@ function assignPatientToRoom() {
 function dischargeFromRoom() {
   showNotification("Patient discharge feature would be implemented here");
 }
-
-/* Optional helpers: dynamically populate floor/ward selects from `rooms` */
-function populateFilters() {
-  const floorSelect = document.getElementById("floorFilter");
-  const wardSelect = document.getElementById("wardFilter");
-  if (!floorSelect || !wardSelect) return;
-
-  // Floors
-  const floors = Array.from(new Set((rooms || []).map((r) => String(r.floor)))).sort((a, b) => Number(a) - Number(b));
-  // remove generated options first (keep the first default option)
-  floorSelect.querySelectorAll('option[data-generated]').forEach((o) => o.remove());
-  floors.forEach((f) => {
-    const opt = document.createElement("option");
-    opt.value = f;
-    opt.textContent = `${f} Floor`;
-    opt.setAttribute("data-generated", "true");
-    floorSelect.appendChild(opt);
-  });
-
-  // Wards
-  const wards = Array.from(new Set((rooms || []).map((r) => String(r.type))));
-  wardSelect.querySelectorAll('option[data-generated]').forEach((o) => o.remove());
-  wards.forEach((w) => {
-    // skip if option with same value already exists (you may have hardcoded ones)
-    if ([...wardSelect.options].some((o) => o.value === w)) return;
-    const opt = document.createElement("option");
-    opt.value = w;
-    // display a nicer label if you prefer
-    opt.textContent = w;
-    opt.setAttribute("data-generated", "true");
-    wardSelect.appendChild(opt);
-  });
-}
-
 /* initialize on DOM ready */
 document.addEventListener("DOMContentLoaded", () => {
   // populateFilters();
-  loadRoomGrid();
+  renderRoomGrid();
 });

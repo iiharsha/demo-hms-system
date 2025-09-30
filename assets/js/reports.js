@@ -18,10 +18,12 @@ loadJSON("../assets/data/rooms.json")
 
 function loadReports() {
 
+  const revenueValue = "4.20Cr"
   const occupancyRate = getOccupancyRate(rooms);
   const reviewValue = 4.5;
   const consultationsTotalValue = 69;
-  document.getElementById("occupancyReport").textContent = occupancyRate + "%";
+  document.getElementById("revenueReportValue").textContent = revenueValue;
+  document.getElementById("occupancyReportValue").textContent = occupancyRate + "%";
   document.getElementById("patientReviewValue").textContent = reviewValue;
-  document.getElementById("consultationsReportCount").textContent = consultationsTotalValue;
+  document.getElementById("consultationsReportValue").textContent = consultationsTotalValue;
 }
