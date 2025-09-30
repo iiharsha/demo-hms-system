@@ -1,0 +1,27 @@
+.error-page {
+  text-align: center;
+  padding: 60px 20px;
+  color: #374151;
+}
+
+.error-icon {
+  font-size: 64px;
+  color: #ef4444; /* red-500 */
+  margin-bottom: 16px;
+}
+
+.error-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.error-message {
+  font-size: 14px;
+  color: #6b7280; /* gray-500 */
+  margin-bottom: 20px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+

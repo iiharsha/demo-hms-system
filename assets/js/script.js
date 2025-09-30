@@ -28,15 +28,15 @@ async function showPage(pageParam) {
   const pageName = pageParam.replace(/\.html$/i, ""); // e.g. "dashboard"
 
   // Build fetch URL (ensure you request the .html file)
-  const fetchUrl = `pages/${pageName}.html`;
+  const fetchHtml = `pages/${pageName}.html`;
 
   try {
-    const res = await fetch(fetchUrl);
-    if (!res.ok) throw new Error(`Failed to load ${fetchUrl}: ${res.status}`);
+    const res = await fetch(fetchHtml);
+    if (!res.ok) throw new Error(`Failed to load ${fetchHtml}: ${res.status}`);
     const html = await res.text();
     container.innerHTML = html;
   } catch (err) {
-    container.innerHTML = `<p>Error loading page "${pageName}".</p>`;
+    container.innerHTML = showErrorPage();
     console.error("Page load error:", err);
   }
 

@@ -8,8 +8,20 @@ function generateReport() {
   showNotification(`Generating ${reportType} from ${fromDate} to ${toDate}`);
 }
 
-//loadReportsPage
+loadJSON("../assets/data/rooms.json")
+  .then(rooms => {
+    loadReports(rooms);
+  })
+  .catch(error => {
+    console.error("Error loading rooms:", error);
+  });
+
 function loadReports() {
+
   const occupancyRate = getOccupancyRate(rooms);
-  console.log("occupancyRate from reports page", +occupancyRate);
+  const reviewValue = 4.5;
+  const consultationsTotalValue = 69;
+  document.getElementById("occupancyReport").textContent = occupancyRate + "%";
+  document.getElementById("patientReviewValue").textContent = reviewValue;
+  document.getElementById("consultationsReportCount").textContent = consultationsTotalValue;
 }

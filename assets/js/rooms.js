@@ -1,7 +1,6 @@
 /* Rooms & Beds Page */
 
 /* Need to go through this again for now i left it as it is */
-
 const rooms = [
   // First Floor - General Ward
   {
@@ -351,153 +350,152 @@ function viewRoomDetails(roomId) {
         const textColor = "white";
 
         return `
-                            <div style="background: ${isOccupied ? "#fef3c7" : "#d1fae5"
-          }; padding: 15px; border-radius: 8px; border-left: 4px solid ${bgColor};">
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <div>
-                                        <div style="font-weight: 600; font-size: 16px; margin-bottom: 5px;">
-                                            Bed ${bed.bed}
-                                        </div>
-                                        ${isOccupied
+              <div style="background: ${isOccupied ? "#fef3c7" : "#d1fae5"};
+              padding: 15px; border-radius: 8px; border-left: 4px solid ${bgColor};">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-weight: 600; font-size: 16px; margin-bottom: 5px;">
+                    Bed ${bed.bed}
+                  </div>
+                  ${isOccupied
             ? `
-                                            <div style="color: #6b7280; font-size: 14px;">
-                                                <strong>Patient:</strong> ${bed.patient}<br>
-                                                <strong>ID:</strong> ${bed.patientId}<br>
-                                                <strong>Admission:</strong> ${bed.admissionDate}
-                                            </div>
-                                        `
+                  <div style="color: #6b7280; font-size: 14px;">
+                    <strong>Patient:</strong> ${bed.patient}<br>
+                    <strong>ID:</strong> ${bed.patientId}<br>
+                    <strong>Admission:</strong> ${bed.admissionDate}
+                  </div>
+                  `
             : `
-                                            <div style="color: var(--secondary); font-weight: 500;">
-                                                Available for admission
-                                            </div>
-                                        `
+                  <div style="color: var(--secondary); font-weight: 500;">
+                    Available for admission
+                  </div>
+                  `
           }
-                                    </div>
-                                    <div>
-                                        ${isOccupied
+                </div>
+                <div>
+                  ${isOccupied
             ? '<span class="badge badge-warning">Occupied</span>'
             : '<span class="badge badge-success">Available</span>'
           }
-                                    </div>
-                                </div>
-                            </div>
-                        `;
+                </div>
+              </div>
+              </div>
+            `;
       })
       .join("")}
-                </div>
+        </div>
             `;
   document.getElementById("roomDetailsContent").innerHTML = html;
   openModal("roomDetailsModal");
 }
 
-function loadRoomGrid() {
+/* render  the dynamic room card */
+function loadRoomGrid(roomList = rooms) {
   const roomGrid = document.getElementById("roomGrid");
 
-  // Group rooms by floor
+  if (!roomGrid) {
+    console.log("no element with id #roomGrid found")
+    return;
+  }
+
+  /* Group rooms by floor */
   const roomsByFloor = {};
-  rooms.forEach((room) => {
-    if (!roomsByFloor[room.floor]) {
-      roomsByFloor[room.floor] = [];
-    }
-    roomsByFloor[room.floor].push(room);
-  });
+  (roomList || []).forEach((room) => {
+    const floorKey = String(room.floor ?? "0")
+    if (!roomsByFloor[floorKey]) roomsByFloor[floorKey] = [];
+    roomsByFloor[floorKey].push(room);
+  })
+
+  // rooms.forEach((room) => {
+  //   if (!roomsByFloor[room.floor]) {
+  //     roomsByFloor[room.floor] = [];
+  //   }
+  //   roomsByFloor[room.floor].push(room);
+  // });
+
+  const floorKeys = Object.keys(roomsByFloor)
+    .map((k) => Number(k)).sort((a, b) => a - b);
 
   let html = "";
 
-  Object.keys(roomsByFloor)
-    .sort()
-    .forEach((floor) => {
-      html += `
-                    <div class="floor-section" style="grid-column: 1/-1;">
-                        <div class="floor-header">
-                            <div class="floor-title">Floor ${floor}</div>
-                            <div style="font-size: 14px; color: #6b7280;">
-                                ${roomsByFloor[floor].length} rooms
-                            </div>
-                        </div>
-                        <div class="room-grid">
-                `;
+  floorKeys.forEach((floor) => {
+    const roomsForFloor = roomsByFloor[floor];
+    html += `
+        <div class="floor-section" style="grid-column: 1/-1;">
+            <div class="floor-header">
+                <div class="floor-title">Floor ${floor}</div>
+                <div style="font-size: 14px; color: #6b7280;">
+                    ${roomsForFloor.length} rooms
+                </div>
+            </div>
+        <div class="room-grid">
+          `;
 
-      roomsByFloor[floor].forEach((room) => {
-        const occupiedCount = room.occupiedBeds.filter((b) => b.patient).length;
-        const availableCount = room.totalBeds - occupiedCount;
-        const occupancyPercent = Math.round(
-          (occupiedCount / room.totalBeds) * 100
-        );
+    roomsForFloor.forEach((room) => {
+      const occupiedCount = (room.occupiedBeds || []).filter((b) => !!b.patient).length;
+      const totalBeds = Number(room.totalBeds) || (room.occupiedBeds ? room.occupiedBeds.length : 0);
+      const availableCount = totalBeds - occupiedCount;
 
-        let statusClass = "available";
-        if (room.status === "maintenance") {
-          statusClass = "maintenance";
-        } else if (room.status === "reserved") {
-          statusClass = "reserved";
-        } else if (occupiedCount === room.totalBeds) {
-          statusClass = "occupied";
-        }
 
-        html += `
-                        <div class="room-card ${statusClass}" onclick="viewRoomDetails('${room.id
-          }')">
-                            <div class="room-header">
-                                <div>
-                                    <div class="room-number">Room ${room.id
-          }</div>
-                                    <div class="room-type">${formatRoomType(
-            room.type
-          )}</div>
-                                </div>
-                                <div style="text-align: right;">
-                                    <div style="font-size: 20px; font-weight: 600; color: ${occupiedCount === room.totalBeds
-            ? "var(--warning)"
-            : "var(--secondary)"
-          }">
-                                        ${occupancyPercent}%
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="bed-indicators">
-                                ${room.occupiedBeds
-            .map((bed, _) => {
-              let bedClass = bed.patient
-                ? "occupied"
-                : "available";
-              if (
-                room.status === "reserved" &&
-                !bed.patient
-              )
-                bedClass = "reserved";
-              return `<div class="bed-indicator ${bedClass}" title="Bed ${bed.bed
-                }: ${bed.patient || "Available"}">${bed.bed
-                }</div>`;
-            })
-            .join("")}
-                            </div>
-                            
-                            <div class="room-stats">
-                                <div class="room-stat">
-                                    <div class="room-stat-value">${occupiedCount}</div>
-                                    <div class="room-stat-label">Occupied</div>
-                                </div>
-                                <div class="room-stat">
-                                    <div class="room-stat-value">${availableCount}</div>
-                                    <div class="room-stat-label">Available</div>
-                                </div>
-                                <div class="room-stat">
-                                    <div class="room-stat-value">₹${room.rate
-          }</div>
-                                    <div class="room-stat-label">Per Day</div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-      });
+      let statusClass = "available";
+      if (room.status === "maintenance") {
+        statusClass = "maintenance";
+      } else if (room.status === "reserved") {
+        statusClass = "reserved";
+      } else if (occupiedCount === totalBeds && totalBeds > 0) {
+        statusClass = "occupied";
+      }
+
+      const bedIndicators = (room.occupiedBeds || [])
+        .map((bed) => {
+          let bedClass = bed.patient ? "occupied" : "available";
+          if (room.status === "reserved" && !bed.patient) bedClass = "reserved";
+          const tooltip = `Bed ${bed.bed}: ${bed.patient || "Available"}`;
+          return `<div class="bed-indicator ${bedClass}" title="${tooltip}">${bed.bed}</div>`;
+        })
+        .join("");
 
       html += `
-                        </div>
-                    </div>
-                `;
+        <div class="room-card ${statusClass}" onclick="viewRoomDetails('${room.id}')">
+          <div class="room-header">
+            <div>
+              <div class="room-number">${room.id}</div>
+              <div class="room-type">${typeof formatRoomType === 'function' ? formatRoomType(room.type) : room.type}</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 20px; font-weight: 600; color: ${occupiedCount === totalBeds ? "var(--warning)" : "var(--secondary)"}">
+                ${occupiedCount}/${totalBeds}
+              </div>
+            </div>
+          </div>
+
+          <div class="bed-indicators">${bedIndicators}</div>
+
+          <div class="room-stats">
+            <div class="room-stat">
+              <div class="room-stat-value">${occupiedCount}</div>
+              <div class="room-stat-label">Occupied</div>
+            </div>
+            <div class="room-stat">
+              <div class="room-stat-value">${availableCount}</div>
+              <div class="room-stat-label">Available</div>
+            </div>
+            <div class="room-stat">
+              <div class="room-stat-value">₹${room.rate ?? "--"}</div>
+              <div class="room-stat-label">Per Day</div>
+            </div>
+          </div>
+        </div>
+      `;
     });
 
+    html += `
+        </div>
+        </div>
+            `;
+  });
+
+  if (!html) html = `<div class="no-results">No rooms match the selected filters.</div>`;
   roomGrid.innerHTML = html;
 }
 
@@ -563,38 +561,33 @@ function filterRooms() {
   const floorFilter = document.getElementById("floorFilter").value;
   const statusFilter = document.getElementById("statusFilter").value;
 
-  let filteredRooms = rooms;
+  let filteredRooms = (rooms || []).slice();
 
   if (wardFilter) {
-    filteredRooms = filteredRooms.filter((r) => r.type === wardFilter);
+    filteredRooms = filteredRooms.filter((r) => String(r.type) === wardFilter);
   }
 
   if (floorFilter) {
-    filteredRooms = filteredRooms.filter(
-      (r) => r.floor === parseInt(floorFilter)
-    );
+    /* compare as strings so types (string/number) both work */
+    filteredRooms = filteredRooms.filter((r) => String(r.floor) === floorFilter);
   }
 
   if (statusFilter) {
     if (statusFilter === "available") {
       filteredRooms = filteredRooms.filter(
         (r) =>
-          r.status !== "maintenance" && r.occupiedBeds.some((b) => !b.patient)
+          r.status !== "maintenance" && (r.occupiedBeds || []).some((b) => !b.patient)
       );
     } else if (statusFilter === "occupied") {
-      filteredRooms = filteredRooms.filter((r) =>
-        r.occupiedBeds.every((b) => b.patient)
-      );
+      filteredRooms = filteredRooms.filter(
+        (r) => (r.occupiedBeds || []).length > 0 && (r.occupiedBeds || []).every((b) => !!b.patient)
+      )
     } else {
       filteredRooms = filteredRooms.filter((r) => r.status === statusFilter);
     }
   }
 
-  // Temporarily replace rooms array for display
-  const originalRooms = rooms;
-  rooms = filteredRooms;
-  loadRooms();
-  rooms = originalRooms;
+  loadRoomGrid(filteredRooms);
 }
 
 function openRoomManagementModal() {
@@ -623,3 +616,42 @@ function assignPatientToRoom() {
 function dischargeFromRoom() {
   showNotification("Patient discharge feature would be implemented here");
 }
+
+/* Optional helpers: dynamically populate floor/ward selects from `rooms` */
+function populateFilters() {
+  const floorSelect = document.getElementById("floorFilter");
+  const wardSelect = document.getElementById("wardFilter");
+  if (!floorSelect || !wardSelect) return;
+
+  // Floors
+  const floors = Array.from(new Set((rooms || []).map((r) => String(r.floor)))).sort((a, b) => Number(a) - Number(b));
+  // remove generated options first (keep the first default option)
+  floorSelect.querySelectorAll('option[data-generated]').forEach((o) => o.remove());
+  floors.forEach((f) => {
+    const opt = document.createElement("option");
+    opt.value = f;
+    opt.textContent = `${f} Floor`;
+    opt.setAttribute("data-generated", "true");
+    floorSelect.appendChild(opt);
+  });
+
+  // Wards
+  const wards = Array.from(new Set((rooms || []).map((r) => String(r.type))));
+  wardSelect.querySelectorAll('option[data-generated]').forEach((o) => o.remove());
+  wards.forEach((w) => {
+    // skip if option with same value already exists (you may have hardcoded ones)
+    if ([...wardSelect.options].some((o) => o.value === w)) return;
+    const opt = document.createElement("option");
+    opt.value = w;
+    // display a nicer label if you prefer
+    opt.textContent = w;
+    opt.setAttribute("data-generated", "true");
+    wardSelect.appendChild(opt);
+  });
+}
+
+/* initialize on DOM ready */
+document.addEventListener("DOMContentLoaded", () => {
+  // populateFilters();
+  loadRoomGrid();
+});

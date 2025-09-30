@@ -159,3 +159,20 @@ function getOccupancyRate(rooms) {
 
   return Math.round((occupiedBedsCount / totalBeds) * 100);
 }
+
+/**
+ * Loads JSON data from a file
+ * @param {string} filePath
+ * @returns {Promise<any>}
+ */
+function loadJSON(filePath) {
+  return fetch(filePath)
+    .then(response => {
+      if (!response.ok) {
+        console.log("not loading")
+        throw new Error("Failed to load " + filePath);
+      }
+      return response.json();
+    });
+}
+

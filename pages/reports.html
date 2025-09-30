@@ -7,14 +7,28 @@
       <div class="stat-label">Monthly Revenue</div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon green">📈</div>
-      <div class="stat-value">342</div>
-      <div class="stat-label">Total Consultations</div>
+      <div class="stat-header">
+        <div class="stat-icon green">
+          <i class="ri-line-chart-line"></i>
+        </div>
+        <div class="stat-title">Consultations</div>
+      </div>
+      <div class="stat-value">
+        <span id="consultationsReportCount"></span>
+        <span class="stat-unit">Consultations in total</span>
+      </div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon yellow">⭐</div>
-      <div class="stat-value">4.8</div>
-      <div class="stat-label">Patient Satisfaction</div>
+      <div class="stat-header">
+        <div class="stat-icon yellow">
+          <i class="ri-star-smile-fill"></i>
+        </div>
+        <div class="stat-title">Reviews</div>
+      </div>
+      <div class="stat-value">
+        <span id="patientReviewValue"></span>
+        <span class="stat-unit">Stars out of 5</span>
+      </div>
     </div>
     <div class="stat-card">
       <div class="stat-header">
@@ -24,7 +38,7 @@
         <div class="stat-title">Occupancy</div>
       </div>
       <div class="stat-value">
-        <span id="occupancyRate">0%</span>
+        <span id="occupancyReport">0%</span>
         <span class="stat-unit">Occupied</span>
       </div>
     </div>
