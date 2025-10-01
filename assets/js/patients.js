@@ -153,6 +153,56 @@ const patients = [
       { vaccine: "Hepatitis B", date: "2023-01-15", nextDue: "Completed" },
     ],
   },
+  {
+    id: "P069",
+    name: "Ram Singh",
+    age: 21,
+    gender: "Male",
+    phone: "1234123412",
+    email: "ramsingh@email.com",
+    bloodGroup: "B+",
+    address: "789 Lake Road, Ahmedabad",
+    emergencyContact: "9876543213",
+    allergies: [],
+    chronicConditions: ["High Cholesterol"],
+    currentMedications: [
+      { name: "Atorvastatin", dose: "20mg", frequency: "Once daily at night" },
+    ],
+    medicalHistory: [
+      {
+        date: "2024-01-12",
+        type: "Admission",
+        doctor: "Dr. Williams",
+        diagnosis: "Appendicitis",
+        notes: "Appendectomy performed, recovery ongoing",
+      },
+      {
+        date: "2023-10-05",
+        type: "Consultation",
+        doctor: "Dr. Jones",
+        diagnosis: "High Cholesterol",
+        notes: "Started on statin therapy",
+      },
+    ],
+    labReports: [
+      {
+        date: "2024-01-05",
+        test: "Lipid Profile",
+        result: "Improving",
+        file: "LIPID_003.pdf",
+      },
+      {
+        date: "2024-01-12",
+        test: "Pre-operative Panel",
+        result: "Normal",
+        file: "PREOP_003.pdf",
+      },
+    ],
+    immunizations: [
+      { vaccine: "COVID-19", date: "2023-05-10", nextDue: "2024-05-10" },
+      { vaccine: "Hepatitis B", date: "2023-01-15", nextDue: "Completed" },
+    ],
+  },
 ];
 
 /* Initialize Patients Page */
@@ -182,11 +232,10 @@ function loadPatients() {
                         <td>
                             <div style="display: flex; align-items: center; gap: 8px;">
                                 ${patient.name}
-                                ${
-                                  hasAllergies
-                                    ? '<span title="Has allergies" style="color: var(--danger);">!</span>'
-                                    : ""
-                                }
+                                ${hasAllergies
+          ? '<span title="Has allergies" style="color: var(--danger);">!</span>'
+          : ""
+        }
                             </div>
                         </td>
                         <td>${patient.age}</td>
@@ -197,12 +246,10 @@ function loadPatients() {
                         <td><span class="badge badge-${statusClass}">${status}</span></td>
                         <td>
                             <div class="action-buttons">
-                                <button class="btn btn-primary" onclick="viewPatient('${
-                                  patient.id
-                                }')" style="padding: 6px 12px; font-size: 12px;">View</button>
-                                <button class="btn btn-outline" onclick="quickConsultation('${
-                                  patient.id
-                                }')" style="padding: 6px 12px; font-size: 12px;">Consult</button>
+                                <button class="btn btn-primary" onclick="viewPatient('${patient.id
+        }')" style="padding: 6px 12px; font-size: 12px;">View</button>
+                                <button class="btn btn-outline" onclick="quickConsultation('${patient.id
+        }')" style="padding: 6px 12px; font-size: 12px;">Consult</button>
                             </div>
                         </td>
                     </tr>
@@ -211,6 +258,9 @@ function loadPatients() {
     .join("");
 }
 
+/**
+ * Export Patient Data to CSV
+ */
 function exportPatientData() {
   const data = patients.map((p) => ({
     ID: p.id,
@@ -239,7 +289,7 @@ function quickConsultation(patientId) {
 
 function savePatient() {
   const newPatient = {
-    id: "P" + String(patients.length + 1).padStart(3, "0"),
+    id: "PA" + String(patients.length + 1).padStart(3, "0"),
     name:
       document.getElementById("patientFirstName").value +
       " " +
@@ -256,6 +306,7 @@ function savePatient() {
   showNotification("Patient added successfully!");
   loadData();
   initializeDashboard();
+
 }
 
 /* Switch Patient Tab to a Particular tabname */
@@ -394,9 +445,8 @@ function viewPatientLabReports(patient) {
                     <tr>
                         <td>${l.date}</td>
                         <td>${l.test}</td>
-                        <td><span class="badge badge-${
-                          l.result.includes("Normal") ? "success" : "warning"
-                        }">${l.result}</span></td>
+                        <td><span class="badge badge-${l.result.includes("Normal") ? "success" : "warning"
+          }">${l.result}</span></td>
                         <td><button class="btn btn-outline" style="padding: 4px 12px; font-size: 12px;">📄 View</button></td>
                     </tr>
                 `
@@ -418,8 +468,8 @@ function viewPatientImmunizations(patient) {
           i.nextDue === "Completed"
             ? "Completed"
             : isDue
-            ? "Overdue"
-            : "Up to date";
+              ? "Overdue"
+              : "Up to date";
         const statusClass =
           i.nextDue === "Completed" ? "success" : isDue ? "danger" : "success";
         return `

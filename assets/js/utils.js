@@ -134,7 +134,12 @@ document.addEventListener("keydown", (e) => {
 
 // Modal Functions
 function openModal(modalId) {
-  document.getElementById(modalId).style.display = "flex";
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.style.display = "flex";
+  } else {
+    console.error("Modal not found:", modalId);
+  }
 }
 
 function closeModal(modalId) {
@@ -161,6 +166,7 @@ function getOccupancyRate(rooms) {
 }
 
 /**
+ * TODO: make it work to simulate real API calls
  * Loads JSON data from a file
  * @param {string} filePath
  * @returns {Promise<any>}

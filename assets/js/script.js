@@ -186,6 +186,12 @@ function resetSessionTimeout() {
   }, 15 * 60 * 1000); // 15 minutes
 }
 
+function closeModal(id) {
+  const modal = document.getElementById(id);
+  if (modal) modal.remove();
+}
+
+
 /* Start session timeout when logged in */
 document.addEventListener("mousemove", resetSessionTimeout);
 document.addEventListener("keypress", resetSessionTimeout);

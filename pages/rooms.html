@@ -10,7 +10,7 @@
       </div>
       <div class="stat-value">
         <span id="totalRooms">0</span>
-        <span class="stat-unit">Total Rooms Available</span>
+        <span class="stat-unit">Rooms Available</span>
       </div>
     </div>
     <div class="stat-card">
@@ -52,7 +52,7 @@
   </div>
 
   <div class="search-bar">
-    <select id="wardFilter" class="select-filter" onchange="filterRooms()">
+    <select id="wardFilter" class="select-filter">
       <option value="">All Wards</option>
       <option value="general">General Ward</option>
       <option value="private">Private Rooms</option>
@@ -61,13 +61,13 @@
       <option value="pediatric">Pediatric Ward</option>
       <option value="maternity">Maternity Ward</option>
     </select>
-    <select id="floorFilter" class="select-filter" onchange="filterRooms()">
+    <select id="floorFilter" class="select-filter">
       <option value="">All Floors</option>
       <option value="1">1st Floor</option>
       <option value="2">2nd Floor</option>
       <option value="3">3rd Floor</option>
     </select>
-    <select id="statusFilter" class="select-filter" onchange="filterRooms()">
+    <select id="statusFilter" class="select-filter">
       <option value="">All Status</option>
       <option value="available">Available</option>
       <option value="occupied">Occupied</option>
@@ -75,7 +75,10 @@
       <option value="reserved">Reserved</option>
     </select>
     <button class="btn btn-primary" onclick="filterRooms()">Apply Filters</button>
-    <button class="btn btn-secondary" onclick="openRoomManagementModal()">⚙ Manage Rooms</button>
+    <button class="btn btn-secondary" onclick="openRoomManagementModal()">
+      <i class="ri-settings-3-line"></i>
+      Manage Rooms
+    </button>
   </div>
 
   <div class="room-grid" id="roomGrid">
