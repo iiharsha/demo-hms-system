@@ -752,25 +752,6 @@ function assignPatientToRoom() {
     </form>
   `;
 
-  // Create or update assignment modal
-  let assignModal = document.getElementById('assignPatientModal');
-  if (!assignModal) {
-    assignModal = document.createElement('div');
-    assignModal.id = 'assignPatientModal';
-    assignModal.className = 'modal';
-    assignModal.innerHTML = `
-      <div class="modal-content" style="max-width: 600px;">
-        <div class="modal-header">
-          <h3>Assign Patient</h3>
-          <button class="close-btn" onclick="closeAssignmentModal()">×</button>
-        </div>
-        <div class="modal-body" id="assignModalBody">
-        </div>
-      </div>
-    `;
-    document.body.appendChild(assignModal);
-  }
-
   document.getElementById('assignModalBody').innerHTML = html;
   openModal('assignPatientModal');
 }
@@ -928,25 +909,6 @@ function dischargeFromRoom() {
       </div>
     </form>
   `;
-
-  // Create or update discharge modal
-  let dischargeModal = document.getElementById('dischargePatientModal');
-  if (!dischargeModal) {
-    dischargeModal = document.createElement('div');
-    dischargeModal.id = 'dischargePatientModal';
-    dischargeModal.className = 'modal';
-    dischargeModal.innerHTML = `
-      <div class="modal-content" style="max-width: 600px;">
-        <div class="modal-header">
-          <h3>Discharge Patient</h3>
-          <button class="close-btn" onclick="closeDischargeModal()">×</button>
-        </div>
-        <div class="modal-body" id="dischargeModalBody">
-        </div>
-      </div>
-    `;
-    document.body.appendChild(dischargeModal);
-  }
 
   document.getElementById('dischargeModalBody').innerHTML = html;
   openModal('dischargePatientModal');
