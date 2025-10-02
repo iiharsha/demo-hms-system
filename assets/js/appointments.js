@@ -1,5 +1,17 @@
 /* Appointments Page */
 
+/**
+ * @typedef {Object} Appointment
+ * @property {string} id - Appointment ID
+ * @property {string} date - Appointment date (YYYY-MM-DD)
+ * @property {string} time - Appointment time (HH:mm)
+ * @property {string} patient - Patient name
+ * @property {string} doctor - Doctor name
+ * @property {string} type - Appointment type (Consultation/Follow-up)
+ * @property {"Scheduled"|"Completed"} status - Appointment status
+ */
+
+/** @type {Appointment[]} */
 const appointments = [
   {
     id: "A001",
@@ -39,6 +51,10 @@ const appointments = [
   },
 ];
 
+/**
+ * Loads all appointments into the table on the page.
+ * @returns {void}
+ */
 function loadAppointments() {
   const table = document.getElementById("appointmentsTable");
   table.innerHTML = appointments
@@ -63,21 +79,38 @@ function loadAppointments() {
     .join("");
 }
 
+/**
+ * Filters appointments by date.
+ * @param {Appointment[]} data - Array of appointment objects.
+ * @param {string} date - Date to filter by (YYYY-MM-DD).
+ * @returns {Appointment[]} Filtered appointments matching the date.
+ */
 function filterAppointmentsByDate(data, date) {
   if (!date) return data;
   return data.filter((a) => a.date === date);
 }
 
+/**
+ * Filters appointments by doctor.
+ * @param {Appointment[]} data - Array of appointment objects.
+ * @param {string} doctor - Doctor's name (may come in format "ID - Name").
+ * @returns {Appointment[]} Filtered appointments for the given doctor.
+ */
 function filterAppointmentsByDoctor(data, doctor) {
-  if (!doctor) return data; // if no doctor filter, return original data
+  if (!doctor) return data;
   return data.filter((a) =>
     a.doctor.toLowerCase().includes(doctor.split("-")[1])
   );
 }
 
-function renderAppointments(filtered) {
+/**
+ * Render the given list of appointments into the table.
+  * @param {Appointment[]} filteredAppointments - List of appointments to render.
+  * @returns {void}
+ */
+function renderAppointments(filteredAppointments) {
   const table = document.getElementById("appointmentsTable");
-  table.innerHTML = filtered
+  table.innerHTML = filteredAppointments
     .map(
       (apt) => `
             <tr>
@@ -98,6 +131,10 @@ function renderAppointments(filtered) {
     .join("");
 }
 
+/**
+ * Applies filter (date + doctor) and re-renders the appointment list.
+ * @returns {void}
+ */
 function filterAppointments() {
   const date = document.getElementById("appointmentDate").value;
   const doctor = document.getElementById("doctorFilter").value;
@@ -111,7 +148,11 @@ function filterAppointments() {
   renderAppointments(filtered);
 }
 
-/* basic implementation of viewing appointment details */
+/**
+ * Opens a modal with details of the selected appointment.
+ * @param {string} id - Appointment ID to view.
+ * @returns {void}
+*/
 function viewAppointment(id) {
   const apt = appointments.find((a) => a.id === id);
   if (!apt) {
@@ -136,6 +177,10 @@ function viewAppointment(id) {
   openModal("viewAppointmentModal");
 }
 
+/**
+ * Saves a new appointment from form input and adds it to the list.
+ * @returns {void}
+ */
 function saveAppointment() {
   const selectedSlot = document.querySelector(".appointment-slot.selected");
   if (!selectedSlot) {
@@ -143,6 +188,7 @@ function saveAppointment() {
     return;
   }
 
+  /** @type {Appointment} */
   const newAppointment = {
     id: "A" + String(appointments.length + 1).padStart(3, "0"),
     date: document.getElementById("appointmentDateInput").value,
@@ -163,6 +209,9 @@ function saveAppointment() {
   initializeDashboard();
 }
 
+/** Opens the "Add Appointment" modal
+ * @return {void}
+*/
 function openAddAppointmentModal() {
   openModal("addAppointmentModal");
 }
