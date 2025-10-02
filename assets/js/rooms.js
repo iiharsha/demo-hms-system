@@ -257,6 +257,9 @@ const rooms = [
   },
 ];
 
+/* loadRooms() load the rooms and beds Page
+ * and renders the rooms grid and table
+ * */
 function loadRooms() {
   // Calculate statistics
   let totalBeds = 0;
@@ -293,99 +296,93 @@ function loadRooms() {
 let currentRoomId = null;
 
 /**
- * View room details
+ * opens a modal showing details of the room with roomId
  */
 function viewRoomDetails(roomId) {
   const room = rooms.find((r) => r.id === roomId);
   if (!room) return;
 
-  /* Store current room ID globally */
+  /* Store current room ID */
   currentRoomId = roomId;
 
   const occupiedCount = room.occupiedBeds.filter((b) => b.patient).length;
   const availableCount = room.totalBeds - occupiedCount;
 
   const html = `
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-      <div>
-        <label style="color: #6b7280; font-size: 12px;">Room Number</label>
-        <p style="font-size: 24px; font-weight: 600; color: var(--primary);">${room.id}</p>
-      </div>
-      <div>
-        <label style="color: #6b7280; font-size: 12px;">Ward Type</label>
-        <p style="font-size: 18px;">${formatRoomType(room.type)}</p>
-      </div>
-      <div>
-        <label style="color: #6b7280; font-size: 12px;">Floor</label>
-        <p>Floor ${room.floor}</p>
-      </div>
-      <div>
-        <label style="color: #6b7280; font-size: 12px;">Daily Rate</label>
-        <p style="font-size: 18px; font-weight: 600;">₹${room.rate}</p>
-      </div>
+  <div class="room-details-grid-2">
+    <div>
+      <label class="label">Room Number</label>
+      <p class="room-details-room-id">${room.id}</p>
     </div>
-    
-    <div style="background: var(--light); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-      <h4 style="margin-bottom: 15px;">Occupancy Status</h4>
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
-        <div style="text-align: center;">
-          <div style="font-size: 24px; font-weight: 600; color: var(--primary);">${room.totalBeds}</div>
-          <div style="font-size: 12px; color: #6b7280;">Total Beds</div>
-        </div>
-        <div style="text-align: center;">
-          <div style="font-size: 24px; font-weight: 600; color: var(--warning);">${occupiedCount}</div>
-          <div style="font-size: 12px; color: #6b7280;">Occupied</div>
-        </div>
-        <div style="text-align: center;">
-          <div style="font-size: 24px; font-weight: 600; color: var(--secondary);">${availableCount}</div>
-          <div style="font-size: 12px; color: #6b7280;">Available</div>
-        </div>
-      </div>
+    <div>
+      <label class="label">Ward Type</label>
+      <p class="room-details-ward-type">${formatRoomType(room.type)}</p>
     </div>
-    
-    <h4 style="margin-bottom: 15px;">Bed Details</h4>
-    <div style="display: grid; gap: 10px;">
-      ${room.occupiedBeds
-      .map((bed) => {
-        const isOccupied = bed.patient !== null;
-        const bgColor = isOccupied ? "var(--warning)" : "var(--secondary)";
+    <div>
+      <label class="label">Floor</label>
+      <p class="room-details-floor-text">Floor ${room.floor}</p>
+    </div>
+    <div>
+      <label class="label">Daily Rate</label>
+      <p class="room-details-daily-rate">₹${room.rate}</p>
+    </div>
+  </div>
 
-        return `
-            <div style="background: ${isOccupied ? "#fef3c7" : "#d1fae5"};
-            padding: 15px; border-radius: 8px; border-left: 4px solid ${bgColor};">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                  <div style="font-weight: 600; font-size: 16px; margin-bottom: 5px;">
-                    Bed ${bed.bed}
-                  </div>
-                  ${isOccupied
-            ? `
-                    <div style="color: #6b7280; font-size: 14px;">
-                      <strong>Patient:</strong> ${bed.patient}<br>
-                      <strong>ID:</strong> ${bed.patientId}<br>
-                      <strong>Admission:</strong> ${bed.admissionDate}
-                    </div>
-                    `
-            : `
-                    <div style="color: var(--secondary); font-weight: 500;">
-                      Available for admission
-                    </div>
-                    `
-          }
-                </div>
-                <div>
-                  ${isOccupied
-            ? '<span class="badge badge-warning">Occupied</span>'
-            : '<span class="badge badge-success">Available</span>'
-          }
-                </div>
-              </div>
-            </div>
-          `;
-      })
-      .join("")}
+  <div class="room-details-card">
+    <h4>Occupancy Status</h4>
+    <div class="room-details-grid-3">
+      <div class="room-details-occupancy-block">
+        <div class="room-details-occupancy-value" style="color: var(--primary);">
+          ${room.totalBeds}
+        </div>
+        <div class="room-details-occupancy-label">Total Beds</div>
+      </div>
+      <div class="room-details-occupancy-block">
+        <div class="room-details-occupancy-value" style="color: var(--warning);">
+          ${occupiedCount}
+        </div>
+        <div class="room-details-occupancy-label">Occupied</div>
+      </div>
+      <div class="room-details-occupancy-block">
+        <div class="room-details-occupancy-value" style="color: var(--secondary);">
+          ${availableCount}
+        </div>
+        <div class="room-details-occupancy-label">Available</div>
+      </div>
     </div>
-  `;
+  </div>
+
+  <h4 style="margin-bottom: 15px;">Bed Details</h4>
+  <div class="room-details-grid-gap-10">
+    ${room.occupiedBeds.map((bed) => {
+    const isOccupied = bed.patient !== null;
+
+    return `
+        <div class="room-details-bed-card ${isOccupied ? 'occupied' : 'available'}">
+          <div>
+            <div class="room-details-bed-title">Bed ${bed.bed}</div>
+            ${isOccupied
+        ? `<div class="room-details-bed-details">
+                    <strong>Patient:</strong> ${bed.patient}<br>
+                    <strong>ID:</strong> ${bed.patientId}<br>
+                    <strong>Admission:</strong> ${bed.admissionDate}
+                  </div>`
+        : `<div class="room-details-bed-available">
+                    Available for admission
+                  </div>`
+      }
+          </div>
+          <div>
+            ${isOccupied
+        ? '<span class="badge badge-warning">Occupied</span>'
+        : '<span class="badge badge-success">Available</span>'
+      }
+          </div>
+        </div>
+      `;
+  }).join("")}
+  </div>
+`;
 
   document.getElementById("roomDetailsContent").innerHTML = html;
   openModal("roomDetailsModal");
@@ -1038,6 +1035,7 @@ function handlePatientDischarge(event) {
 function closeDischargeModal() {
   closeModal('dischargePatientModal');
 }
+
 /* initialize on DOM ready */
 document.addEventListener("DOMContentLoaded", () => {
   // populateFilters();

@@ -1,0 +1,242 @@
+
+.room-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.room-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.room-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.room-card.available {
+  border-left: 4px solid var(--secondary);
+}
+
+.room-card.occupied {
+  border-left: 4px solid var(--warning);
+}
+
+.room-card.maintenance {
+  border-left: 4px solid var(--danger);
+  opacity: 0.7;
+}
+
+.room-card.reserved {
+  border-left: 4px solid var(--primary);
+}
+
+.room-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.room-number {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.room-type {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 5px;
+}
+
+.bed-indicators {
+  display: flex;
+  gap: 5px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.bed-indicator {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.bed-indicator.available {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--secondary);
+  border: 1px solid var(--secondary);
+}
+
+.bed-indicator.occupied {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--warning);
+  border: 1px solid var(--warning);
+}
+
+.bed-indicator.reserved {
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+.room-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.room-stat {
+  text-align: center;
+}
+
+.room-stat-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.room-stat-label {
+  font-size: 10px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.floor-section {
+  margin-bottom: 30px;
+}
+
+.floor-header {
+  background: var(--light);
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.floor-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+/* for room details modal */
+/* Container Layouts */
+.room-details-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.room-details-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.room-details-grid-gap-10 {
+  display: grid;
+  gap: 10px;
+}
+
+.room-details-room-id {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.room-details-ward-type {
+  font-size: 18px;
+}
+
+.room-details-daily-rate {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.room-details-floor-text {
+  font-size: 14px;
+}
+
+/* Card Section */
+.room-details-card {
+  background: var(--light);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.room-details-card h4 {
+  margin-bottom: 15px;
+}
+
+/* Occupancy Info */
+.room-details-occupancy-block {
+  text-align: center;
+}
+
+.room-details-occupancy-value {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.room-details-occupancy-label {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* Bed Details */
+.room-details-bed-card {
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.room-details-bed-card.occupied {
+  background: #fef3c7;
+  border-left: 4px solid var(--warning);
+}
+
+.room-details-bed-card.available {
+  background: #d1fae5;
+  border-left: 4px solid var(--secondary);
+}
+
+.room-details-bed-title {
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.room-details-bed-details {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.room-details-bed-available {
+  color: var(--secondary);
+  font-weight: 500;
+}
+

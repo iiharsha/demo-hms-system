@@ -132,7 +132,6 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// Modal Functions
 function openModal(modalId) {
   const modal = document.getElementById(modalId);
   if (modal) {
@@ -146,6 +145,9 @@ function closeModal(modalId) {
   document.getElementById(modalId).style.display = "none";
 }
 
+/* getOccupancyRate() fetches the
+ * rate of occupied beds
+ * */
 function getOccupancyRate(rooms) {
   let totalBeds = 0;
   let occupiedBedsCount = 0;
