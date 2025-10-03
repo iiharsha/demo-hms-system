@@ -1,6 +1,27 @@
 /* Rooms & Beds Page */
 
-/* Need to go through this again for now i left it as it is */
+/**
+ * @typedef {Object} Bed
+ * @property {string} bed - bed identifier (A,B,C,D, etc...)
+ ** @property {string|null} patient - Name of the patient assigned to the bed, or null if empty
+ * @property {string} [patientId] - Unique patient ID (optional, only if occupied)
+ * @property {string} [admissionDate] - Date of admission in YYYY-MM-DD format (optional, only if occupied)/
+
+/**
+ * @typedef {Object} Room
+ * @property {string} id - Room ID
+ * @property {number} floor - the floor which the room is on.
+ * @property {"general"|"private"|"semi-private"|"maternity"|"icu"|"pediatric"} type - the type of room
+ * @property {number} totalBeds - the total number of beds in a room.
+ * @property {Bed[]} occupiedBeds - list of beds in the room with the patient info or null.
+ * @property {"available"|"occupied"|"maintenance"|"reserved"} status - current room status
+ * @property {number} rate - daily room rate in rupees.
+ */
+
+/** 
+ * List of hospital rooms with bed and patient occupancy information.
+ * @type {Room[]}
+ */
 const rooms = [
   // First Floor - General Ward
   {
@@ -257,16 +278,19 @@ const rooms = [
   },
 ];
 
-/* loadRooms() load the rooms and beds Page
- * and renders the rooms grid and table
- * */
-function loadRooms() {
+/** Renders the rooms page by calculating statistics and updating the UI.
+ * Also renders the room grid and room table.
+ *
+ * @param {Array<Object>} [roomsList=rooms] - Optional list of rooms to render (defaults to global rooms).
+ * @returns {void}
+ */
+function loadRooms(roomsList = rooms) {
   // Calculate statistics
   let totalBeds = 0;
   let occupiedBedsCount = 0;
   let availableBedsCount = 0;
 
-  rooms.forEach((room) => {
+  roomsList.forEach((room) => {
     totalBeds += room.totalBeds;
     room.occupiedBeds.forEach((bed) => {
       if (bed.patient) {
@@ -279,24 +303,26 @@ function loadRooms() {
 
   const occupancyRate = Math.round((occupiedBedsCount / totalBeds) * 100);
 
-  // Update stats
-  document.getElementById("totalRooms").textContent = rooms.length;
+  document.getElementById("totalRooms").textContent = roomsList.length;
   document.getElementById("availableRooms").textContent = availableBedsCount;
   document.getElementById("occupiedRooms").textContent = occupiedBedsCount;
   document.getElementById("occupancyRate").textContent = occupancyRate + "%";
 
-  /* Load room grid */
   renderRoomGrid();
-
-  // Load room table
   loadRoomTable();
 }
 
-/* global variable to track the current room */
+/** 
+ * Currently selected room ID.
+ * @type {string|null}
+ */
 let currentRoomId = null;
 
 /**
- * opens a modal showing details of the room with roomId
+ * opens a modal showing details of the room with the given roomId
+ *
+ * @param {string} roomId - the unique id of the room to view.
+ * @returns {void}
  */
 function viewRoomDetails(roomId) {
   const room = rooms.find((r) => r.id === roomId);
@@ -388,8 +414,13 @@ function viewRoomDetails(roomId) {
   openModal("roomDetailsModal");
 }
 
-/* render the dynamic room card */
-function renderRoomGrid(roomList = rooms) {
+/**
+ * Render the dynamic room card grid grouped by floor
+ *
+ * @param {Array<Object>} [roomsList=rooms] - Optional list of rooms to render (defaults to global rooms).
+ * @returns {void}
+ */
+function renderRoomGrid(roomsList = rooms) {
   const roomGrid = document.getElementById("roomGrid");
 
   if (!roomGrid) {
@@ -399,7 +430,7 @@ function renderRoomGrid(roomList = rooms) {
 
   /* Group rooms by floor */
   const roomsByFloor = {};
-  (roomList || []).forEach((room) => {
+  (roomsList || []).forEach((room) => {
     const floorKey = String(room.floor ?? "0")
     if (!roomsByFloor[floorKey]) roomsByFloor[floorKey] = [];
     roomsByFloor[floorKey].push(room);
@@ -500,14 +531,23 @@ function renderRoomGrid(roomList = rooms) {
         `;
   });
 
-  if (!html) html = `< div class="no-results" > No rooms match the selected filters.</div > `;
+  if (!html) html = `<div class="no-results" >
+                      <i class="ri-alert-line" style="color: var(--warning);"></i>
+                      No rooms match the selected filters.
+                    </div > `;
   roomGrid.innerHTML = html;
 }
 
-function loadRoomTable() {
+/**
+ * Loads the room table into the #roomsTable element.
+ *
+ * @param {Array<Object>} [roomsList=rooms] - Optional list of rooms to render (defaults to global rooms).
+ * @returns {string} - HTML to render the room table.
+ */
+function loadRoomTable(roomsList = rooms) {
   const table = document.getElementById("roomsTable");
 
-  table.innerHTML = rooms
+  table.innerHTML = roomsList
     .map((room) => {
       const occupiedCount = room.occupiedBeds.filter((b) => b.patient).length;
       const availableCount = room.totalBeds - occupiedCount;
@@ -549,6 +589,12 @@ function loadRoomTable() {
     .join("");
 }
 
+/**
+ * Convert the internal room type keys into readable text.
+ *
+ * @param {string} type - Room type
+ * @returns {string} Converted name of the room type.
+ */
 function formatRoomType(type) {
   const types = {
     general: "General Ward",
@@ -563,6 +609,9 @@ function formatRoomType(type) {
 
 /**
  * Filter the rooms based on Ward, Floor, and Room Status
+ * then re-render the room grid.
+ *
+ * @returns {void}
  */
 function filterRooms() {
   const wardFilter = document.getElementById("wardFilter").value;
@@ -600,12 +649,14 @@ function filterRooms() {
   renderRoomGrid(filteredRooms);
 }
 
-function openRoomManagementModal() {
-  showNotification("Room management modal would open here");
-}
-
-function exportRoomData() {
-  const data = rooms.map((r) => ({
+/**
+ * Export the room data into CSV format.
+ *
+ * @param {Array<Object>} roomList - list of rooms to render.
+ * @returns {void}
+ */
+function exportRoomData(roomsList) {
+  const data = roomsList.map((r) => ({
     RoomNumber: r.id,
     Floor: r.floor,
     Type: formatRoomType(r.type),
@@ -619,425 +670,7 @@ function exportRoomData() {
   showNotification("Room occupancy report exported");
 }
 
-// function assignPatientToRoom() {
-//   showNotification("Patient assignment feature would be implemented here");
-// }
-
-// function dischargeFromRoom() {
-//   showNotification("Patient discharge feature would be implemented here");
-// }
-
-
-/**
- * Open modal to assign a patient to a room
- */
-function assignPatientToRoom() {
-  if (!currentRoomId) {
-    showNotification('Please select a room first', 'error');
-    return;
-  }
-
-  const room = rooms.find(r => r.id === currentRoomId);
-  if (!room) {
-    showNotification('Room not found', 'error');
-    return;
-  }
-
-  // Check if room is under maintenance
-  if (room.status === 'maintenance') {
-    showNotification('Cannot assign patients to rooms under maintenance', 'error');
-    return;
-  }
-
-  // Get available beds in this room
-  const availableBeds = room.occupiedBeds.filter(bed => !bed.patient);
-
-  if (availableBeds.length === 0) {
-    showNotification('No available beds in this room', 'error');
-    return;
-  }
-
-  // Check if patients array exists
-  if (typeof patients === 'undefined' || !patients || patients.length === 0) {
-    showNotification('No patients found in the system. Please add patients first.', 'error');
-    console.error('Patients array not found or empty:', patients);
-    return;
-  }
-
-  // Get patients who are NOT currently admitted
-  const admittedPatientIds = new Set();
-  rooms.forEach(r => {
-    r.occupiedBeds.forEach(bed => {
-      if (bed.patient && bed.patientId) {
-        admittedPatientIds.add(bed.patientId);
-      }
-    });
-  });
-
-  console.log('Total patients:', patients.length);
-  console.log('Admitted patient IDs:', Array.from(admittedPatientIds));
-
-  const availablePatients = patients.filter(p => !admittedPatientIds.has(p.id));
-
-  console.log('Available patients for admission:', availablePatients.length, availablePatients);
-
-  if (availablePatients.length === 0) {
-    showNotification('All patients are currently admitted. No patients available for new admission.', 'warning');
-    return;
-  }
-
-  // Build the assignment form
-  const html = `
-    <div style="margin-bottom: 20px;">
-      <h4 style="margin-bottom: 10px;">Assign Patient to Room ${room.id}</h4>
-      <p style="color: #6b7280; font-size: 14px;">Select a patient and bed for admission</p>
-    </div>
-
-    <form id="assignPatientForm" onsubmit="handlePatientAssignment(event); return false;">
-      <div style="margin-bottom: 20px;">
-        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Select Patient *</label>
-        <select id="patientSelect" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
-          <option value="">-- Select Patient --</option>
-          ${availablePatients.map(p => `
-            <option value="${p.id}">
-              ${p.name} (${p.id}) - Age: ${p.age}, ${p.gender}
-            </option>
-          `).join('')}
-        </select>
-      </div>
-
-      <div style="margin-bottom: 20px;">
-        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Select Bed *</label>
-        <select id="bedSelect" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
-          <option value="">-- Select Bed --</option>
-          ${availableBeds.map(bed => `
-            <option value="${bed.bed}">Bed ${bed.bed}</option>
-          `).join('')}
-        </select>
-      </div>
-
-      <div style="margin-bottom: 20px;">
-        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Admission Date *</label>
-        <input type="date" id="admissionDate" required value="${new Date().toISOString().split('T')[0]}" 
-               style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
-      </div>
-
-      <div style="margin-bottom: 20px;">
-        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Admission Notes</label>
-        <textarea id="admissionNotes" rows="3" placeholder="Enter any admission notes or special instructions..."
-                  style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; resize: vertical;"></textarea>
-      </div>
-
-      <div style="background: #eff6ff; padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary);">
-        <div style="display: flex; gap: 10px; margin-bottom: 8px;">
-          <i class="ri-information-line" style="color: var(--primary); font-size: 20px;"></i>
-          <div>
-            <strong style="color: var(--primary);">Room Details</strong>
-            <div style="font-size: 14px; color: #6b7280; margin-top: 5px;">
-              <div>Type: ${formatRoomType(room.type)}</div>
-              <div>Daily Rate: ₹${room.rate}</div>
-              <div>Floor: ${room.floor}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div style="display: flex; gap: 10px; margin-top: 20px;">
-        <button type="button" class="btn btn-outline" onclick="closeAssignmentModal()" style="flex: 1;">Cancel</button>
-        <button type="submit" class="btn btn-primary" style="flex: 1;">Assign Patient</button>
-      </div>
-    </form>
-  `;
-
-  document.getElementById('assignModalBody').innerHTML = html;
-  openModal('assignPatientModal');
-}
-
-/**
- * Handle patient assignment form submission
- */
-function handlePatientAssignment(event) {
-  event.preventDefault();
-
-  const roomId = currentRoomId;
-  const patientId = document.getElementById('patientSelect').value;
-  const bedId = document.getElementById('bedSelect').value;
-  const admissionDate = document.getElementById('admissionDate').value;
-  const notes = document.getElementById('admissionNotes').value;
-
-  const room = rooms.find(r => r.id === roomId);
-  const patient = patients.find(p => p.id === patientId);
-  const bed = room.occupiedBeds.find(b => b.bed === bedId);
-
-  if (!room || !patient || !bed) {
-    showNotification('Invalid selection', 'error');
-    return false;
-  }
-
-  // Assign patient to bed
-  bed.patient = patient.name;
-  bed.patientId = patient.id;
-  bed.admissionDate = admissionDate;
-  bed.admissionNotes = notes;
-
-  // Update room status
-  const occupiedCount = room.occupiedBeds.filter(b => b.patient).length;
-  if (occupiedCount === room.totalBeds) {
-    room.status = 'occupied';
-  } else {
-    room.status = 'available';
-  }
-
-  // Close modals and refresh
-  closeAssignmentModal();
-  closeModal('roomDetailsModal');
-
-  showNotification(`${patient.name} assigned to Room ${roomId}, Bed ${bedId}`, 'success');
-
-  // Reload the rooms view
-  if (typeof loadRooms === 'function') {
-    loadRooms();
-  } else {
-    renderRoomGrid();
-    if (typeof loadRoomTable === 'function') {
-      loadRoomTable();
-    }
-  }
-
-  return false;
-}
-
-/**
- * Close assignment modal
- */
-function closeAssignmentModal() {
-  closeModal('assignPatientModal');
-}
-
-/**
- * Open modal to discharge a patient from a room
- */
-function dischargeFromRoom() {
-  if (!currentRoomId) {
-    showNotification('Please select a room first', 'error');
-    return;
-  }
-
-  const room = rooms.find(r => r.id === currentRoomId);
-  if (!room) {
-    showNotification('Room not found', 'error');
-    return;
-  }
-
-  // Get occupied beds in this room
-  const occupiedBeds = room.occupiedBeds.filter(bed => bed.patient);
-
-  if (occupiedBeds.length === 0) {
-    showNotification('No patients to discharge from this room', 'warning');
-    return;
-  }
-
-  // Build the discharge form
-  const html = `
-    <div style="margin-bottom: 20px;">
-      <h4 style="margin-bottom: 10px;">Discharge Patient from Room ${room.id}</h4>
-      <p style="color: #6b7280; font-size: 14px;">Select a patient to discharge</p>
-    </div>
-
-    <form id="dischargePatientForm" onsubmit="handlePatientDischarge(event); return false;">
-      <div style="margin-bottom: 20px;">
-        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Select Patient *</label>
-        <select id="dischargePatientSelect" required onchange="updateDischargeDetails()" 
-                style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
-          <option value="">-- Select Patient --</option>
-          ${occupiedBeds.map(bed => `
-            <option value="${bed.bed}" data-patient-id="${bed.patientId}" data-admission="${bed.admissionDate}">
-              Bed ${bed.bed}: ${bed.patient} (${bed.patientId})
-            </option>
-          `).join('')}
-        </select>
-      </div>
-
-      <div id="patientDetailsSection" style="display: none; background: #f9fafb; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-        <h5 style="margin-bottom: 10px; font-size: 14px;">Patient Details</h5>
-        <div id="patientDetailsContent" style="font-size: 14px; color: #6b7280;"></div>
-      </div>
-
-      <div style="margin-bottom: 20px;">
-        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Discharge Date *</label>
-        <input type="date" id="dischargeDate" required value="${new Date().toISOString().split('T')[0]}" 
-               style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
-      </div>
-
-      <div style="margin-bottom: 20px;">
-        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Discharge Reason *</label>
-        <select id="dischargeReason" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
-          <option value="">-- Select Reason --</option>
-          <option value="recovered">Recovered</option>
-          <option value="transferred">Transferred to Another Facility</option>
-          <option value="home_care">Home Care</option>
-          <option value="ama">Against Medical Advice (AMA)</option>
-          <option value="deceased">Deceased</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-
-      <div style="margin-bottom: 20px;">
-        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Discharge Summary / Notes</label>
-        <textarea id="dischargeNotes" rows="4" placeholder="Enter discharge summary, follow-up instructions, prescriptions, etc..."
-                  style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; resize: vertical;"></textarea>
-      </div>
-
-      <div style="background: #fef3c7; padding: 15px; border-radius: 8px; border-left: 4px solid var(--warning); margin-bottom: 20px;">
-        <div style="display: flex; gap: 10px;">
-          <i class="ri-alert-line" style="color: var(--warning); font-size: 20px;"></i>
-          <div>
-            <strong style="color: var(--warning);">Important</strong>
-            <p style="font-size: 14px; color: #92400e; margin-top: 5px; margin-bottom: 0;">
-              This will mark the bed as available and remove the patient from the room. Make sure all billing and documentation is complete before discharge.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div style="display: flex; gap: 10px; margin-top: 20px;">
-        <button type="button" class="btn btn-outline" onclick="closeDischargeModal()" style="flex: 1;">Cancel</button>
-        <button type="submit" class="btn btn-primary" style="flex: 1;">Discharge Patient</button>
-      </div>
-    </form>
-  `;
-
-  document.getElementById('dischargeModalBody').innerHTML = html;
-  openModal('dischargePatientModal');
-}
-
-/**
- * Update discharge details when patient is selected
- */
-function updateDischargeDetails() {
-  const select = document.getElementById('dischargePatientSelect');
-  const selectedOption = select.options[select.selectedIndex];
-
-  if (!selectedOption.value) {
-    document.getElementById('patientDetailsSection').style.display = 'none';
-    return;
-  }
-
-  const patientId = selectedOption.dataset.patientId;
-  const admissionDate = selectedOption.dataset.admission;
-  const patient = patients.find(p => p.id === patientId);
-
-  if (patient) {
-    const daysSinceAdmission = Math.floor((new Date() - new Date(admissionDate)) / (1000 * 60 * 60 * 24));
-
-    const detailsHtml = `
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-        <div>
-          <strong>Patient Name:</strong><br>${patient.name}
-        </div>
-        <div>
-          <strong>Patient ID:</strong><br>${patient.id}
-        </div>
-        <div>
-          <strong>Age / Gender:</strong><br>${patient.age} years, ${patient.gender}
-        </div>
-        <div>
-          <strong>Blood Group:</strong><br>${patient.bloodGroup}
-        </div>
-        <div>
-          <strong>Admission Date:</strong><br>${admissionDate}
-        </div>
-        <div>
-          <strong>Days Admitted:</strong><br>${daysSinceAdmission} days
-        </div>
-      </div>
-    `;
-
-    document.getElementById('patientDetailsContent').innerHTML = detailsHtml;
-    document.getElementById('patientDetailsSection').style.display = 'block';
-  }
-}
-
-/**
- * Handle patient discharge form submission
- */
-function handlePatientDischarge(event) {
-  event.preventDefault();
-
-  const roomId = currentRoomId;
-  const bedId = document.getElementById('dischargePatientSelect').value;
-  const dischargeDate = document.getElementById('dischargeDate').value;
-  const dischargeReason = document.getElementById('dischargeReason').value;
-  const notes = document.getElementById('dischargeNotes').value;
-
-  const room = rooms.find(r => r.id === roomId);
-  const bed = room.occupiedBeds.find(b => b.bed === bedId);
-
-  if (!room || !bed) {
-    showNotification('Invalid selection', 'error');
-    return false;
-  }
-
-  const patientName = bed.patient;
-  const patientId = bed.patientId;
-
-  // Store discharge record (you could save this to a discharge history array)
-  const dischargeRecord = {
-    roomId: roomId,
-    bedId: bedId,
-    patientName: patientName,
-    patientId: patientId,
-    admissionDate: bed.admissionDate,
-    dischargeDate: dischargeDate,
-    reason: dischargeReason,
-    notes: notes,
-    timestamp: new Date().toISOString()
-  };
-
-  console.log('Discharge Record:', dischargeRecord);
-
-  // Clear the bed
-  bed.patient = null;
-  bed.patientId = null;
-  bed.admissionDate = null;
-  bed.admissionNotes = null;
-
-  // Update room status
-  const occupiedCount = room.occupiedBeds.filter(b => b.patient).length;
-  if (occupiedCount === 0) {
-    room.status = 'available';
-  } else {
-    room.status = 'available'; // Has some available beds
-  }
-
-  // Close modals and refresh
-  closeDischargeModal();
-  closeModal('roomDetailsModal');
-
-  showNotification(`${patientName} discharged from Room ${roomId}, Bed ${bedId}`, 'success');
-
-  // Reload the rooms view
-  if (typeof loadRooms === 'function') {
-    loadRooms();
-  } else {
-    renderRoomGrid();
-    if (typeof loadRoomTable === 'function') {
-      loadRoomTable();
-    }
-  }
-
-  return false;
-}
-
-/**
- * Close discharge modal
- */
-function closeDischargeModal() {
-  closeModal('dischargePatientModal');
-}
-
 /* initialize on DOM ready */
 document.addEventListener("DOMContentLoaded", () => {
-  // populateFilters();
   renderRoomGrid();
 });

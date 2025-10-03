@@ -88,7 +88,7 @@
   <div class="card" style="margin-top: 20px;">
     <div class="card-header">
       <h3 class="card-title">Room Occupancy Details</h3>
-      <button class="btn btn-outline" onclick="exportRoomData()">Export Report</button>
+      <button class="btn btn-outline" onclick="exportRoomData(rooms)">Export Report</button>
     </div>
     <table class="table">
       <thead>
@@ -116,7 +116,9 @@
   <div class="modal-content" style="max-width: 700px;">
     <div class="modal-header">
       <h3>Room Details</h3>
-      <button class="close-btn" onclick="closeModal('roomDetailsModal')">×</button>
+      <button class="close-btn" onclick="closeModal('roomDetailsModal')">
+        <i class="ri-close-line"></i>
+      </button>
     </div>
     <div class="modal-body">
       <div id="roomDetailsContent">
@@ -136,7 +138,9 @@
   <div class="modal-content" style="max-width: 600px;">
     <div class="modal-header">
       <h3>Assign Patient</h3>
-      <button class="close-btn" onclick="closeAssignmentModal()">×</button>
+      <button class="close-btn" onclick="closeAssignmentModal()">
+        <i class="ri-close-line"></i>
+      </button>
     </div>
     <div class="modal-body" id="assignModalBody">
     </div>
@@ -148,9 +152,40 @@
   <div class="modal-content" style="max-width: 600px;">
     <div class="modal-header">
       <h3>Discharge Patient</h3>
-      <button class="close-btn" onclick="closeDischargeModal()">×</button>
+      <button class="close-btn" onclick="closeDischargeModal()">
+        <i class="ri-close-line"></i>
+      </button>
     </div>
     <div class="modal-body" id="dischargeModalBody">
+    </div>
+  </div>
+</div>
+
+<!-- Room Management Modal -->
+<div class="modal" id="roomManagementModal">
+  <div class="modal-content" style="max-width: 800px;">
+    <div class="modal-header">
+      <h3>Room Management</h3>
+      <button class="close-btn" onclick="closeModal('roomManagementModal')">
+        <i class="ri-close-line"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom: 20px;">
+        <p style="color: #6b7280; font-size: 14px;">Manage room allocation, availability, and maintenance status</p>
+      </div>
+
+      <div class="room-search" style="margin-bottom: 20px;">
+        <input type="text" id="roomSearchInput" placeholder="Search by room number, floor, or type..."
+          oninput="filterRoomManagementList()">
+      </div>
+
+      <div id="roomManagementList" class="room-management-list">
+        <!-- Dynamic room management items will be inserted here by JavaScript -->
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('roomManagementModal')">Close</button>
     </div>
   </div>
 </div>

@@ -298,6 +298,8 @@ function savePatient() {
     gender: document.getElementById("patientGender").value,
     phone: document.getElementById("patientPhone").value,
     email: document.getElementById("patientEmail").value,
+    address: document.getElementById("patientAddress").value,
+    bloogGroup: document.getElementById("patientBloodGroup").value,
   };
 
   patients.push(newPatient);
