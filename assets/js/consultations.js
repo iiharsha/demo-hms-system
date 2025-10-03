@@ -97,6 +97,7 @@ function searchConsultations() {
                 <tr>
                     <td>${consult.id}</td>
                     <td>${consult.date}</td>
+                    <td>${consult.time}</td>
                     <td>${consult.patient}</td>
                     <td>${consult.doctor}</td>
                     <td>${consult.diagnosis}</td>

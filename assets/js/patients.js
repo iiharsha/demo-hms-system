@@ -1,5 +1,59 @@
 /* patients page */
 
+/**
+ * @typedef {Object} PatientMedication
+ * @property {string} name - Name of the medication.
+ * @property {string} dose - Dosage prescribed.
+ * @property {string} frequency - Frequency of intake.
+ */
+
+/**
+ * @typedef {Object} MedicalHistory
+ * @property {string} date - Date of the medical record.
+ * @property {string} type - Type of medical encounter (Consultation, Admission, Emergency, Follow-up, etc.).
+ * @property {string} doctor - Name of the doctor involved.
+ * @property {string} diagnosis - Diagnosis given.
+ * @property {string} notes - Additional notes.
+ */
+
+/**
+ * @typedef {Object} LabReport
+ * @property {string} date - Date of the lab test.
+ * @property {string} test - Name of the test.
+ * @property {string} result - Result of the test.
+ * @property {string} file - File name/path for the report.
+ */
+
+/**
+ * @typedef {Object} Immunization
+ * @property {string} vaccine - Vaccine name.
+ * @property {string} date - Date the vaccine was administered.
+ * @property {string} nextDue - Next due date or status (e.g., "Completed").
+ */
+
+/**
+ * @typedef {Object} Patient
+ * @property {string} id - Patient ID
+ * @property {string} name - Name of the patient.
+ * @property {number} age - Age of the patient.
+ * @property {"Male"|"Female"|"Other"} gender - gender of the patient.
+ * @property {string} phone - Phone number of the patient.
+ * @property {string} email - Email of the patient.
+ * @property {"A+"|"A-"|"B+"|"B-"|"O+"|"O-"|"AB+"|"AB-"} bloodGroup - blood group of the patient.
+ * @property {string} address - address of the patient.
+ * @property {string} emergencyContact - emergency contact of the patient.
+ * @property {string[]} allergies - list of allergies of the patient.
+ * @property {string[]} chronicConditions - list of chronic conditions of the patient.
+ * @property {PatientMedication[]} currentMedications - list of current medications of the patient.
+ * @property {MedicalHistory[]} medicalHistory - list of medical history of the patient.
+ * @property {LabReport[]} labReports - list of lab reports of the patient.
+ * @property {Immunization[]} immunizations - list of immunizations of the patient.
+ */
+
+/**
+ * List of patients
+ * @type {Patient[]}
+ */
 const patients = [
   {
     id: "P001",
@@ -259,6 +313,94 @@ function loadPatients() {
 }
 
 /**
+ * Update the dashboard statistics (counts).
+ * @param {Patient[]} patientList
+ */
+function updatePatientStats(patientList) {
+  const total = patientList.length;
+
+  document.getElementById("totalPatientsCount").textContent = total;
+  document.getElementById("newPatientsMonth").textContent = "2";       // TODO: Replace with server data
+  document.getElementById("activePatients").textContent = total - 1;   // TODO: Replace with real metric
+  document.getElementById("criticalPatients").textContent = "1";       // TODO: Replace with real metric
+}
+
+/**
+ * Render the patients table rows.
+ * @param {Patient[]} patientList
+ */
+function renderPatientsTable(patientList) {
+  const table = document.getElementById("patientsTable");
+
+  const rows = patientList.map((patient) => {
+    const lastVisit = getLastPatientVisit(patient);
+    const statusInfo = getPatientStatus(patient);
+    const allergyIcon = patient.allergies?.length
+      ? `<span title="Has allergies" class="icon-danger">!</span>`
+      : "";
+
+    return `
+      <tr>
+        <td>${patient.id}</td>
+        <td>
+          <div class="patient-name">
+            ${patient.name} ${allergyIcon}
+          </div>
+        </td>
+        <td>${patient.age}</td>
+        <td>${patient.gender}</td>
+        <td>${patient.phone}</td>
+        <td>${patient.bloodGroup || "Unknown"}</td>
+        <td>${lastVisit}</td>
+        <td><span class="badge badge-${statusInfo.class}">${statusInfo.label}</span></td>
+        <td>${renderPatientActions(patient.id)}</td>
+      </tr>
+    `;
+  });
+
+  table.innerHTML = rows.join("");
+}
+
+/**
+ * Helper: get the last visit date of the patient.
+ * @param {Patient} patient
+ * @returns {string}
+ */
+function getLastPatientVisit(patient) {
+  if (patient.medicalHistory?.length) {
+    return patient.medicalHistory[0].date; //TODO: ensure sorted by date.
+  }
+
+  return "No Visits";
+}
+
+/**
+ * Helper: Derive the patient status.
+ * @param {Patient} patient
+ * @returns {string}
+ */
+function getPatientStatus(patient) {
+  if (patient.chronicConditions?.length) {
+    return { label: "Chronic", class: "warning" };
+  }
+  return { label: "Regular", class: "success" };
+}
+
+/**
+ * Render the action buttons for the patient row.
+ * @param {string} patientId - the id of the patient.
+ * @returns {string} - HTML string of the div with the buttons.
+ */
+function renderPatientActions(patientId) {
+  return `
+    <div class="action-buttons">
+      <button class="btn btn-primary" onclick="viewPatient('${patientId}')">View</button>
+      <button class="btn btn-outline" onclick="quickConsultation('${patientId}')">Consult</button>
+    </div>
+  `;
+}
+
+/**
  * Export Patient Data to CSV
  */
 function exportPatientData() {
@@ -339,7 +481,11 @@ function switchPatientTab(tabName) {
   }
 }
 
-/* Switch Patient Info Tab */
+/**
+ * Renders the patient basic info tab
+ * @param {} patient - The 
+ */
+
 function viewPatientInfo(patient) {
   document.getElementById("patientAvatar").textContent = patient.name
     .split(" ")
@@ -490,7 +636,11 @@ function viewPatientImmunizations(patient) {
   }
 }
 
-/* View Patient Details */
+/**
+ * Displays the patient details
+ * @param {string} id - the id of the patient to be displayed.
+ * @returns {string}  HTML string to be rendred by different functions
+ */
 function viewPatient(id) {
   const patient = patients.find((p) => p.id === id);
   if (!patient) return;
@@ -523,19 +673,27 @@ function searchPatients() {
   const table = document.getElementById("patientsTable");
   table.innerHTML = filtered
     .map(
-      (patient) => `
-                <tr>
-                    <td>${patient.id}</td>
-                    <td>${patient.name}</td>
-                    <td>${patient.age}</td>
-                    <td>${patient.gender}</td>
-                    <td>${patient.phone}</td>
-                    <td>${patient.email}</td>
-                    <td>
-                        <button class="btn btn-primary" onclick="viewPatient('${patient.id}')" style="padding: 6px 12px; font-size: 12px;">View</button>
-                    </td>
-                </tr>
-            `
+      (patient) => {
+        const lastVisit =
+          patient.medicalHistory && patient.medicalHistory.length > 0
+            ? patient.medicalHistory[0].date
+            : "No visits";
+        return `
+              <tr>
+              <td>${patient.id}</td>
+              <td>${patient.name}</td>
+              <td>${patient.age}</td>
+              <td>${patient.gender}</td>
+              <td>${patient.phone}</td>
+              <td>${patient.bloodGroup}</td>
+              <td>${lastVisit}</td>
+              <td>${patient.status}</td>
+              <td>
+              <button class="btn btn-primary" onclick="viewPatient('${patient.id}')" style="padding: 6px 12px; font-size: 12px;">View</button>
+              </td>
+              </tr>
+              `
+      }
     )
     .join("");
 }
