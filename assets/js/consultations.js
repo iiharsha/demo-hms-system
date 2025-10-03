@@ -4,6 +4,7 @@ const consultations = [
   {
     id: "C001",
     date: "2024-01-14",
+    time: "10:00",
     patient: "John Doe",
     doctor: "Dr. Smith",
     diagnosis: "Flu",
@@ -12,10 +13,29 @@ const consultations = [
   {
     id: "C002",
     date: "2024-01-14",
+    time: "11:00",
     patient: "Jane Smith",
     doctor: "Dr. Jones",
     diagnosis: "Migraine",
     status: "Completed",
+  },
+  {
+    id: "C003",
+    date: "2024-01-15",
+    time: "12:00",
+    patient: "Donald Trump",
+    doctor: "Dr. Williams",
+    diagnosis: "Brain Cells not there",
+    status: "Scheduled",
+  },
+  {
+    id: "C004",
+    date: "2025-01-15",
+    time: "15:00",
+    patient: "Micheal Jackson",
+    doctor: "Dr. Smith",
+    diagnosis: "Skin Rash",
+    status: "Scheduled",
   },
 ];
 
@@ -27,10 +47,12 @@ function loadConsultations() {
                 <tr>
                     <td>${consult.id}</td>
                     <td>${consult.date}</td>
+                    <td>${consult.time}</td>
                     <td>${consult.patient}</td>
                     <td>${consult.doctor}</td>
                     <td>${consult.diagnosis}</td>
-                    <td><span class="badge badge-success">${consult.status}</span></td>
+                    <td><span class="badge badge-${consult.status === "Completed" ? "success" : "primary"
+        }">${consult.status}</span></td>
                     <td>
                         <button class="btn btn-primary" onclick="viewConsultation('${consult.id}')" style="padding: 6px 12px; font-size: 12px;">View</button>
                     </td>
@@ -106,6 +128,7 @@ function viewConsultation(id) {
         <table>
             <tr><td><strong>ID:</strong></td><td>${consultation.id}</td></tr>
             <tr><td><strong>Date:</strong></td><td>${consultation.date}</td></tr>
+            <tr><td><strong>Date:</strong></td><td>${consultation.time}</td></tr>
             <tr><td><strong>Patient:</strong></td><td>${consultation.patient}</td></tr>
             <tr><td><strong>Doctor:</strong></td><td>${consultation.doctor}</td></tr>
             <tr><td><strong>Diagnosis:</strong></td><td>${consultation.diagnosis}</td></tr>
