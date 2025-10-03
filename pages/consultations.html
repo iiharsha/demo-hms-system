@@ -12,6 +12,7 @@
         <tr>
           <th>ID</th>
           <th>Date</th>
+          <th>Time</th>
           <th>Patient</th>
           <th>Doctor</th>
           <th>Diagnosis</th>
@@ -32,7 +33,9 @@
   <div class="modal-content">
     <div class="modal-header">
       <h3>Consultation Details</h3>
-      <button class="close-btn" onclick="closeModal('viewConsultationModal')">×</button>
+      <button class="close-btn" onclick="closeModal('viewConsultationModal')">
+        <i class="ri-close-line"></i>
+      </button>
     </div>
     <!-- the admission details will be injected here-->
     <div class="modal-body" id="viewConsultationModalBody"></div>
@@ -47,7 +50,9 @@
   <div class="modal-content">
     <div class="modal-header">
       <h3>New Consultation</h3>
-      <button class="close-btn" onclick="closeModal('newConsultationModal')">×</button>
+      <button class="close-btn" onclick="closeModal('newConsultationModal')">
+        <i class="ri-close-line"></i>
+      </button>
     </div>
     <div class="modal-body">
       <div class="tab-buttons">

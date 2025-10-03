@@ -20,7 +20,7 @@ const appointments = [
     patient: "John Doe",
     doctor: "Dr. Smith",
     type: "Consultation",
-    status: "Scheduled",
+    status: "Completed",
   },
   {
     id: "A002",
@@ -45,7 +45,7 @@ const appointments = [
     date: "2025-01-15",
     time: "12:00",
     patient: "Micheal Jackson",
-    doctor: "Dr. Williams",
+    doctor: "Dr. Smith",
     type: "Follow-up",
     status: "Scheduled",
   },

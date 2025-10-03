@@ -1,5 +1,18 @@
 /* admissions page */
 
+//TODO: i stopped here
+
+/**
+ * @typedef {Object} Admission
+ * @property {string} id - Admission ID
+ * @property {string} patient - Patient name
+ * @property {string} room - Room number of the admitted patient.
+ * @property {string} bed -  The bed name in the room.
+ * @property {string} date - Admission Date.
+ * @property {string} doctor - Doctor name
+ * @property {string} status - 
+ */
+
 const admissions = [
   {
     id: "ADM001",
@@ -33,13 +46,11 @@ function loadAdmissions() {
 			<td>${adm.bed}</td>
 			<td>${adm.date}</td>
 			<td>${adm.doctor}</td>
-			<td><span class="badge badge-${
-        adm.status === "Active" ? "success" : "warning"
-      }">${adm.status}</span></td>
+			<td><span class="badge badge-${adm.status === "Active" ? "success" : "warning"
+        }">${adm.status}</span></td>
 			<td>
-			<button class="btn btn-primary" onclick="viewAdmission('${
-        adm.id
-      }')" style="padding: 6px 12px; font-size: 12px;">View</button>
+			<button class="btn btn-primary" onclick="viewAdmission('${adm.id
+        }')" style="padding: 6px 12px; font-size: 12px;">View</button>
 			</td>
 			</tr>
 			`
@@ -66,13 +77,11 @@ function filterAdmissions() {
 			<td>${adm.bed}</td>
 			<td>${adm.date}</td>
 			<td>${adm.doctor}</td>
-			<td><span class="badge badge-${
-        adm.status === "Active" ? "success" : "warning"
-      }">${adm.status}</span></td>
+			<td><span class="badge badge-${adm.status === "Active" ? "success" : "warning"
+        }">${adm.status}</span></td>
 			<td>
-			<button class="btn btn-primary" onclick="viewAdmission('${
-        adm.id
-      }')" style="padding: 6px 12px; font-size: 12px;">View</button>
+			<button class="btn btn-primary" onclick="viewAdmission('${adm.id
+        }')" style="padding: 6px 12px; font-size: 12px;">View</button>
 			</td>
 			</tr>
             `
