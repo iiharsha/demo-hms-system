@@ -5,78 +5,91 @@
  * @property {string} id - Appointment ID
  * @property {string} date - Appointment date (YYYY-MM-DD)
  * @property {string} time - Appointment time (HH:mm)
- * @property {string} patient - Patient name
+ * @property {string} patientId - Patient ID reference
+ * @property {string} patientName - Patient name
  * @property {string} doctor - Doctor name
- * @property {string} type - Appointment type (Consultation/Follow-up)
- * @property {"Scheduled"|"Completed"} status - Appointment status
+ * @property {string} type - Appointment type (Consultation/Follow-up/Check-up)
+ * @property {"Scheduled"|"Completed"|"Cancelled"} status - Appointment status
+ * @property {string} [notes] - Additional notes for the appointment
  */
 
 /** @type {Appointment[]} */
-const appointments = [
-  {
-    id: "A001",
-    date: "2024-01-15",
-    time: "10:00",
-    patient: "John Doe",
-    doctor: "Dr. Smith",
-    type: "Consultation",
-    status: "Completed",
-  },
-  {
-    id: "A002",
-    date: "2024-01-15",
-    time: "11:00",
-    patient: "Jane Smith",
-    doctor: "Dr. Jones",
-    type: "Follow-up",
-    status: "Completed",
-  },
-  {
-    id: "A003",
-    date: "2024-01-15",
-    time: "12:00",
-    patient: "Donald Trump",
-    doctor: "Dr. Williams",
-    type: "Follow-up",
-    status: "Scheduled",
-  },
-  {
-    id: "A004",
-    date: "2025-01-15",
-    time: "12:00",
-    patient: "Micheal Jackson",
-    doctor: "Dr. Smith",
-    type: "Follow-up",
-    status: "Scheduled",
-  },
-];
+const appointments = [];
+
+/**
+ * Initialize appointments with some sample data linked to existing patients
+ */
+function initializeAppointments() {
+  // Only initialize if appointments array is empty
+  if (appointments.length > 0) return;
+
+  // Add some sample appointments using real patient data
+  const sampleAppointments = [
+    {
+      id: "A001",
+      date: "2024-01-15",
+      time: "10:00",
+      patientId: "P001",
+      patientName: "John Doe",
+      doctor: "Dr. Smith",
+      type: "Consultation",
+      status: "Completed",
+      notes: "Regular checkup for hypertension"
+    },
+    {
+      id: "A002",
+      date: "2024-01-15",
+      time: "11:00",
+      patientId: "P002",
+      patientName: "Jane Smith",
+      doctor: "Dr. Jones",
+      type: "Follow-up",
+      status: "Completed",
+      notes: "Asthma follow-up"
+    },
+    {
+      id: "A003",
+      date: "2025-01-20",
+      time: "14:00",
+      patientId: "P003",
+      patientName: "Robert Johnson",
+      doctor: "Dr. Williams",
+      type: "Follow-up",
+      status: "Scheduled",
+      notes: "Post-surgery follow-up"
+    }
+  ];
+
+  appointments.push(...sampleAppointments);
+}
 
 /**
  * Loads all appointments into the table on the page.
  * @returns {void}
  */
 function loadAppointments() {
-  const table = document.getElementById("appointmentsTable");
-  table.innerHTML = appointments
-    .map(
-      (apt) => `
-                <tr>
-                    <td>${apt.id}</td>
-                    <td>${apt.date}</td>
-                    <td>${apt.time}</td>
-                    <td>${apt.patient}</td>
-                    <td>${apt.doctor}</td>
-                    <td>${apt.type}</td>
-                    <td><span class="badge badge-${apt.status === "Completed" ? "success" : "primary"
-        }">${apt.status}</span></td>
-                    <td>
-                        <button class="btn btn-primary" onclick="viewAppointment('${apt.id
-        }')" style="padding: 6px 12px; font-size: 12px;">View</button>
-                    </td>
-                </tr>
-            `
-    )
-    .join("");
+  // Ensure appointments are initialized
+  if (appointments.length === 0) {
+    initializeAppointments();
+  }
+
+  updateAppointmentStats();
+  renderAppointments(appointments);
+}
+
+/**
+ * Update appointment statistics
+ */
+function updateAppointmentStats() {
+  const today = new Date().toISOString().split('T')[0];
+  const todayAppointments = appointments.filter(a => a.date === today).length;
+  const scheduledAppointments = appointments.filter(a => a.status === "Scheduled").length;
+
+  const todayCountEl = document.getElementById("todayAppointments");
+  const scheduledCountEl = document.getElementById("scheduledAppointments");
+
+  if (todayCountEl) todayCountEl.textContent = todayAppointments;
+  if (scheduledCountEl) scheduledCountEl.textContent = scheduledAppointments;
 }
 
 /**
@@ -98,36 +111,61 @@ function filterAppointmentsByDate(data, date) {
  */
 function filterAppointmentsByDoctor(data, doctor) {
   if (!doctor) return data;
+  const doctorName = doctor.includes("-") ? doctor.split("-")[1].trim() : doctor;
   return data.filter((a) =>
-    a.doctor.toLowerCase().includes(doctor.split("-")[1])
+    a.doctor.toLowerCase().includes(doctorName.toLowerCase())
   );
 }
 
 /**
  * Render the given list of appointments into the table.
-  * @param {Appointment[]} filteredAppointments - List of appointments to render.
-  * @returns {void}
+ * @param {Appointment[]} filteredAppointments - List of appointments to render.
+ * @returns {void}
  */
 function renderAppointments(filteredAppointments) {
   const table = document.getElementById("appointmentsTable");
+
+  if (!table) {
+    console.error("Appointments table element not found");
+    return;
+  }
+
+  if (filteredAppointments.length === 0) {
+    table.innerHTML = `
+      <tr>
+        <td colspan="8" style="text-align: center; color: #6b7280; padding: 20px;">
+          No appointments found
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
   table.innerHTML = filteredAppointments
-    .map(
-      (apt) => `
-            <tr>
-                <td>${apt.id}</td>
-                <td>${apt.date}</td>
-                <td>${apt.time}</td>
-                <td>${apt.patient}</td>
-                <td>${apt.doctor}</td>
-                <td>${apt.type}</td>
-                <td><span class="badge badge-${apt.status === "Completed" ? "success" : "primary"
-        }">${apt.status}</span></td>
-                <td>
-                    <button class="btn btn-primary" onclick="viewAppointment('${apt.id
-        }')" style="padding: 6px 12px; font-size: 12px;">View</button>
-                </td>
-            </tr>`
-    )
+    .map((apt) => {
+      const statusClass = apt.status === "Completed" ? "success" :
+        apt.status === "Cancelled" ? "danger" : "primary";
+
+      return `
+        <tr>
+          <td>${apt.id}</td>
+          <td>${apt.date}</td>
+          <td>${apt.time}</td>
+          <td>${apt.patientName}</td>
+          <td>${apt.doctor}</td>
+          <td>${apt.type}</td>
+          <td><span class="badge badge-${statusClass}">${apt.status}</span></td>
+          <td>
+            <button class="btn btn-primary" onclick="viewAppointment('${apt.id}')" 
+                    style="padding: 6px 12px; font-size: 12px;">View</button>
+            ${apt.status === "Scheduled" ? `
+              <button class="btn btn-outline" onclick="cancelAppointment('${apt.id}')" 
+                      style="padding: 6px 12px; font-size: 12px;">Cancel</button>
+            ` : ''}
+          </td>
+        </tr>
+      `;
+    })
     .join("");
 }
 
@@ -136,13 +174,12 @@ function renderAppointments(filteredAppointments) {
  * @returns {void}
  */
 function filterAppointments() {
-  const date = document.getElementById("appointmentDate").value;
-  const doctor = document.getElementById("doctorFilter").value;
+  const date = document.getElementById("appointmentDate")?.value;
+  const doctor = document.getElementById("doctorFilter")?.value;
 
   let filtered = appointments;
 
   filtered = filterAppointmentsByDate(filtered, date);
-
   filtered = filterAppointmentsByDoctor(filtered, doctor);
 
   renderAppointments(filtered);
@@ -152,29 +189,408 @@ function filterAppointments() {
  * Opens a modal with details of the selected appointment.
  * @param {string} id - Appointment ID to view.
  * @returns {void}
-*/
+ */
 function viewAppointment(id) {
   const apt = appointments.find((a) => a.id === id);
   if (!apt) {
-    console.error("Appointment not found", id);
+    showNotification("Appointment not found", "error");
     return;
   }
+
+  const patient = patients.find(p => p.id === apt.patientId);
 
   const modalBody = document.getElementById("viewAppointmentModalBody");
 
   modalBody.innerHTML = `
-        <table>
-            <tr><td><strong>ID:</strong></td><td>${apt.id}</td></tr>
-            <tr><td><strong>Date:</strong></td><td>${apt.date}</td></tr>
-            <tr><td><strong>Time:</strong></td><td>${apt.time}</td></tr>
-            <tr><td><strong>Patient:</strong></td><td>${apt.patient}</td></tr>
-            <tr><td><strong>Doctor:</strong></td><td>${apt.doctor}</td></tr>
-            <tr><td><strong>Type:</strong></td><td>${apt.type}</td></tr>
-            <tr><td><strong>Status:</strong></td><td>${apt.status}</td></tr>
+    <div style="display: grid; gap: 20px;">
+      <div class="card">
+        <h4 style="margin-bottom: 15px;">Appointment Details</h4>
+        <table style="width: 100%;">
+          <tr>
+            <td style="padding: 8px;"><strong>Appointment ID:</strong></td>
+            <td style="padding: 8px;">${apt.id}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px;"><strong>Date:</strong></td>
+            <td style="padding: 8px;">${apt.date}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px;"><strong>Time:</strong></td>
+            <td style="padding: 8px;">${apt.time}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px;"><strong>Type:</strong></td>
+            <td style="padding: 8px;">${apt.type}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px;"><strong>Doctor:</strong></td>
+            <td style="padding: 8px;">${apt.doctor}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px;"><strong>Status:</strong></td>
+            <td style="padding: 8px;">
+              <span class="badge badge-${apt.status === "Completed" ? "success" : apt.status === "Cancelled" ? "danger" : "primary"}">
+                ${apt.status}
+              </span>
+            </td>
+          </tr>
+          ${apt.notes ? `
+          <tr>
+            <td style="padding: 8px;"><strong>Notes:</strong></td>
+            <td style="padding: 8px;">${apt.notes}</td>
+          </tr>
+          ` : ''}
         </table>
-    `;
+      </div>
+      
+      ${patient ? `
+      <div class="card">
+        <h4 style="margin-bottom: 15px;">Patient Information</h4>
+        <table style="width: 100%;">
+          <tr>
+            <td style="padding: 8px;"><strong>Patient Name:</strong></td>
+            <td style="padding: 8px;">${patient.name}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px;"><strong>Patient ID:</strong></td>
+            <td style="padding: 8px;">${patient.id}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px;"><strong>Age:</strong></td>
+            <td style="padding: 8px;">${patient.age} years</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px;"><strong>Phone:</strong></td>
+            <td style="padding: 8px;">${patient.phone}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px;"><strong>Blood Group:</strong></td>
+            <td style="padding: 8px;">${patient.bloodGroup || "Unknown"}</td>
+          </tr>
+          ${patient.allergies && patient.allergies.length > 0 ? `
+          <tr>
+            <td style="padding: 8px;"><strong>Allergies:</strong></td>
+            <td style="padding: 8px;">
+              ${patient.allergies.map(a => `<span class="badge badge-danger">${a}</span>`).join(' ')}
+            </td>
+          </tr>
+          ` : ''}
+        </table>
+      </div>
+      ` : ''}
+    </div>
+  `;
 
   openModal("viewAppointmentModal");
+}
+
+/**
+ * Cancel an appointment
+ * @param {string} appointmentId - The appointment ID to cancel
+ */
+function cancelAppointment(appointmentId) {
+  const appointment = appointments.find(a => a.id === appointmentId);
+
+  if (!appointment) {
+    showNotification("Appointment not found", "error");
+    return;
+  }
+
+  if (appointment.status === "Cancelled") {
+    showNotification("Appointment already cancelled", "error");
+    return;
+  }
+
+  if (!confirm(`Are you sure you want to cancel the appointment for ${appointment.patientName}?`)) {
+    return;
+  }
+
+  appointment.status = "Cancelled";
+
+  loadAppointments();
+  showNotification(`Appointment cancelled for ${appointment.patientName}`);
+
+  if (typeof initializeDashboard === 'function') {
+    initializeDashboard();
+  }
+}
+
+/**
+ * Opens the "Add Appointment" modal and populates patient dropdown
+ * @return {void}
+ */
+function openAddAppointmentModal() {
+  populateAppointmentPatientDropdown();
+  populateAppointmentDoctorDropdown();
+
+  const dateInput = document.getElementById("appointmentDateInput");
+  if (dateInput && !dateInput.value)
+    dateInput.value = new Date().toISOString().split("T")[0];
+
+  openModal("addAppointmentModal");
+
+  setTimeout(() => {
+    refreshTimeSlots(); // uses selected doctor & date
+  }, 100);
+
+  // Re-generate when user changes doctor/date
+  document.getElementById("appointmentDoctor")?.addEventListener("change", refreshTimeSlots);
+  document.getElementById("appointmentDateInput")?.addEventListener("change", refreshTimeSlots);
+}
+
+/**
+ * Populate patient dropdown with searchable patient list
+ */
+function populateAppointmentPatientDropdown() {
+  const patientSelect = document.getElementById("appointmentPatient");
+
+  if (!patientSelect) {
+    console.error("Patient select element not found");
+    return;
+  }
+
+  // Check if we need to convert to searchable input
+  if (patientSelect.tagName === "SELECT") {
+    // Replace select with searchable input structure
+    const container = patientSelect.parentElement;
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'relative';
+    wrapper.innerHTML = `
+      <input type="text" 
+             id="appointmentPatientSearch" 
+             placeholder="Search patient by name, ID, or phone..."
+             autocomplete="off"
+             style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;">
+      <div id="patientSearchResults" 
+           style="display: none; position: absolute; top: 100%; left: 0; right: 0; 
+                  background: white; border: 1px solid #d1d5db; border-radius: 8px; 
+                  max-height: 300px; overflow-y: auto; z-index: 1000; margin-top: 4px;
+                  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);"></div>
+      <input type="hidden" id="appointmentPatientId" value="">
+      <div style="margin-top: 8px;">
+        <button type="button" class="btn btn-outline" onclick="navigateToAddPatient()" 
+                style="padding: 8px 16px; font-size: 13px;">
+          <i class="ri-add-line"></i> Add New Patient
+        </button>
+      </div>
+    `;
+
+    container.replaceChild(wrapper, patientSelect);
+
+    // Add event listeners
+    setupPatientSearch();
+  } else {
+    // Already converted, just setup search again
+    setupPatientSearch();
+  }
+}
+
+/**
+ * Setup patient search functionality
+ */
+function setupPatientSearch() {
+  const searchInput = document.getElementById("appointmentPatientSearch");
+  const resultsDiv = document.getElementById("patientSearchResults");
+  const hiddenInput = document.getElementById("appointmentPatientId");
+
+  if (!searchInput || !resultsDiv) return;
+
+  let selectedPatient = null;
+
+  searchInput.addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase().trim();
+
+    if (searchTerm.length < 1) {
+      resultsDiv.style.display = 'none';
+      hiddenInput.value = '';
+      selectedPatient = null;
+      return;
+    }
+
+    // Filter patients
+    const filteredPatients = patients.filter(p =>
+      p.name.toLowerCase().includes(searchTerm) ||
+      p.id.toLowerCase().includes(searchTerm) ||
+      p.phone.includes(searchTerm) ||
+      (p.email && p.email.toLowerCase().includes(searchTerm))
+    );
+
+    if (filteredPatients.length === 0) {
+      resultsDiv.innerHTML = `
+        <div style="padding: 12px; text-align: center; color: #6b7280;">
+          No patients found. 
+          <a href="#" onclick="navigateToAddPatient(); return false;" 
+             style="color: var(--primary); text-decoration: underline;">
+            Add new patient
+          </a>
+        </div>
+      `;
+      resultsDiv.style.display = 'block';
+      return;
+    }
+
+    resultsDiv.innerHTML = filteredPatients.map(p => {
+      const hasAllergies = p.allergies && p.allergies.length > 0;
+      return `
+        <div class="patient-search-item" data-patient-id="${p.id}" 
+             style="padding: 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6;
+                    transition: background-color 0.2s;">
+          <div style="font-weight: 600; color: #111827;">${p.name}</div>
+          <div style="font-size: 13px; color: #6b7280; margin-top: 4px;">
+            ${p.id} • ${p.age}y, ${p.gender} • ${p.phone}
+            ${hasAllergies ? `<span style="color: var(--danger); margin-left: 8px;" title="Has allergies">⚠</span>` : ''}
+          </div>
+          ${p.bloodGroup ? `<div style="font-size: 12px; color: #9ca3af; margin-top: 2px;">Blood Group: ${p.bloodGroup}</div>` : ''}
+        </div>
+      `;
+    }).join('');
+
+    resultsDiv.style.display = 'block';
+
+    // Add click handlers
+    resultsDiv.querySelectorAll('.patient-search-item').forEach(item => {
+      item.addEventListener('mouseenter', function() {
+        this.style.backgroundColor = '#f9fafb';
+      });
+      item.addEventListener('mouseleave', function() {
+        this.style.backgroundColor = 'transparent';
+      });
+      item.addEventListener('click', function() {
+        const patientId = this.dataset.patientId;
+        selectedPatient = patients.find(p => p.id === patientId);
+
+        if (selectedPatient) {
+          searchInput.value = selectedPatient.name;
+          hiddenInput.value = selectedPatient.id;
+          resultsDiv.style.display = 'none';
+
+          // Show patient info
+          showSelectedPatientInfo(selectedPatient);
+        }
+      });
+    });
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
+      resultsDiv.style.display = 'none';
+    }
+  });
+}
+
+/**
+ * Show selected patient information
+ * @param {Object} patient - The selected patient object
+ */
+function showSelectedPatientInfo(patient) {
+  let infoDiv = document.getElementById("selectedPatientInfo");
+
+  if (!infoDiv) {
+    const searchWrapper = document.getElementById("appointmentPatientSearch").parentElement;
+    infoDiv = document.createElement('div');
+    infoDiv.id = "selectedPatientInfo";
+    searchWrapper.appendChild(infoDiv);
+  }
+
+  const hasAllergies = patient.allergies && patient.allergies.length > 0;
+  const hasChronic = patient.chronicConditions && patient.chronicConditions.length > 0;
+
+  infoDiv.innerHTML = `
+    <div class="card" style="margin-top: 12px; background: #f9fafb; padding: 12px;">
+      <div style="display: flex; justify-content: space-between; align-items: start;">
+        <div>
+          <div style="font-weight: 600; margin-bottom: 4px;">${patient.name}</div>
+          <div style="font-size: 13px; color: #6b7280;">
+            ${patient.age}y, ${patient.gender} • ${patient.bloodGroup || "Unknown"}
+          </div>
+          ${hasAllergies ? `
+            <div style="margin-top: 8px;">
+              <strong style="font-size: 13px; color: var(--danger);">⚠ Allergies:</strong>
+              ${patient.allergies.map(a => `<span class="badge badge-danger" style="font-size: 11px; margin-left: 4px;">${a}</span>`).join('')}
+            </div>
+          ` : ''}
+          ${hasChronic ? `
+            <div style="margin-top: 6px;">
+              <strong style="font-size: 13px;">Conditions:</strong>
+              ${patient.chronicConditions.map(c => `<span class="badge badge-warning" style="font-size: 11px; margin-left: 4px;">${c}</span>`).join('')}
+            </div>
+          ` : ''}
+        </div>
+        <button onclick="clearSelectedPatient()" class="btn btn-outline" 
+                style="padding: 4px 8px; font-size: 12px;">Change</button>
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * Clear selected patient
+ */
+function clearSelectedPatient() {
+  const searchInput = document.getElementById("appointmentPatientSearch");
+  const hiddenInput = document.getElementById("appointmentPatientId");
+  const infoDiv = document.getElementById("selectedPatientInfo");
+
+  if (searchInput) searchInput.value = '';
+  if (hiddenInput) hiddenInput.value = '';
+  if (infoDiv) infoDiv.innerHTML = '';
+}
+
+/**
+ * Populate doctor dropdown
+ */
+function populateAppointmentDoctorDropdown() {
+  const doctorSelect = document.getElementById("appointmentDoctor");
+
+  if (!doctorSelect) return;
+
+  // Extract unique doctors from existing appointments and patients' medical history
+  const doctorSet = new Set();
+
+  appointments.forEach(apt => {
+    if (apt.doctor) doctorSet.add(apt.doctor);
+  });
+
+  patients.forEach(p => {
+    if (p.medicalHistory) {
+      p.medicalHistory.forEach(h => {
+        if (h.doctor) doctorSet.add(h.doctor);
+      });
+    }
+  });
+
+  const doctors = Array.from(doctorSet).sort();
+
+  doctorSelect.innerHTML = `
+    <option value="">Select Doctor</option>
+    ${doctors.map(d => `<option value="${d}">${d}</option>`).join('')}
+  `;
+}
+
+/**
+ * Navigate to patients page and open add patient modal
+ */
+function navigateToAddPatient() {
+  // Close current modal
+  closeModal("addAppointmentModal");
+
+  // Navigate to patients page
+  if (typeof showPage === 'function') {
+    showPage('patients.html');
+
+    // Wait for page to load, then open add patient modal
+    setTimeout(() => {
+      if (typeof openAddPatientModal === 'function') {
+        openAddPatientModal();
+      } else {
+        openModal("addPatientModal");
+      }
+    }, 300);
+  } else {
+    // Fallback: just open the add patient modal
+    openModal("addPatientModal");
+  }
 }
 
 /**
@@ -182,36 +598,355 @@ function viewAppointment(id) {
  * @returns {void}
  */
 function saveAppointment() {
+  const patientId = document.getElementById("appointmentPatientId")?.value;
+  const date = document.getElementById("appointmentDateInput")?.value;
+  const doctor = document.getElementById("appointmentDoctor")?.value;
+  const type = document.getElementById("appointmentType")?.value;
+  const notes = document.getElementById("appointmentNotes")?.value;
+
+  // Get selected time slot
   const selectedSlot = document.querySelector(".appointment-slot.selected");
+
+  // Validation
+  if (!patientId) {
+    showNotification("Please select a patient", "error");
+    return;
+  }
+
+  if (!date) {
+    showNotification("Please select a date", "error");
+    return;
+  }
+
   if (!selectedSlot) {
-    alert("Please select a time slot");
+    showNotification("Please select a time slot", "error");
+    return;
+  }
+
+  if (!doctor) {
+    showNotification("Please select a doctor", "error");
+    return;
+  }
+
+  if (!type) {
+    showNotification("Please select appointment type", "error");
+    return;
+  }
+
+  const patient = patients.find(p => p.id === patientId);
+  if (!patient) {
+    showNotification("Patient not found", "error");
+    return;
+  }
+
+  const time = selectedSlot.dataset.time;
+
+  // Check for duplicate appointments
+  const duplicate = appointments.find(a =>
+    a.date === date &&
+    a.time === time &&
+    a.doctor === doctor &&
+    a.status === "Scheduled"
+  );
+
+  if (duplicate) {
+    showNotification("This time slot is already booked with this doctor", "error");
     return;
   }
 
   /** @type {Appointment} */
   const newAppointment = {
     id: "A" + String(appointments.length + 1).padStart(3, "0"),
-    date: document.getElementById("appointmentDateInput").value,
-    time: selectedSlot.dataset.time,
-    patient:
-      document.getElementById("appointmentPatient").options[
-        document.getElementById("appointmentPatient").selectedIndex
-      ].text,
-    doctor: document.getElementById("appointmentDoctor").value.split(" - ")[0],
-    type: document.getElementById("appointmentType").value,
+    date: date,
+    time: time,
+    patientId: patient.id,
+    patientName: patient.name,
+    doctor: doctor,
+    type: type,
     status: "Scheduled",
+    notes: notes || ""
   };
 
   appointments.push(newAppointment);
+
+  // Add to patient's medical history
+  if (patient.medicalHistory) {
+    patient.medicalHistory.unshift({
+      date: date,
+      type: type,
+      doctor: doctor,
+      diagnosis: "Scheduled Appointment",
+      notes: `Appointment scheduled for ${time}`
+    });
+  }
+
   loadAppointments();
   closeModal("addAppointmentModal");
-  showNotification("Appointment scheduled successfully!");
-  initializeDashboard();
+  showNotification(`Appointment scheduled for ${patient.name} on ${date} at ${time}`);
+
+  if (typeof initializeDashboard === 'function') {
+    initializeDashboard();
+  }
+
+  // Clear form
+  clearAppointmentForm();
 }
 
-/** Opens the "Add Appointment" modal
- * @return {void}
-*/
-function openAddAppointmentModal() {
-  openModal("addAppointmentModal");
+/**
+ * Initialize time slot selection
+ */
+function initializeTimeSlots() {
+  const timeSlots = document.querySelectorAll(".appointment-slot");
+
+  timeSlots.forEach(slot => {
+    slot.addEventListener('click', function() {
+      // Remove selected class from all slots
+      timeSlots.forEach(s => s.classList.remove('selected'));
+
+      // Add selected class to clicked slot
+      this.classList.add('selected');
+
+      // Visual feedback
+      console.log('Selected time:', this.dataset.time);
+    });
+  });
+}
+
+/**
+ * Dynamically generates interactive time slots for appointment scheduling.
+ * - Prevents selecting booked or past time slots.
+ * - Supports easy future integration with backend APIs.
+ * - Cleanly handles re-rendering and state.
+ *
+ * @param {string} [selectedDoctor] - Doctor to filter booked slots.
+ * @param {string} [selectedDate] - Date (YYYY-MM-DD) to filter booked slots.
+ */
+function generateTimeSlots(selectedDoctor, selectedDate) {
+  const container = document.getElementById("timeSlotsContainer");
+  if (!container) {
+    console.warn("[Appointments] Missing #timeSlotsContainer element");
+    return;
+  }
+
+  // Resolve date context
+  const date = selectedDate || document.getElementById("appointmentDateInput")?.value;
+  const doctor = selectedDoctor || document.getElementById("appointmentDoctor")?.value;
+
+  // Clear container
+  container.innerHTML = "";
+
+  // Define slot range (9:00 - 17:00)
+  const slots = [];
+  for (let hour = 9; hour < 17; hour++) {
+    slots.push(`${String(hour).padStart(2, "0")}:00`);
+    slots.push(`${String(hour).padStart(2, "0")}:30`);
+  }
+
+  // Collect booked slots (for selected doctor & date)
+  const bookedSlots = new Set(
+    appointments
+      .filter(a => a.date === date && a.doctor === doctor && a.status === "Scheduled")
+      .map(a => a.time)
+  );
+
+  const now = new Date();
+  const today = now.toISOString().split("T")[0];
+  const isToday = date === today;
+
+  // Build slot HTML
+  const grid = document.createElement("div");
+  grid.style.display = "grid";
+  grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(100px, 1fr))";
+  grid.style.gap = "10px";
+
+  slots.forEach(time => {
+    const slot = document.createElement("div");
+    slot.textContent = time;
+    slot.dataset.time = time;
+    slot.classList.add("appointment-slot");
+
+    // Determine slot state
+    const slotDateTime = new Date(`${date}T${time}:00`);
+    const isPast = isToday && slotDateTime < now;
+    const isBooked = bookedSlots.has(time);
+
+    if (isPast || isBooked) {
+      slot.classList.add("disabled");
+      slot.title = isPast ? "Past time slot" : "Already booked";
+    } else {
+      slot.addEventListener("click", onTimeSlotClick);
+    }
+
+    grid.appendChild(slot);
+  });
+
+  container.appendChild(grid);
+
+  // Apply consistent styles (create once)
+  if (!document.getElementById("timeSlotStyles")) {
+    const style = document.createElement("style");
+    style.id = "timeSlotStyles";
+    style.textContent = `
+      .appointment-slot {
+        padding: 10px;
+        text-align: center;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        cursor: pointer;
+        background: white;
+        transition: all 0.2s ease;
+        user-select: none;
+      }
+      .appointment-slot:hover:not(.disabled):not(.selected) {
+        background-color: #f3f4f6;
+        border-color: var(--primary);
+      }
+      .appointment-slot.selected {
+        background-color: var(--primary);
+        color: white;
+        border-color: var(--primary);
+        font-weight: 600;
+      }
+      .appointment-slot.disabled {
+        background-color: #f9fafb;
+        color: #9ca3af;
+        cursor: not-allowed;
+        border-color: #e5e7eb;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+}
+
+/**
+ * Handles clicking a time slot — toggles selection visually & logically.
+ * @param {MouseEvent} event
+ */
+function onTimeSlotClick(event) {
+  const slot = event.currentTarget;
+  if (slot.classList.contains("disabled")) return;
+
+  // Deselect other slots
+  document.querySelectorAll(".appointment-slot.selected")
+    .forEach(s => s.classList.remove("selected"));
+
+  // Select current
+  slot.classList.add("selected");
+}
+
+/**
+ * Refreshes available slots when date or doctor changes.
+ * Designed for easy API integration later.
+ */
+function refreshTimeSlots() {
+  /**
+   * Generate time slots dynamically if they don't exist
+   */
+  function generateTimeSlots() {
+    const container = document.getElementById("timeSlotsContainer");
+
+    if (!container) {
+      console.warn("Time slots container not found");
+      return;
+    }
+
+    // Check if slots already exist
+    if (container.querySelector('.appointment-slot')) {
+      initializeTimeSlots();
+      return;
+    }
+
+    // Generate time slots from 9 AM to 5 PM
+    const slots = [];
+    for (let hour = 9; hour < 17; hour++) {
+      slots.push(`${String(hour).padStart(2, '0')}:00`);
+      slots.push(`${String(hour).padStart(2, '0')}:30`);
+    }
+
+    container.innerHTML = `
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+      ${slots.map(time => `
+        <div class="appointment-slot" data-time="${time}" 
+             style="padding: 10px; text-align: center; border: 2px solid #e5e7eb; 
+                    border-radius: 8px; cursor: pointer; transition: all 0.2s;
+                    background: white;">
+          ${time}
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+    initializeTimeSlots();
+
+    // Add CSS for selected state
+    if (!document.getElementById('timeSlotStyles')) {
+      const style = document.createElement('style');
+      style.id = 'timeSlotStyles';
+      style.textContent = `
+      .appointment-slot:hover {
+        background-color: #f3f4f6 !important;
+        border-color: var(--primary) !important;
+      }
+      .appointment-slot.selected {
+        background-color: var(--primary) !important;
+        color: white !important;
+        border-color: var(--primary) !important;
+        font-weight: 600;
+      }
+    `;
+      document.head.appendChild(style);
+    }
+  }
+  const doctor = document.getElementById("appointmentDoctor")?.value;
+  const date = document.getElementById("appointmentDateInput")?.value;
+  generateTimeSlots(doctor, date);
+}
+
+/**
+ * Clear appointment form
+ */
+function clearAppointmentForm() {
+  clearSelectedPatient();
+
+  const dateInput = document.getElementById("appointmentDateInput");
+  const doctorSelect = document.getElementById("appointmentDoctor");
+  const typeSelect = document.getElementById("appointmentType");
+  const notesInput = document.getElementById("appointmentNotes");
+
+  if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+  if (doctorSelect) doctorSelect.value = "";
+  if (typeSelect) typeSelect.value = "";
+  if (notesInput) notesInput.value = "";
+
+  // Clear selected time slot
+  document.querySelectorAll(".appointment-slot.selected").forEach(slot => {
+    slot.classList.remove("selected");
+  });
+}
+
+/**
+ * Export appointments data to CSV
+ */
+function exportAppointmentsData() {
+  const data = appointments.map(a => ({
+    AppointmentID: a.id,
+    Date: a.date,
+    Time: a.time,
+    PatientID: a.patientId,
+    PatientName: a.patientName,
+    Doctor: a.doctor,
+    Type: a.type,
+    Status: a.status,
+    Notes: a.notes || ""
+  }));
+
+  exportToCSV(data, "appointments_report.csv");
+  showNotification("Appointments data exported successfully");
+}
+
+// Initialize appointments when DOM is ready
+if (typeof document !== 'undefined') {
+  document.addEventListener("DOMContentLoaded", () => {
+    initializeAppointments();
+  });
 }

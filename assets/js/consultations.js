@@ -25,7 +25,7 @@ const consultations = [
     time: "12:00",
     patient: "Donald Trump",
     doctor: "Dr. Williams",
-    diagnosis: "Brain Cells not there",
+    diagnosis: "Ear Condition",
     status: "Scheduled",
   },
   {

@@ -21,7 +21,7 @@ function loadReports() {
   const revenueValue = "4.20Cr"
   const occupancyRate = getOccupancyRate(rooms);
   const reviewValue = 4.5;
-  const consultationsTotalValue = 69;
+  const consultationsTotalValue = consultations.length;
   document.getElementById("revenueReportValue").textContent = revenueValue;
   document.getElementById("occupancyReportValue").textContent = occupancyRate + "%";
   document.getElementById("patientReviewValue").textContent = reviewValue;

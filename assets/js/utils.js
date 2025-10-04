@@ -28,6 +28,31 @@ function showNotification(message) {
   }, 3000);
 }
 
+
+/* shows a toast notification on the top right of the screen */
+function showErrorNotification(message) {
+  // Create notification element
+  const notification = document.createElement("div");
+  notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--danger);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: var(--shadow-lg);
+                z-index: 2000;
+                animation: slideIn 0.3s ease;
+            `;
+  notification.textContent = message;
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.remove();
+  }, 3000);
+}
+
 /* Close modal when clicking outside */
 window.onclick = (event) => {
   if (event.target.classList.contains("modal")) {

@@ -331,6 +331,12 @@ function viewRoomDetails(roomId) {
   /* Store current room ID */
   currentRoomId = roomId;
 
+  const roomManagementModule = document.getElementById('roomManagementModal');
+  if (roomManagementModule && roomManagementModule.style.display !== 'none') {
+    roomManagementModule.dataset.wasVisible = "true"; // store state
+    roomManagementModule.style.display = 'none';
+  }
+
   const occupiedCount = room.occupiedBeds.filter((b) => b.patient).length;
   const availableCount = room.totalBeds - occupiedCount;
 

@@ -26,7 +26,7 @@ function loadRecentAppointments() {
       (apt) => `
                 <tr>
                     <td>${apt.time}</td>
-                    <td>${apt.patient}</td>
+                    <td>${apt.patientName}</td>
                     <td>${apt.doctor}</td>
                     <td>${apt.type}</td>
                     <td><span class="badge badge-${apt.status === "Completed" ? "success" : "primary"
@@ -46,9 +46,9 @@ function loadRecentAdmissions() {
       (adm) => `
                 <tr>
                     <td>${adm.id}</td>
-                    <td>${adm.patient}</td>
-                    <td>${adm.room}</td>
-                    <td>${adm.date}</td>
+                    <td>${adm.patientName}</td>
+                    <td>${adm.roomId}</td>
+                    <td>${adm.admissionDate}</td>
                     <td><span class="badge badge-${adm.status === "Active" ? "success" : "warning"
         }">${adm.status}</span></td>
                 </tr>
