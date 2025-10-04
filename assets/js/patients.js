@@ -1,719 +1,750 @@
-/* patients page */
+/**
+ * Patients Management Module
+ * Refactored for senior-level JavaScript practices
+ */
+
+// ============================================================================
+// TYPE DEFINITIONS (same as before)
+// ============================================================================
 
 /**
  * @typedef {Object} PatientMedication
- * @property {string} name - Name of the medication.
- * @property {string} dose - Dosage prescribed.
- * @property {string} frequency - Frequency of intake.
+ * @property {string} name
+ * @property {string} dose
+ * @property {string} frequency
  */
 
 /**
  * @typedef {Object} MedicalHistory
- * @property {string} date - Date of the medical record.
- * @property {string} type - Type of medical encounter (Consultation, Admission, Emergency, Follow-up, etc.).
- * @property {string} doctor - Name of the doctor involved.
- * @property {string} diagnosis - Diagnosis given.
- * @property {string} notes - Additional notes.
+ * @property {string} date
+ * @property {string} type
+ * @property {string} doctor
+ * @property {string} diagnosis
+ * @property {string} notes
  */
 
 /**
  * @typedef {Object} LabReport
- * @property {string} date - Date of the lab test.
- * @property {string} test - Name of the test.
- * @property {string} result - Result of the test.
- * @property {string} file - File name/path for the report.
+ * @property {string} date
+ * @property {string} test
+ * @property {string} result
+ * @property {string} file
  */
 
 /**
  * @typedef {Object} Immunization
- * @property {string} vaccine - Vaccine name.
- * @property {string} date - Date the vaccine was administered.
- * @property {string} nextDue - Next due date or status (e.g., "Completed").
+ * @property {string} vaccine
+ * @property {string} date
+ * @property {string} nextDue
  */
 
 /**
  * @typedef {Object} Patient
- * @property {string} id - Patient ID
- * @property {string} name - Name of the patient.
- * @property {number} age - Age of the patient.
- * @property {"Male"|"Female"|"Other"} gender - gender of the patient.
- * @property {string} phone - Phone number of the patient.
- * @property {string} email - Email of the patient.
- * @property {"A+"|"A-"|"B+"|"B-"|"O+"|"O-"|"AB+"|"AB-"} bloodGroup - blood group of the patient.
- * @property {string} address - address of the patient.
- * @property {string} emergencyContact - emergency contact of the patient.
- * @property {string[]} allergies - list of allergies of the patient.
- * @property {string[]} chronicConditions - list of chronic conditions of the patient.
- * @property {PatientMedication[]} currentMedications - list of current medications of the patient.
- * @property {MedicalHistory[]} medicalHistory - list of medical history of the patient.
- * @property {LabReport[]} labReports - list of lab reports of the patient.
- * @property {Immunization[]} immunizations - list of immunizations of the patient.
+ * @property {string} id
+ * @property {string} name
+ * @property {number} age
+ * @property {"Male"|"Female"|"Other"} gender
+ * @property {string} phone
+ * @property {string} email
+ * @property {"A+"|"A-"|"B+"|"B-"|"O+"|"O-"|"AB+"|"AB-"} bloodGroup
+ * @property {string} address
+ * @property {string} emergencyContact
+ * @property {string[]} complaints
+ * @property {string[]} allergies
+ * @property {string[]} chronicConditions
+ * @property {PatientMedication[]} currentMedications
+ * @property {MedicalHistory[]} medicalHistory
+ * @property {LabReport[]} labReports
+ * @property {Immunization[]} immunizations
  */
 
-/**
- * List of patients
- * @type {Patient[]}
- */
-const patients = [
-  {
-    id: "P001",
-    name: "John Doe",
-    age: 35,
-    gender: "Male",
-    phone: "9876543210",
-    email: "john@email.com",
-    bloodGroup: "O+",
-    address: "123 Main Street, Ahmedabad",
-    emergencyContact: "9876543211",
-    allergies: ["Penicillin", "Peanuts"],
-    chronicConditions: ["Hypertension", "Type 2 Diabetes"],
-    currentMedications: [
-      { name: "Metformin", dose: "500mg", frequency: "Twice daily" },
-      { name: "Lisinopril", dose: "10mg", frequency: "Once daily" },
-    ],
-    medicalHistory: [
-      {
-        date: "2024-01-10",
-        type: "Consultation",
-        doctor: "Dr. Smith",
-        diagnosis: "Hypertension",
-        notes: "Blood pressure elevated, started on Lisinopril",
-      },
-      {
-        date: "2023-12-15",
-        type: "Emergency",
-        doctor: "Dr. Jones",
-        diagnosis: "Acute Bronchitis",
-        notes: "Prescribed antibiotics and rest",
-      },
-      {
-        date: "2023-11-20",
-        type: "Check-up",
-        doctor: "Dr. Smith",
-        diagnosis: "Routine Check-up",
-        notes: "All vitals normal",
-      },
-    ],
-    labReports: [
-      {
-        date: "2024-01-10",
-        test: "Complete Blood Count",
-        result: "Normal",
-        file: "CBC_001.pdf",
-      },
-      {
-        date: "2024-01-10",
-        test: "Lipid Profile",
-        result: "High Cholesterol",
-        file: "LIPID_001.pdf",
-      },
-    ],
-    immunizations: [
-      { vaccine: "COVID-19", date: "2023-03-15", nextDue: "2024-03-15" },
-      { vaccine: "Influenza", date: "2023-10-01", nextDue: "2024-10-01" },
-    ],
-  },
-  {
-    id: "P002",
-    name: "Jane Smith",
-    age: 28,
-    gender: "Female",
-    phone: "9876543211",
-    email: "jane@email.com",
-    bloodGroup: "A+",
-    address: "456 Park Avenue, Ahmedabad",
-    emergencyContact: "9876543212",
-    allergies: ["Sulfa drugs"],
-    chronicConditions: ["Asthma"],
-    currentMedications: [
-      { name: "Albuterol Inhaler", dose: "90mcg", frequency: "As needed" },
-    ],
-    medicalHistory: [
-      {
-        date: "2024-01-08",
-        type: "Follow-up",
-        doctor: "Dr. Williams",
-        diagnosis: "Asthma Management",
-        notes: "Well controlled on current medication",
-      },
-      {
-        date: "2023-09-10",
-        type: "Consultation",
-        doctor: "Dr. Smith",
-        diagnosis: "Migraine",
-        notes: "Prescribed Sumatriptan for acute episodes",
-      },
-    ],
-    labReports: [
-      {
-        date: "2023-12-20",
-        test: "Thyroid Function",
-        result: "Normal",
-        file: "THYROID_002.pdf",
-      },
-    ],
-    immunizations: [
-      { vaccine: "COVID-19", date: "2023-04-20", nextDue: "2024-04-20" },
-      { vaccine: "Tetanus", date: "2022-06-15", nextDue: "2032-06-15" },
-    ],
-  },
-  {
-    id: "P003",
-    name: "Robert Johnson",
-    age: 42,
-    gender: "Male",
-    phone: "9876543212",
-    email: "robert@email.com",
-    bloodGroup: "B+",
-    address: "789 Lake Road, Ahmedabad",
-    emergencyContact: "9876543213",
-    allergies: [],
-    chronicConditions: ["High Cholesterol"],
-    currentMedications: [
-      { name: "Atorvastatin", dose: "20mg", frequency: "Once daily at night" },
-    ],
-    medicalHistory: [
-      {
-        date: "2024-01-12",
-        type: "Admission",
-        doctor: "Dr. Williams",
-        diagnosis: "Appendicitis",
-        notes: "Appendectomy performed, recovery ongoing",
-      },
-      {
-        date: "2023-10-05",
-        type: "Consultation",
-        doctor: "Dr. Jones",
-        diagnosis: "High Cholesterol",
-        notes: "Started on statin therapy",
-      },
-    ],
-    labReports: [
-      {
-        date: "2024-01-05",
-        test: "Lipid Profile",
-        result: "Improving",
-        file: "LIPID_003.pdf",
-      },
-      {
-        date: "2024-01-12",
-        test: "Pre-operative Panel",
-        result: "Normal",
-        file: "PREOP_003.pdf",
-      },
-    ],
-    immunizations: [
-      { vaccine: "COVID-19", date: "2023-05-10", nextDue: "2024-05-10" },
-      { vaccine: "Hepatitis B", date: "2023-01-15", nextDue: "Completed" },
-    ],
-  },
-  {
-    id: "P069",
-    name: "Ram Singh",
-    age: 21,
-    gender: "Male",
-    phone: "1234123412",
-    email: "ramsingh@email.com",
-    bloodGroup: "B+",
-    address: "789 Lake Road, Ahmedabad",
-    emergencyContact: "9876543213",
-    allergies: [],
-    chronicConditions: ["High Cholesterol"],
-    currentMedications: [
-      { name: "Atorvastatin", dose: "20mg", frequency: "Once daily at night" },
-    ],
-    medicalHistory: [
-      {
-        date: "2024-01-12",
-        type: "Admission",
-        doctor: "Dr. Williams",
-        diagnosis: "Appendicitis",
-        notes: "Appendectomy performed, recovery ongoing",
-      },
-      {
-        date: "2023-10-05",
-        type: "Consultation",
-        doctor: "Dr. Jones",
-        diagnosis: "High Cholesterol",
-        notes: "Started on statin therapy",
-      },
-    ],
-    labReports: [
-      {
-        date: "2024-01-05",
-        test: "Lipid Profile",
-        result: "Improving",
-        file: "LIPID_003.pdf",
-      },
-      {
-        date: "2024-01-12",
-        test: "Pre-operative Panel",
-        result: "Normal",
-        file: "PREOP_003.pdf",
-      },
-    ],
-    immunizations: [
-      { vaccine: "COVID-19", date: "2023-05-10", nextDue: "2024-05-10" },
-      { vaccine: "Hepatitis B", date: "2023-01-15", nextDue: "Completed" },
-    ],
-  },
-];
+// ============================================================================
+// STATE MANAGEMENT
+// ============================================================================
 
-/* Initialize Patients Page */
-function loadPatients() {
-  // Update statistics
-  document.getElementById("totalPatientsCount").textContent = patients.length;
-  document.getElementById("newPatientsMonth").textContent = "2"; // Mock data
-  document.getElementById("activePatients").textContent = patients.length - 1;
-  document.getElementById("criticalPatients").textContent = "1"; // Mock data
+class PatientStore {
+  constructor() {
+    /** @type {Patient[]} */
+    this.patients = [];
+    this.isLoading = false;
+    this.error = null;
+  }
 
-  const table = document.getElementById("patientsTable");
-  table.innerHTML = patients
-    .map((patient) => {
-      const lastVisit =
-        patient.medicalHistory && patient.medicalHistory.length > 0
-          ? patient.medicalHistory[0].date
-          : "No visits";
-      const hasAllergies = patient.allergies && patient.allergies.length > 0;
-      const hasChronic =
-        patient.chronicConditions && patient.chronicConditions.length > 0;
-      const status = hasChronic ? "Chronic" : "Regular";
-      const statusClass = hasChronic ? "warning" : "success";
+  /**
+   * Load patients from JSON file
+   * @returns {Promise<Patient[]>}
+   */
+  async loadPatients() {
+    this.isLoading = true;
 
-      return `
-                    <tr>
-                        <td>${patient.id}</td>
-                        <td>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                ${patient.name}
-                                ${hasAllergies
-          ? '<span title="Has allergies" style="color: var(--danger);">!</span>'
-          : ""
-        }
-                            </div>
-                        </td>
-                        <td>${patient.age}</td>
-                        <td>${patient.gender}</td>
-                        <td>${patient.phone}</td>
-                        <td>${patient.bloodGroup || "Unknown"}</td>
-                        <td>${lastVisit}</td>
-                        <td><span class="badge badge-${statusClass}">${status}</span></td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn btn-primary" onclick="viewPatient('${patient.id
-        }')" style="padding: 6px 12px; font-size: 12px;">View</button>
-                                <button class="btn btn-outline" onclick="quickConsultation('${patient.id
-        }')" style="padding: 6px 12px; font-size: 12px;">Consult</button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-    })
-    .join("");
+    try {
+      const response = await fetch("assets/data/patients.json");
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: Failed to fetch patients`);
+      }
+
+      this.patients = await response.json();
+      this.error = null;
+
+      console.log("✅ Patients loaded successfully:", this.patients.length);
+      return this.patients;
+    } catch (error) {
+      this.error = error.message;
+      console.error("❌ Error loading patients:", error);
+      throw error;
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  /**
+   * Get all patients (returns copy to prevent external mutations)
+   * @returns {Patient[]}
+   */
+  getAll() {
+    return [...this.patients];
+  }
+
+  /**
+   * Get patient by ID
+   * @param {string} id
+   * @returns {Patient|undefined}
+   */
+  getById(id) {
+    return this.patients.find(p => p.id === id);
+  }
+
+  /**
+   * Add new patient
+   * @param {Patient} patient
+   */
+  add(patient) {
+    this.patients.push(patient);
+  }
+
+  /**
+   * Search patients by term
+   * @param {string} searchTerm
+   * @returns {Patient[]}
+   */
+  search(searchTerm) {
+    const term = searchTerm.toLowerCase().trim();
+
+    if (!term) {
+      return this.getAll();
+    }
+
+    return this.patients.filter(p =>
+      p.name.toLowerCase().includes(term) ||
+      p.id.toLowerCase().includes(term) ||
+      p.phone.includes(term) ||
+      (p.email && p.email.toLowerCase().includes(term))
+    );
+  }
+
+  /**
+   * Get statistics
+   * @returns {Object}
+   */
+  getStats() {
+    const total = this.patients.length;
+    const chronic = this.patients.filter(p => p.chronicConditions?.length).length;
+
+    return {
+      total,
+      newThisMonth: 2, // TODO: Calculate from actual data
+      active: total - 1, // TODO: Calculate from actual data
+      critical: 1, // TODO: Calculate from actual data
+      chronic
+    };
+  }
+
+  /**
+   * Generate next patient ID
+   * @returns {string}
+   */
+  generateNextId() {
+    const nextNum = this.patients.length + 1;
+    return `PA${String(nextNum).padStart(3, "0")}`;
+  }
 }
 
-/**
- * Update the dashboard statistics (counts).
- * @param {Patient[]} patientList
- */
-function updatePatientStats(patientList) {
-  const total = patientList.length;
+// ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
 
-  document.getElementById("totalPatientsCount").textContent = total;
-  document.getElementById("newPatientsMonth").textContent = "2";       // TODO: Replace with server data
-  document.getElementById("activePatients").textContent = total - 1;   // TODO: Replace with real metric
-  document.getElementById("criticalPatients").textContent = "1";       // TODO: Replace with real metric
-}
+const PatientUtils = {
+  /**
+   * Get most recent visit date
+   * @param {Patient} patient
+   * @returns {string}
+   */
+  getLastVisit(patient) {
+    if (!patient.medicalHistory?.length) {
+      return "No visits";
+    }
 
-/**
- * Render the patients table rows.
- * @param {Patient[]} patientList
- */
-function renderPatientsTable(patientList) {
-  const table = document.getElementById("patientsTable");
+    const sorted = [...patient.medicalHistory].sort((a, b) =>
+      new Date(b.date) - new Date(a.date)
+    );
 
-  const rows = patientList.map((patient) => {
-    const lastVisit = getLastPatientVisit(patient);
-    const statusInfo = getPatientStatus(patient);
-    const allergyIcon = patient.allergies?.length
-      ? `<span title="Has allergies" class="icon-danger">!</span>`
+    return sorted[0].date;
+  },
+
+  /**
+   * Get patient status
+   * @param {Patient} patient
+   * @returns {{label: string, class: string}}
+   */
+  getStatus(patient) {
+    if (patient.chronicConditions?.length) {
+      return { label: "Chronic", class: "warning" };
+    }
+    return { label: "Regular", class: "success" };
+  },
+
+  /**
+   * Check if patient has allergies
+   * @param {Patient} patient
+   * @returns {boolean}
+   */
+  hasAllergies(patient) {
+    return Boolean(patient.allergies?.length);
+  },
+
+  /**
+   * Calculate age from DOB
+   * @param {string} dob
+   * @returns {number}
+   */
+  calculateAge(dob) {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    return age;
+  },
+
+  /**
+   * Get initials from name
+   * @param {string} name
+   * @returns {string}
+   */
+  getInitials(name) {
+    return name
+      .split(" ")
+      .map(n => n[0])
+      .join("")
+      .toUpperCase();
+  }
+};
+
+
+// ============================================================================
+// RENDERING FUNCTIONS
+// ============================================================================
+
+const PatientRenderer = {
+  /**
+   * Render patients table
+   * @param {Patient[]} patients
+   */
+  renderTable(patients) {
+    const table = DOM.get("patientsTable");
+    if (!table) return;
+
+    if (!patients.length) {
+      table.innerHTML = `
+        <tr>
+          <td colspan="10" style="text-align: center; color: #6b7280; padding: 40px;">
+            No patients found
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    table.innerHTML = patients.map(p => this.renderTableRow(p)).join("");
+  },
+
+  /**
+   * Render single table row
+   * @param {Patient} patient
+   * @returns {string}
+   */
+  renderTableRow(patient) {
+    const lastVisit = PatientUtils.getLastVisit(patient);
+    const status = PatientUtils.getStatus(patient);
+    const allergyIcon = PatientUtils.hasAllergies(patient)
+      ? '<span title="Has allergies" style="color: var(--danger); font-weight: bold; margin-left: 8px;">!</span>'
       : "";
+    const complaints = patient.complaints?.length
+      ? patient.complaints.join(", ")
+      : "None";
 
     return `
       <tr>
         <td>${patient.id}</td>
         <td>
-          <div class="patient-name">
-            ${patient.name} ${allergyIcon}
+          <div style="display: flex; align-items: center;">
+            ${patient.name}${allergyIcon}
           </div>
         </td>
         <td>${patient.age}</td>
         <td>${patient.gender}</td>
         <td>${patient.phone}</td>
         <td>${patient.bloodGroup || "Unknown"}</td>
+        <td>${complaints}</td>
         <td>${lastVisit}</td>
-        <td><span class="badge badge-${statusInfo.class}">${statusInfo.label}</span></td>
-        <td>${renderPatientActions(patient.id)}</td>
+        <td><span class="badge badge-${status.class}">${status.label}</span></td>
+        <td>
+          <div class="action-buttons">
+            <button class="btn btn-primary" onclick="viewPatient('${patient.id}')" 
+                    style="padding: 6px 12px; font-size: 12px;">
+              View
+            </button>
+            <button class="btn btn-outline" onclick="quickConsultation('${patient.id}')" 
+                    style="padding: 6px 12px; font-size: 12px;">
+              Consult
+            </button>
+          </div>
+        </td>
       </tr>
     `;
-  });
+  },
 
-  table.innerHTML = rows.join("");
+  /**
+   * Render statistics
+   * @param {Object} stats
+   */
+  renderStats(stats) {
+    DOM.setText("totalPatientsCount", stats.total);
+    DOM.setText("newPatientsMonth", stats.newThisMonth);
+    DOM.setText("activePatients", stats.active);
+    DOM.setText("criticalPatients", stats.critical);
+  },
+
+  /**
+   * Render patient basic info
+   * @param {Patient} patient
+   */
+  renderPatientInfo(patient) {
+    DOM.setText("patientAvatar", PatientUtils.getInitials(patient.name));
+    DOM.setText("patientNameDisplay", patient.name);
+    DOM.setText("patientIdDisplay", patient.id);
+    DOM.setText("patientBloodGroupDisplay", patient.bloodGroup || "Unknown");
+    DOM.setText("patientAgeDisplay", `${patient.age} years`);
+    DOM.setText("patientGenderDisplay", patient.gender);
+    DOM.setText("patientPhoneDisplay", patient.phone);
+    DOM.setText("patientEmailDisplay", patient.email);
+    DOM.setText("patientAddressDisplay", patient.address || "Not provided");
+    DOM.setText("patientEmergencyDisplay", patient.emergencyContact || "Not provided");
+
+    this.renderBadges("patientAllergiesDisplay", patient.allergies, "danger");
+    this.renderBadges("patientConditionsDisplay", patient.chronicConditions, "warning");
+    this.renderBadges("patientComplaintsDisplay", patient.complaints, "info");
+  },
+
+  /**
+   * Render badge list
+   * @param {string} id
+   * @param {string[]} items
+   * @param {string} badgeClass
+   */
+  renderBadges(id, items, badgeClass) {
+    if (!items?.length) {
+      DOM.setHTML(id, '<span style="color: #6b7280;">None reported</span>');
+      return;
+    }
+
+    const badges = items
+      .map(item => `<span class="badge badge-${badgeClass}">${item}</span>`)
+      .join(" ");
+
+    DOM.setHTML(id, badges);
+  },
+
+  /**
+   * Render medical history
+   * @param {Patient} patient
+   */
+  renderMedicalHistory(patient) {
+    if (!patient.medicalHistory?.length) {
+      DOM.setHTML("medicalHistoryList", '<p style="color: #6b7280;">No medical history available</p>');
+      return;
+    }
+
+    const sorted = [...patient.medicalHistory].sort((a, b) =>
+      new Date(b.date) - new Date(a.date)
+    );
+
+    const html = sorted.map(record => `
+      <div class="card" style="margin-bottom: 15px;">
+        <div style="display: flex; justify-content: space-between; align-items: start;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+              <span class="badge badge-primary">${record.type}</span>
+              <span style="color: #6b7280; font-size: 14px;">${record.date}</span>
+              <span style="color: #6b7280; font-size: 14px;">• ${record.doctor}</span>
+            </div>
+            <h4 style="margin-bottom: 8px;">${record.diagnosis}</h4>
+            <p style="color: #6b7280; font-size: 14px;">${record.notes}</p>
+          </div>
+        </div>
+      </div>
+    `).join("");
+
+    DOM.setHTML("medicalHistoryList", html);
+  },
+
+  /**
+   * Render medications
+   * @param {Patient} patient
+   */
+  renderMedications(patient) {
+    if (!patient.currentMedications?.length) {
+      DOM.setHTML("currentMedicationsList", '<p style="color: #6b7280;">No current medications</p>');
+      return;
+    }
+
+    const html = patient.currentMedications.map(med => `
+      <div class="card" style="margin-bottom: 15px; background: var(--light);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h4 style="color: var(--primary); margin-bottom: 5px;">${med.name}</h4>
+            <p style="margin: 0;"><strong>Dosage:</strong> ${med.dose}</p>
+            <p style="margin: 0;"><strong>Frequency:</strong> ${med.frequency}</p>
+          </div>
+          <div style="font-size: 24px;">💊</div>
+        </div>
+      </div>
+    `).join("");
+
+    DOM.setHTML("currentMedicationsList", html);
+  },
+
+  /**
+   * Render lab reports
+   * @param {Patient} patient
+   */
+  renderLabReports(patient) {
+    if (!patient.labReports?.length) {
+      DOM.setHTML("labReportsTable", `
+        <tr>
+          <td colspan="4" style="text-align: center; color: #6b7280;">
+            No lab reports available
+          </td>
+        </tr>
+      `);
+      return;
+    }
+
+    const html = patient.labReports.map(report => `
+      <tr>
+        <td>${report.date}</td>
+        <td>${report.test}</td>
+        <td>
+          <span class="badge badge-${report.result.includes("Normal") ? "success" : "warning"}">
+            ${report.result}
+          </span>
+        </td>
+        <td>
+          <button class="btn btn-outline" style="padding: 4px 12px; font-size: 12px;">
+            📄 View
+          </button>
+        </td>
+      </tr>
+    `).join("");
+
+    DOM.setHTML("labReportsTable", html);
+  },
+
+  /**
+   * Render immunizations
+   * @param {Patient} patient
+   */
+  renderImmunizations(patient) {
+    if (!patient.immunizations?.length) {
+      DOM.setHTML("immunizationsTable", `
+        <tr>
+          <td colspan="4" style="text-align: center; color: #6b7280;">
+            No immunization records available
+          </td>
+        </tr>
+      `);
+      return;
+    }
+
+    const html = patient.immunizations.map(imm => {
+      const isDue = imm.nextDue !== "Completed" && new Date(imm.nextDue) < new Date();
+      const status = imm.nextDue === "Completed" ? "Completed" : isDue ? "Overdue" : "Up to date";
+      const statusClass = imm.nextDue === "Completed" ? "success" : isDue ? "danger" : "success";
+
+      return `
+        <tr>
+          <td>${imm.vaccine}</td>
+          <td>${imm.date}</td>
+          <td>${imm.nextDue}</td>
+          <td><span class="badge badge-${statusClass}">${status}</span></td>
+        </tr>
+      `;
+    }).join("");
+
+    DOM.setHTML("immunizationsTable", html);
+  }
+};
+
+// ============================================================================
+// MAIN APPLICATION
+// ============================================================================
+
+// Create global store instance
+const patientStore = new PatientStore();
+
+/**
+ * Initialize and load patients
+ */
+async function loadPatients() {
+  try {
+    await patientStore.loadPatients();
+    const patients = patientStore.getAll();
+    const stats = patientStore.getStats();
+
+    PatientRenderer.renderTable(patients);
+    PatientRenderer.renderStats(stats);
+  } catch (error) {
+    console.error("Failed to load patients:", error);
+    if (typeof showNotification === "function") {
+      showNotification("Failed to load patient data. Please refresh the page.");
+    }
+  }
 }
 
 /**
- * Helper: get the last visit date of the patient.
- * @param {Patient} patient
- * @returns {string}
+ * View patient details
+ * @param {string} patientId
  */
-function getLastPatientVisit(patient) {
-  if (patient.medicalHistory?.length) {
-    return patient.medicalHistory[0].date; //TODO: ensure sorted by date.
+function viewPatient(patientId) {
+  const patient = patientStore.getById(patientId);
+
+  if (!patient) {
+    console.error("Patient not found:", patientId);
+    return;
   }
 
-  return "No Visits";
-}
+  // Render all tabs
+  PatientRenderer.renderPatientInfo(patient);
+  PatientRenderer.renderMedicalHistory(patient);
+  PatientRenderer.renderMedications(patient);
+  PatientRenderer.renderLabReports(patient);
+  PatientRenderer.renderImmunizations(patient);
 
-/**
- * Helper: Derive the patient status.
- * @param {Patient} patient
- * @returns {string}
- */
-function getPatientStatus(patient) {
-  if (patient.chronicConditions?.length) {
-    return { label: "Chronic", class: "warning" };
+  // Switch to first tab and open modal
+  switchPatientTab("info");
+
+  if (typeof openModal === "function") {
+    openModal("viewPatientModal");
   }
-  return { label: "Regular", class: "success" };
 }
 
 /**
- * Render the action buttons for the patient row.
- * @param {string} patientId - the id of the patient.
- * @returns {string} - HTML string of the div with the buttons.
+ * Quick consultation
+ * @param {string} patientId
  */
-function renderPatientActions(patientId) {
-  return `
-    <div class="action-buttons">
-      <button class="btn btn-primary" onclick="viewPatient('${patientId}')">View</button>
-      <button class="btn btn-outline" onclick="quickConsultation('${patientId}')">Consult</button>
-    </div>
-  `;
-}
-
-/**
- * Export Patient Data to CSV
- */
-function exportPatientData() {
-  const data = patients.map((p) => ({
-    ID: p.id,
-    Name: p.name,
-    Age: p.age,
-    Gender: p.gender,
-    Phone: p.phone,
-    Email: p.email,
-    BloodGroup: p.bloodGroup || "Unknown",
-    Allergies: p.allergies ? p.allergies.join(", ") : "None",
-    ChronicConditions: p.chronicConditions
-      ? p.chronicConditions.join(", ")
-      : "None",
-  }));
-  exportToCSV(data, "patients_data.csv");
-  showNotification("Patient data exported successfully");
-}
-
 function quickConsultation(patientId) {
-  const patient = patients.find((p) => p.id === patientId);
-  if (patient) {
+  const patient = patientStore.getById(patientId);
+
+  if (!patient) {
+    console.error("Patient not found:", patientId);
+    return;
+  }
+
+  if (typeof showNotification === "function") {
     showNotification(`Starting consultation for ${patient.name}`);
+  }
+
+  if (typeof openNewConsultationModal === "function") {
     openNewConsultationModal();
   }
 }
 
-function savePatient() {
-  const newPatient = {
-    id: "PA" + String(patients.length + 1).padStart(3, "0"),
-    name:
-      document.getElementById("patientFirstName").value +
-      " " +
-      document.getElementById("patientLastName").value,
-    age: calculateAge(document.getElementById("patientDOB").value),
-    gender: document.getElementById("patientGender").value,
-    phone: document.getElementById("patientPhone").value,
-    email: document.getElementById("patientEmail").value,
-    address: document.getElementById("patientAddress").value,
-    bloogGroup: document.getElementById("patientBloodGroup").value,
-  };
-
-  patients.push(newPatient);
-  loadPatients();
-  closeModal("addPatientModal");
-  showNotification("Patient added successfully!");
-  loadData();
-  initializeDashboard();
-
+/**
+ * Search patients
+ */
+function searchPatients() {
+  const searchTerm = DOM.getValue("patientSearch");
+  const results = patientStore.search(searchTerm);
+  PatientRenderer.renderTable(results);
 }
 
-/* Switch Patient Tab to a Particular tabname */
+/**
+ * Save new patient
+ */
+function savePatient() {
+  try {
+    const newPatient = {
+      id: patientStore.generateNextId(),
+      name: `${DOM.getValue("patientFirstName")} ${DOM.getValue("patientLastName")}`.trim(),
+      age: PatientUtils.calculateAge(DOM.getValue("patientDOB")),
+      gender: DOM.getValue("patientGender"),
+      phone: DOM.getValue("patientPhone"),
+      email: DOM.getValue("patientEmail"),
+      address: DOM.getValue("patientAddress"),
+      bloodGroup: DOM.getValue("patientBloodGroup"),
+      emergencyContact: DOM.getValue("patientEmergency"),
+      complaints: [],
+      allergies: [],
+      chronicConditions: [],
+      currentMedications: [],
+      medicalHistory: [],
+      labReports: [],
+      immunizations: []
+    };
+
+    patientStore.add(newPatient);
+
+    // Re-render
+    const patients = patientStore.getAll();
+    const stats = patientStore.getStats();
+    PatientRenderer.renderTable(patients);
+    PatientRenderer.renderStats(stats);
+
+    if (typeof closeModal === "function") {
+      closeModal("addPatientModal");
+    }
+
+    if (typeof showNotification === "function") {
+      showNotification("Patient added successfully!");
+    }
+  } catch (error) {
+    console.error("Failed to save patient:", error);
+    if (typeof showNotification === "function") {
+      showNotification("Failed to add patient");
+    }
+  }
+}
+
+/**
+ * Switch patient detail tab
+ * @param {string} tabName
+ */
 function switchPatientTab(tabName) {
   // Update tab buttons
-  document.querySelectorAll("#viewPatientModal .tab-btn").forEach((btn) => {
+  document.querySelectorAll("#viewPatientModal .tab-btn").forEach(btn => {
     btn.classList.remove("active");
-    if (
-      btn.textContent.toLowerCase().includes(tabName) ||
-      (tabName === "info" && btn.textContent === "Basic Info") ||
-      (tabName === "medical" && btn.textContent === "Medical History") ||
-      (tabName === "labs" && btn.textContent === "Lab Reports")
-    ) {
+    const btnText = btn.textContent.toLowerCase();
+
+    if (btnText.includes(tabName) ||
+      (tabName === "info" && btnText.includes("basic info")) ||
+      (tabName === "medical" && btnText.includes("medical history")) ||
+      (tabName === "labs" && btnText.includes("lab reports"))) {
       btn.classList.add("active");
     }
   });
 
   // Update tab content
-  document
-    .querySelectorAll("#viewPatientModal .tab-content")
-    .forEach((content) => {
-      content.classList.remove("active");
-    });
+  document.querySelectorAll("#viewPatientModal .tab-content").forEach(content => {
+    content.classList.remove("active");
+  });
 
-  const tabElement = document.getElementById(`${tabName}-patient-tab`);
+  const tabElement = DOM.get(`${tabName}-patient-tab`);
   if (tabElement) {
     tabElement.classList.add("active");
   }
 }
 
 /**
- * Renders the patient basic info tab
- * @param {} patient - The 
+ * Export patient data to CSV
  */
+function exportPatientData() {
+  try {
+    const patients = patientStore.getAll();
+    const data = patients.map(p => ({
+      ID: p.id,
+      Name: p.name,
+      Age: p.age,
+      Gender: p.gender,
+      Phone: p.phone,
+      Email: p.email,
+      BloodGroup: p.bloodGroup || "Unknown",
+      Allergies: p.allergies?.join(", ") || "None",
+      ChronicConditions: p.chronicConditions?.join(", ") || "None"
+    }));
 
-function viewPatientInfo(patient) {
-  document.getElementById("patientAvatar").textContent = patient.name
-    .split(" ")
-    .map((n) => n[0])
-    .join("");
-  document.getElementById("patientNameDisplay").textContent = patient.name;
-  document.getElementById("patientIdDisplay").textContent = patient.id;
-  document.getElementById("patientBloodGroupDisplay").textContent =
-    patient.bloodGroup || "Unknown";
-  document.getElementById("patientAgeDisplay").textContent =
-    patient.age + " years";
-  document.getElementById("patientGenderDisplay").textContent = patient.gender;
-  document.getElementById("patientPhoneDisplay").textContent = patient.phone;
-  document.getElementById("patientEmailDisplay").textContent = patient.email;
-  document.getElementById("patientAddressDisplay").textContent =
-    patient.address || "Not provided";
-  document.getElementById("patientEmergencyDisplay").textContent =
-    patient.emergencyContact || "Not provided";
-
-  // Update allergies
-  const allergiesDiv = document.getElementById("patientAllergiesDisplay");
-  if (patient.allergies && patient.allergies.length > 0) {
-    allergiesDiv.innerHTML = patient.allergies
-      .map((a) => `<span class="badge badge-danger">${a}</span>`)
-      .join(" ");
-  } else {
-    allergiesDiv.innerHTML =
-      '<span style="color: #6b7280;">None reported</span>';
-  }
-
-  // Update chronic conditions
-  const conditionsDiv = document.getElementById("patientConditionsDisplay");
-  if (patient.chronicConditions && patient.chronicConditions.length > 0) {
-    conditionsDiv.innerHTML = patient.chronicConditions
-      .map((c) => `<span class="badge badge-warning">${c}</span>`)
-      .join(" ");
-  } else {
-    conditionsDiv.innerHTML =
-      '<span style="color: #6b7280;">None reported</span>';
-  }
-}
-
-/* Switch Patient Medical History Tab */
-function viewPatientMedicalHistory(patient) {
-  const medicalHistoryDiv = document.getElementById("medicalHistoryList");
-  if (patient.medicalHistory && patient.medicalHistory.length > 0) {
-    medicalHistoryDiv.innerHTML = patient.medicalHistory
-      .map(
-        (h) => `
-										<div class="card" style="margin-bottom: 15px;">
-												<div style="display: flex; justify-content: space-between; align-items: start;">
-														<div>
-																<div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-																		<span class="badge badge-primary">${h.type}</span>
-																		<span style="color: #6b7280; font-size: 14px;">${h.date}</span>
-																		<span style="color: #6b7280; font-size: 14px;">• ${h.doctor}</span>
-																</div>
-																<h4 style="margin-bottom: 8px;">${h.diagnosis}</h4>
-																<p style="color: #6b7280; font-size: 14px;">${h.notes}</p>
-														</div>
-												</div>
-										</div>
-								`
-      )
-      .join("");
-  } else {
-    medicalHistoryDiv.innerHTML =
-      '<p style="color: #6b7280;">No medical history available</p>';
-  }
-}
-
-/* Switch Patient Medications Tab */
-function viewPatientMedications(patient) {
-  const medicationsDiv = document.getElementById("currentMedicationsList");
-  if (patient.currentMedications && patient.currentMedications.length > 0) {
-    medicationsDiv.innerHTML = patient.currentMedications
-      .map(
-        (m) => `
-                    <div class="card" style="margin-bottom: 15px; background: var(--light);">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <h4 style="color: var(--primary); margin-bottom: 5px;">${m.name}</h4>
-                                <p style="margin: 0;"><strong>Dosage:</strong> ${m.dose}</p>
-                                <p style="margin: 0;"><strong>Frequency:</strong> ${m.frequency}</p>
-                            </div>
-                            <div style="font-size: 24px;">💊</div>
-                        </div>
-                    </div>
-                `
-      )
-      .join("");
-  } else {
-    medicationsDiv.innerHTML =
-      '<p style="color: #6b7280;">No current medications</p>';
-  }
-}
-
-/* Switch Patient Lab Reports Tab */
-function viewPatientLabReports(patient) {
-  const labReportsTable = document.getElementById("labReportsTable");
-  if (patient.labReports && patient.labReports.length > 0) {
-    labReportsTable.innerHTML = patient.labReports
-      .map(
-        (l) => `
-                    <tr>
-                        <td>${l.date}</td>
-                        <td>${l.test}</td>
-                        <td><span class="badge badge-${l.result.includes("Normal") ? "success" : "warning"
-          }">${l.result}</span></td>
-                        <td><button class="btn btn-outline" style="padding: 4px 12px; font-size: 12px;">📄 View</button></td>
-                    </tr>
-                `
-      )
-      .join("");
-  } else {
-    labReportsTable.innerHTML =
-      '<tr><td colspan="4" style="text-align: center; color: #6b7280;">No lab reports available</td></tr>';
-  }
-}
-
-function viewPatientImmunizations(patient) {
-  const immunizationsTable = document.getElementById("immunizationsTable");
-  if (patient.immunizations && patient.immunizations.length > 0) {
-    immunizationsTable.innerHTML = patient.immunizations
-      .map((i) => {
-        const isDue = new Date(i.nextDue) < new Date();
-        const status =
-          i.nextDue === "Completed"
-            ? "Completed"
-            : isDue
-              ? "Overdue"
-              : "Up to date";
-        const statusClass =
-          i.nextDue === "Completed" ? "success" : isDue ? "danger" : "success";
-        return `
-                        <tr>
-                            <td>${i.vaccine}</td>
-                            <td>${i.date}</td>
-                            <td>${i.nextDue}</td>
-                            <td><span class="badge badge-${statusClass}">${status}</span></td>
-                        </tr>
-                    `;
-      })
-      .join("");
-  } else {
-    immunizationsTable.innerHTML =
-      '<tr><td colspan="4" style="text-align: center; color: #6b7280;">No immunization records available</td></tr>';
+    if (typeof exportToCSV === "function") {
+      exportToCSV(data, "patients_data.csv");
+      if (typeof showNotification === "function") {
+        showNotification("Patient data exported successfully");
+      }
+    } else {
+      console.error("exportToCSV function not found");
+    }
+  } catch (error) {
+    console.error("Failed to export data:", error);
   }
 }
 
 /**
- * Displays the patient details
- * @param {string} id - the id of the patient to be displayed.
- * @returns {string}  HTML string to be rendred by different functions
+ * Print patient list
  */
-function viewPatient(id) {
-  const patient = patients.find((p) => p.id === id);
-  if (!patient) return;
-
-  viewPatientInfo(patient);
-  viewPatientMedicalHistory(patient);
-  viewPatientMedications(patient);
-  viewPatientLabReports(patient);
-  viewPatientImmunizations(patient);
-
-  /* Reset to first tab */
-  switchPatientTab("info");
-
-  /* Open modal */
-  openModal("viewPatientModal");
-}
-
-/* search patients */
-function searchPatients() {
-  const searchTerm = document
-    .getElementById("patientSearch")
-    .value.toLowerCase();
-  const filtered = patients.filter(
-    (p) =>
-      p.name.toLowerCase().includes(searchTerm) ||
-      p.id.toLowerCase().includes(searchTerm) ||
-      p.phone.includes(searchTerm)
-  );
-
-  const table = document.getElementById("patientsTable");
-  table.innerHTML = filtered
-    .map(
-      (patient) => {
-        const lastVisit =
-          patient.medicalHistory && patient.medicalHistory.length > 0
-            ? patient.medicalHistory[0].date
-            : "No visits";
-        return `
-              <tr>
-              <td>${patient.id}</td>
-              <td>${patient.name}</td>
-              <td>${patient.age}</td>
-              <td>${patient.gender}</td>
-              <td>${patient.phone}</td>
-              <td>${patient.bloodGroup}</td>
-              <td>${lastVisit}</td>
-              <td>${patient.status}</td>
-              <td>
-              <button class="btn btn-primary" onclick="viewPatient('${patient.id}')" style="padding: 6px 12px; font-size: 12px;">View</button>
-              </td>
-              </tr>
-              `
-      }
-    )
-    .join("");
-}
-
 function printPatientList() {
   window.print();
-  showNotification("Patient list sent to printer");
+  if (typeof showNotification === "function") {
+    showNotification("Patient list sent to printer");
+  }
 }
 
-function openAddPatientModal() {
-  openModal("addPatientModal");
-}
-
+/**
+ * Print patient record
+ */
 function printPatientRecord() {
   window.print();
-  showNotification("Patient record sent to printer");
+  if (typeof showNotification === "function") {
+    showNotification("Patient record sent to printer");
+  }
 }
 
+/**
+ * Open add patient modal
+ */
+function openAddPatientModal() {
+  if (typeof openModal === "function") {
+    openModal("addPatientModal");
+  }
+}
+
+/**
+ * Edit patient
+ */
 function editPatient() {
-  closeModal("viewPatientModal");
-  openModal("addPatientModal");
-  showNotification("Edit patient functionality would be implemented here");
+  if (typeof closeModal === "function") {
+    closeModal("viewPatientModal");
+  }
+  if (typeof openModal === "function") {
+    openModal("addPatientModal");
+  }
+  if (typeof showNotification === "function") {
+    showNotification("Edit patient functionality would be implemented here");
+  }
+}
+
+// ============================================================================
+// INITIALIZATION
+// ============================================================================
+
+// Auto-initialize when DOM is ready (for page loading via navigation)
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", loadPatients);
+} else {
+  // If script loads after DOM is ready (e.g., dynamic page loading)
+  // Check if we're on the patients page before loading
+  if (DOM.get("patientsTable")) {
+    loadPatients();
+  }
 }

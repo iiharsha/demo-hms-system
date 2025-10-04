@@ -322,7 +322,7 @@ let currentRoomId = null;
  * opens a modal showing details of the room with the given roomId
  *
  * @param {string} roomId - the unique id of the room to view.
- * @returns {void}
+ * @returns {string} - HTML string for the room details.
  */
 function viewRoomDetails(roomId) {
   const room = rooms.find((r) => r.id === roomId);

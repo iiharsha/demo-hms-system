@@ -209,3 +209,55 @@ function loadJSON(filePath) {
     });
 }
 
+// ============================================================================
+// DOM HELPERS
+// ============================================================================
+
+const DOM = {
+  /**
+   * Get element by ID with error handling
+   * @param {string} id
+   * @returns {HTMLElement|null}
+   */
+  get(id) {
+    const element = document.getElementById(id);
+    if (!element) {
+      console.warn(`Element with id "${id}" not found`);
+    }
+    return element;
+  },
+
+  /**
+   * Set text content safely
+   * @param {string} id
+   * @param {string|number} text
+   */
+  setText(id, text) {
+    const element = this.get(id);
+    if (element) {
+      element.textContent = text;
+    }
+  },
+
+  /**
+   * Set HTML content safely
+   * @param {string} id
+   * @param {string} html
+   */
+  setHTML(id, html) {
+    const element = this.get(id);
+    if (element) {
+      element.innerHTML = html;
+    }
+  },
+
+  /**
+   * Get input value
+   * @param {string} id
+   * @returns {string}
+   */
+  getValue(id) {
+    const element = this.get(id);
+    return element ? element.value : "";
+  }
+};
