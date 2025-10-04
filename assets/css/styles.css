@@ -23,6 +23,9 @@ body {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
   color: var(--dark);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: antialiased;
 }
 
 .login-container {
@@ -166,7 +169,7 @@ body {
 }
 
 .sidebar-header {
-  padding: 20px;
+  padding: 18px;
   background: rgba(0, 0, 0, 0.2);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -246,17 +249,18 @@ body {
 
 .header {
   background: var(--white);
-  padding: 20px 30px;
   box-shadow: var(--shadow);
+  padding: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .header-title {
-  font-size: 24px;
+  font-size: 18px;
   color: var(--dark);
   font-weight: 600;
+  padding-left: 24px;
 }
 
 .user-info {
