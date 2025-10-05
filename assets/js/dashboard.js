@@ -2,7 +2,6 @@
 
 /* initializes the dashboard stats */
 function initializeDashboard() {
-  document.getElementById("totalPatients").textContent = patients.length;
   document.getElementById("todayAppointments").textContent =
     appointments.length;
   document.getElementById("activeAdmissions").textContent = admissions.filter(

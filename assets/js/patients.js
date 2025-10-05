@@ -91,7 +91,7 @@ class PatientStore {
       return this.patients;
     } catch (error) {
       this.error = error.message;
-      console.error("❌ Error loading patients:", error);
+      console.error("Error loading patients:", error);
       throw error;
     } finally {
       this.isLoading = false;
@@ -129,6 +129,7 @@ class PatientStore {
    * @returns {Patient[]}
    */
   search(searchTerm) {
+    console.log("called")
     const term = searchTerm.toLowerCase().trim();
 
     if (!term) {
@@ -325,6 +326,7 @@ const PatientRenderer = {
    */
   renderStats(stats) {
     DOM.setText("totalPatientsCount", stats.total);
+    DOM.setText("totalPatients", stats.total); // dashboard card
     DOM.setText("newPatientsMonth", stats.newThisMonth);
     DOM.setText("activePatients", stats.active);
     DOM.setText("criticalPatients", stats.critical);
