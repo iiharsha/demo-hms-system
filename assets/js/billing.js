@@ -1,25 +1,7 @@
 /* Billing Page */
 
-const bills = [
-  {
-    id: "B001",
-    patient: "John Doe",
-    date: "2024-01-14",
-    amount: "₹5,000",
-    status: "Paid",
-  },
-  {
-    id: "B002",
-    patient: "Jane Smith",
-    date: "2024-01-14",
-    amount: "₹3,500",
-    status: "Pending",
-  },
-];
-
 function loadBills() {
-  const table = document.getElementById("billsTable");
-  table.innerHTML = bills
+  const html = bills
     .map(
       (bill) => `
 <tr>
@@ -27,23 +9,22 @@ function loadBills() {
 <td>${bill.patient}</td>
 <td>${bill.date}</td>
 <td>${bill.amount}</td>
-<td><span class="badge badge-${
-        bill.status === "Paid" ? "success" : "warning"
-      }">${bill.status}</span></td>
+<td><span class="badge badge-${bill.status === "Paid" ? "success" : "warning"
+        }">${bill.status}</span></td>
 <td>
-<button class="btn btn-primary" onclick="viewBill('${
-        bill.id
-      }')" style="padding: 6px 12px; font-size: 12px;">View</button>
+<button class="btn btn-primary" onclick="viewBill('${bill.id
+        }')" style="padding: 6px 12px; font-size: 12px;">View</button>
 </td>
 </tr>
 `
     )
     .join("");
+  DOM.setHTML("billsTable", html);
 }
 
 function filterBills() {
-  const searchTerm = document.getElementById("billSearch").value.toLowerCase();
-  const status = document.getElementById("billStatusFilter").value;
+  const searchTerm = DOM.getValue("billSearch").toLowerCase();
+  const status = DOM.getValue("billStatusFilter");
 
   let filtered = bills;
   if (searchTerm) {
@@ -59,8 +40,7 @@ function filterBills() {
     );
   }
 
-  const table = document.getElementById("billsTable");
-  table.innerHTML = filtered
+  const html = filtered
     .map(
       (bill) => `
                 <tr>
@@ -68,18 +48,18 @@ function filterBills() {
                     <td>${bill.patient}</td>
                     <td>${bill.date}</td>
                     <td>${bill.amount}</td>
-                    <td><span class="badge badge-${
-                      bill.status === "Paid" ? "success" : "warning"
-                    }">${bill.status}</span></td>
+                    <td><span class="badge badge-${bill.status === "Paid" ? "success" : "warning"
+        }">${bill.status}</span></td>
                     <td>
-                        <button class="btn btn-primary" onclick="viewBill('${
-                          bill.id
-                        }')" style="padding: 6px 12px; font-size: 12px;">View</button>
+                        <button class="btn btn-primary" onclick="viewBill('${bill.id
+        }')" style="padding: 6px 12px; font-size: 12px;">View</button>
                     </td>
                 </tr>
             `
     )
     .join("");
+
+  DOM.setHTML("billsTable", html);
 }
 
 /* View Bill Details */

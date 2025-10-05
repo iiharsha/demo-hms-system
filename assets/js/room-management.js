@@ -294,7 +294,7 @@ function dischargeFromRoom() {
 </form>
 `;
 
-    document.getElementById('dischargeModalBody').innerHTML = html;
+    DOM.setHTML('dischargeModalBody', html);
     openModal('dischargePatientModal');
   } catch (err) {
     console.error('Error in dischargeFromRoom(): ', err)
@@ -306,11 +306,11 @@ function dischargeFromRoom() {
  * Update discharge details when patient is selected
  */
 function updateDischargeDetails() {
-  const select = document.getElementById('dischargePatientSelect');
+  const select = DOM.get('dischargePatientSelect');
   const selectedOption = select.options[select.selectedIndex];
 
   if (!selectedOption.value) {
-    document.getElementById('patientDetailsSection').style.display = 'none';
+    DOM.get('patientDetailsSection').style.display = 'none';
     return;
   }
 
@@ -344,8 +344,8 @@ function updateDischargeDetails() {
       </div>
     `;
 
-    document.getElementById('patientDetailsContent').innerHTML = detailsHtml;
-    document.getElementById('patientDetailsSection').style.display = 'block';
+    DOM.setHTML('patientDetailsContent', detailsHtml);
+    DOM.get('patientDetailsSection').style.display = 'block';
   }
 }
 
@@ -356,28 +356,28 @@ function handlePatientDischarge(event) {
   event.preventDefault();
 
   const roomId = currentRoomId;
-  const bedId = document.getElementById('dischargePatientSelect').value;
-  const dischargeDate = document.getElementById('dischargeDate').value;
-  const dischargeReason = document.getElementById('dischargeReason').value;
-  const notes = document.getElementById('dischargeNotes').value;
+  const bedId = DOM.getValue('dischargePatientSelect');
+  const dischargeDate = DOM.getValue('dischargeDate');
+  const dischargeReason = DOM.getValue('dischargeReason');
+  const notes = DOM.getValue('dischargeNotes');
 
   const room = rooms.find(r => r.id === roomId);
   const bed = room?.occupiedBeds.find(b => b.bed === bedId);
 
   if (!room || !bed || !bed.patientId) {
-    showNotification('Invalid selection', 'error');
+    showWarningNotification('Invalid selection');
     return false;
   }
 
   const admission = admissions.find(a => a.patientId === bed.patientId && a.roomId === roomId && a.bed === bedId && a.status === "Active");
 
   if (!admission) {
-    showNotification("Admission not found", "error");
+    showWarningNotification("Admission not found");
     return false;
   }
 
   if (admission.status === "Discharged") {
-    showNotification("Patient already discharged", "error");
+    showWarningNotification("Patient already discharged");
     return false;
   }
 
@@ -524,14 +524,14 @@ function generateRoomManagementList(roomList) {
  * @returns {void}
  */
 function filterRoomManagementList() {
-  const searchValue = document.getElementById('roomSearchInput').value.toLowerCase();
+  const searchValue = DOM.getValue('roomSearchInput').toLowerCase();
   const filteredRooms = rooms.filter(room => {
     return room.id.toLowerCase().includes(searchValue) ||
       room.floor.toString().includes(searchValue) ||
       formatRoomType(room.type).toLowerCase().includes(searchValue);
   });
 
-  document.getElementById('roomManagementList').innerHTML = generateRoomManagementList(filteredRooms);
+  DOM.setHTML('roomManagementList', generateRoomManagementList(filteredRooms));
 }
 
 /**
@@ -671,10 +671,10 @@ function cancelRoomReservation(roomId) {
  */
 function openRoomManagementModal(roomList = rooms) {
   // Populate the modal content
-  document.getElementById('roomManagementList').innerHTML = generateRoomManagementList(roomList);
+  DOM.setHTML('roomManagementList', generateRoomManagementList(roomList));
 
   // Clear search input
-  const searchInput = document.getElementById('roomSearchInput');
+  const searchInput = DOM.get('roomSearchInput');
   if (searchInput) {
     searchInput.value = '';
   }

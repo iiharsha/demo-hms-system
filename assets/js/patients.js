@@ -1,274 +1,15 @@
 /* patients page */
 
-/**
- * @typedef {Object} PatientMedication
- * @property {string} name - Name of the medication.
- * @property {string} dose - Dosage prescribed.
- * @property {string} frequency - Frequency of intake.
- */
-
-/**
- * @typedef {Object} MedicalHistory
- * @property {string} date - Date of the medical record.
- * @property {string} type - Type of medical encounter (Consultation, Admission, Emergency, Follow-up, etc.).
- * @property {string} doctor - Name of the doctor involved.
- * @property {string} diagnosis - Diagnosis given.
- * @property {string} notes - Additional notes.
- */
-
-/**
- * @typedef {Object} LabReport
- * @property {string} date - Date of the lab test.
- * @property {string} test - Name of the test.
- * @property {string} result - Result of the test.
- * @property {string} file - File name/path for the report.
- */
-
-/**
- * @typedef {Object} Immunization
- * @property {string} vaccine - Vaccine name.
- * @property {string} date - Date the vaccine was administered.
- * @property {string} nextDue - Next due date or status (e.g., "Completed").
- */
-
-/**
- * @typedef {Object} Patient
- * @property {string} id - Patient ID
- * @property {string} name - Name of the patient.
- * @property {number} age - Age of the patient.
- * @property {"Male"|"Female"|"Other"} gender - gender of the patient.
- * @property {string} phone - Phone number of the patient.
- * @property {string} email - Email of the patient.
- * @property {"A+"|"A-"|"B+"|"B-"|"O+"|"O-"|"AB+"|"AB-"} bloodGroup - blood group of the patient.
- * @property {string} address - address of the patient.
- * @property {string} emergencyContact - emergency contact of the patient.
- * @property {string[]} allergies - list of allergies of the patient.
- * @property {string[]} chronicConditions - list of chronic conditions of the patient.
- * @property {PatientMedication[]} currentMedications - list of current medications of the patient.
- * @property {MedicalHistory[]} medicalHistory - list of medical history of the patient.
- * @property {LabReport[]} labReports - list of lab reports of the patient.
- * @property {Immunization[]} immunizations - list of immunizations of the patient.
- */
-
-/**
- * List of patients
- * @type {Patient[]}
- */
-const patients = [
-  {
-    id: "P001",
-    name: "John Doe",
-    age: 35,
-    gender: "Male",
-    phone: "9876543210",
-    email: "john@email.com",
-    bloodGroup: "O+",
-    address: "123 Main Street, Ahmedabad",
-    emergencyContact: "9876543211",
-    allergies: ["Penicillin", "Peanuts"],
-    chronicConditions: ["Hypertension", "Type 2 Diabetes"],
-    currentMedications: [
-      { name: "Metformin", dose: "500mg", frequency: "Twice daily" },
-      { name: "Lisinopril", dose: "10mg", frequency: "Once daily" },
-    ],
-    medicalHistory: [
-      {
-        date: "2024-01-10",
-        type: "Consultation",
-        doctor: "Dr. Smith",
-        diagnosis: "Hypertension",
-        notes: "Blood pressure elevated, started on Lisinopril",
-      },
-      {
-        date: "2023-12-15",
-        type: "Emergency",
-        doctor: "Dr. Jones",
-        diagnosis: "Acute Bronchitis",
-        notes: "Prescribed antibiotics and rest",
-      },
-      {
-        date: "2023-11-20",
-        type: "Check-up",
-        doctor: "Dr. Smith",
-        diagnosis: "Routine Check-up",
-        notes: "All vitals normal",
-      },
-    ],
-    labReports: [
-      {
-        date: "2024-01-10",
-        test: "Complete Blood Count",
-        result: "Normal",
-        file: "CBC_001.pdf",
-      },
-      {
-        date: "2024-01-10",
-        test: "Lipid Profile",
-        result: "High Cholesterol",
-        file: "LIPID_001.pdf",
-      },
-    ],
-    immunizations: [
-      { vaccine: "COVID-19", date: "2023-03-15", nextDue: "2024-03-15" },
-      { vaccine: "Influenza", date: "2023-10-01", nextDue: "2024-10-01" },
-    ],
-  },
-  {
-    id: "P002",
-    name: "Jane Smith",
-    age: 28,
-    gender: "Female",
-    phone: "9876543211",
-    email: "jane@email.com",
-    bloodGroup: "A+",
-    address: "456 Park Avenue, Ahmedabad",
-    emergencyContact: "9876543212",
-    allergies: ["Sulfa drugs"],
-    chronicConditions: ["Asthma"],
-    currentMedications: [
-      { name: "Albuterol Inhaler", dose: "90mcg", frequency: "As needed" },
-    ],
-    medicalHistory: [
-      {
-        date: "2024-01-08",
-        type: "Follow-up",
-        doctor: "Dr. Williams",
-        diagnosis: "Asthma Management",
-        notes: "Well controlled on current medication",
-      },
-      {
-        date: "2023-09-10",
-        type: "Consultation",
-        doctor: "Dr. Smith",
-        diagnosis: "Migraine",
-        notes: "Prescribed Sumatriptan for acute episodes",
-      },
-    ],
-    labReports: [
-      {
-        date: "2023-12-20",
-        test: "Thyroid Function",
-        result: "Normal",
-        file: "THYROID_002.pdf",
-      },
-    ],
-    immunizations: [
-      { vaccine: "COVID-19", date: "2023-04-20", nextDue: "2024-04-20" },
-      { vaccine: "Tetanus", date: "2022-06-15", nextDue: "2032-06-15" },
-    ],
-  },
-  {
-    id: "P003",
-    name: "Robert Johnson",
-    age: 42,
-    gender: "Male",
-    phone: "9876543212",
-    email: "robert@email.com",
-    bloodGroup: "B+",
-    address: "789 Lake Road, Ahmedabad",
-    emergencyContact: "9876543213",
-    allergies: [],
-    chronicConditions: ["High Cholesterol"],
-    currentMedications: [
-      { name: "Atorvastatin", dose: "20mg", frequency: "Once daily at night" },
-    ],
-    medicalHistory: [
-      {
-        date: "2024-01-12",
-        type: "Admission",
-        doctor: "Dr. Williams",
-        diagnosis: "Appendicitis",
-        notes: "Appendectomy performed, recovery ongoing",
-      },
-      {
-        date: "2023-10-05",
-        type: "Consultation",
-        doctor: "Dr. Jones",
-        diagnosis: "High Cholesterol",
-        notes: "Started on statin therapy",
-      },
-    ],
-    labReports: [
-      {
-        date: "2024-01-05",
-        test: "Lipid Profile",
-        result: "Improving",
-        file: "LIPID_003.pdf",
-      },
-      {
-        date: "2024-01-12",
-        test: "Pre-operative Panel",
-        result: "Normal",
-        file: "PREOP_003.pdf",
-      },
-    ],
-    immunizations: [
-      { vaccine: "COVID-19", date: "2023-05-10", nextDue: "2024-05-10" },
-      { vaccine: "Hepatitis B", date: "2023-01-15", nextDue: "Completed" },
-    ],
-  },
-  {
-    id: "P069",
-    name: "Ram Singh",
-    age: 21,
-    gender: "Male",
-    phone: "1234123412",
-    email: "ramsingh@email.com",
-    bloodGroup: "B+",
-    address: "789 Lake Road, Ahmedabad",
-    emergencyContact: "9876543213",
-    allergies: [],
-    chronicConditions: ["High Cholesterol"],
-    currentMedications: [
-      { name: "Atorvastatin", dose: "20mg", frequency: "Once daily at night" },
-    ],
-    medicalHistory: [
-      {
-        date: "2024-01-12",
-        type: "Admission",
-        doctor: "Dr. Williams",
-        diagnosis: "Appendicitis",
-        notes: "Appendectomy performed, recovery ongoing",
-      },
-      {
-        date: "2023-10-05",
-        type: "Consultation",
-        doctor: "Dr. Jones",
-        diagnosis: "High Cholesterol",
-        notes: "Started on statin therapy",
-      },
-    ],
-    labReports: [
-      {
-        date: "2024-01-05",
-        test: "Lipid Profile",
-        result: "Improving",
-        file: "LIPID_003.pdf",
-      },
-      {
-        date: "2024-01-12",
-        test: "Pre-operative Panel",
-        result: "Normal",
-        file: "PREOP_003.pdf",
-      },
-    ],
-    immunizations: [
-      { vaccine: "COVID-19", date: "2023-05-10", nextDue: "2024-05-10" },
-      { vaccine: "Hepatitis B", date: "2023-01-15", nextDue: "Completed" },
-    ],
-  },
-];
 
 /* Initialize Patients Page */
 function loadPatients() {
   // Update statistics
-  document.getElementById("totalPatientsCount").textContent = patients.length;
-  document.getElementById("newPatientsMonth").textContent = "2"; // Mock data
-  document.getElementById("activePatients").textContent = patients.length - 1;
-  document.getElementById("criticalPatients").textContent = "1"; // Mock data
+  DOM.setValue("totalPatientsCount", patients.length);
+  DOM.setValue("newPatientsMonth", 2);
+  DOM.setValue("activePatients", patients.length - 1);
+  DOM.setValue("criticalPatients", 1);
 
-  const table = document.getElementById("patientsTable");
-  table.innerHTML = patients
+  const html = patients
     .map((patient) => {
       const lastVisit =
         patient.medicalHistory && patient.medicalHistory.length > 0
@@ -310,6 +51,8 @@ function loadPatients() {
                 `;
     })
     .join("");
+
+  DOM.setHTML("patientsTable", html);
 }
 
 /**
@@ -319,10 +62,10 @@ function loadPatients() {
 function updatePatientStats(patientList) {
   const total = patientList.length;
 
-  document.getElementById("totalPatientsCount").textContent = total;
-  document.getElementById("newPatientsMonth").textContent = "2";       // TODO: Replace with server data
-  document.getElementById("activePatients").textContent = total - 1;   // TODO: Replace with real metric
-  document.getElementById("criticalPatients").textContent = "1";       // TODO: Replace with real metric
+  DOM.setValue("totalPatientsCount", total);
+  DOM.setValue("newPatientsMonth", 2)
+  DOM.setValue("activePatients", total - 1);
+  DOM.setValue("criticalPatients", 1);
 }
 
 /**
@@ -330,7 +73,6 @@ function updatePatientStats(patientList) {
  * @param {Patient[]} patientList
  */
 function renderPatientsTable(patientList) {
-  const table = document.getElementById("patientsTable");
 
   const rows = patientList.map((patient) => {
     const lastVisit = getLastPatientVisit(patient);
@@ -358,7 +100,7 @@ function renderPatientsTable(patientList) {
     `;
   });
 
-  table.innerHTML = rows.join("");
+  DOM.setHTML("patientsTable", rows.join(""));
 }
 
 /**

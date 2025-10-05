@@ -13,13 +13,13 @@ function initializeLogin() {
     return
   }
 
-  const loginForm = document.getElementById("loginForm");
+  const loginForm = DOM.get("loginForm");
   if (loginForm) {
     loginForm.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const username = document.getElementById("username").value;
-      const role = document.getElementById("role").value;
+      const username = DOM.get("username").value;
+      const role = DOM.get("role").value;
 
       if (username) {
         currentUser = username;
@@ -33,14 +33,14 @@ function initializeLogin() {
 // Login Function
 function login(username, role) {
   // Hide login, show app
-  document.getElementById("loginScreen").style.display = "none";
-  document.getElementById("mainApp").style.display = "block";
+  DOM.get("loginScreen").style.display = "none";
+  DOM.get("mainApp").style.display = "block";
 
   // Update user info
-  document.getElementById("userDisplay").textContent = username;
-  document.getElementById("roleDisplay").textContent =
+  DOM.get("userDisplay").textContent = username;
+  DOM.get("roleDisplay").textContent =
     role.charAt(0).toUpperCase() + role.slice(1);
-  document.getElementById("userAvatar").textContent = username.charAt(0).toUpperCase();
+  DOM.get("userAvatar").textContent = username.charAt(0).toUpperCase();
 
   // Load default page
   // loadPage("dashboard.html");
@@ -53,12 +53,12 @@ function login(username, role) {
 
 // Logout
 function logout() {
-  document.getElementById("loginScreen").style.display = "flex";
-  document.getElementById("mainApp").style.display = "none";
+  DOM.get("loginScreen").style.display = "flex";
+  DOM.get("mainApp").style.display = "none";
 
   // Clear inputs if present
-  const usernameInput = document.getElementById("username");
-  const passwordInput = document.getElementById("password");
+  const usernameInput = DOM.get("username");
+  const passwordInput = DOM.get("password");
   if (usernameInput) usernameInput.value = "";
   if (passwordInput) passwordInput.value = "";
 }

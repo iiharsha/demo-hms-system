@@ -2,13 +2,13 @@
 
 /* initializes the dashboard stats */
 function initializeDashboard() {
-  document.getElementById("totalPatients").textContent = patients.length;
-  document.getElementById("todayAppointments").textContent =
+  DOM.get("totalPatients").textContent = patients.length;
+  DOM.get("todayAppointments").textContent =
     appointments.length;
-  document.getElementById("activeAdmissions").textContent = admissions.filter(
+  DOM.get("activeAdmissions").textContent = admissions.filter(
     (a) => a.status === "Active",
   ).length;
-  document.getElementById("pendingBills").textContent = bills.filter(
+  DOM.get("pendingBills").textContent = bills.filter(
     (b) => b.status === "Pending",
   ).length;
 
@@ -20,8 +20,7 @@ function initializeDashboard() {
 
 /* loads the recent appointments table */
 function loadRecentAppointments() {
-  const table = document.getElementById("recentAppointmentsTable");
-  table.innerHTML = appointments
+  const html = appointments
     .slice(0, 5)
     .map(
       (apt) => `
@@ -36,11 +35,11 @@ function loadRecentAppointments() {
             `,
     )
     .join("");
+  DOM.setHTML("recentAppointmentsTable", html);
 }
 
 /* Loads today's appointments into the recent appointments card */
 function loadRecentTodayAppointments() {
-  const table = document.getElementById("recentAppointmentsTable");
 
   // Get today's date in YYYY-MM-DD format
   const today = new Date().toISOString().split("T")[0];
@@ -52,7 +51,7 @@ function loadRecentTodayAppointments() {
   });
 
   /* Render today's appointments */
-  table.innerHTML = todaysAppointments.length
+  const html = todaysAppointments.length
     ? todaysAppointments
       .slice(0, 5)
       .map(
@@ -72,12 +71,12 @@ function loadRecentTodayAppointments() {
       )
       .join("")
     : `<tr><td colspan="5" style="text-align:center;">No appointments today</td></tr>`;
+  DOM.setHTML("recentAppointmentsTable", html);
 }
 
 /* loads the recent admissions table */
 function loadRecentAdmissions() {
-  const table = document.getElementById("recentAdmissionsTable");
-  table.innerHTML = admissions
+  const html = admissions
     .slice(0, 5)
     .map(
       (adm) => `
@@ -92,12 +91,13 @@ function loadRecentAdmissions() {
             `,
     )
     .join("");
+  DOM.setHTML("recentAdmissionsTable", html);
 }
 
 /*Auto - refresh dashboard stats every 30 seconds */
 document.addEventListener("DOMContentLoaded", () => {
   setInterval(() => {
-    const dashboardPage = document.getElementById("dashboard-page");
+    const dashboardPage = DOM.get("dashboard-page");
     if (dashboardPage && !dashboardPage.classList.contains("hide")) {
       initializeDashboard();
     }

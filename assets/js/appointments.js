@@ -85,8 +85,8 @@ function updateAppointmentStats() {
   const todayAppointments = appointments.filter(a => a.date === today).length;
   const scheduledAppointments = appointments.filter(a => a.status === "Scheduled").length;
 
-  const todayCountEl = document.getElementById("todayAppointments");
-  const scheduledCountEl = document.getElementById("scheduledAppointments");
+  const todayCountEl = DOM.get("todayAppointments");
+  const scheduledCountEl = DOM.get("scheduledAppointments");
 
   if (todayCountEl) todayCountEl.textContent = todayAppointments;
   if (scheduledCountEl) scheduledCountEl.textContent = scheduledAppointments;
@@ -123,7 +123,7 @@ function filterAppointmentsByDoctor(data, doctor) {
  * @returns {void}
  */
 function renderAppointments(filteredAppointments) {
-  const table = document.getElementById("appointmentsTable");
+  const table = DOM.get("appointmentsTable");
 
   if (!table) {
     console.error("Appointments table element not found");
@@ -174,8 +174,8 @@ function renderAppointments(filteredAppointments) {
  * @returns {void}
  */
 function filterAppointments() {
-  const date = document.getElementById("appointmentDate")?.value;
-  const doctor = document.getElementById("doctorFilter")?.value;
+  const date = DOM.get("appointmentDate")?.value;
+  const doctor = DOM.get("doctorFilter")?.value;
 
   let filtered = appointments;
 
@@ -199,7 +199,7 @@ function viewAppointment(id) {
 
   const patient = patients.find(p => p.id === apt.patientId);
 
-  const modalBody = document.getElementById("viewAppointmentModalBody");
+  const modalBody = DOM.get("viewAppointmentModalBody");
 
   modalBody.innerHTML = `
     <div style="display: grid; gap: 20px;">
@@ -323,7 +323,7 @@ function openAddAppointmentModal() {
   populateAppointmentPatientDropdown();
   populateAppointmentDoctorDropdown();
 
-  const dateInput = document.getElementById("appointmentDateInput");
+  const dateInput = DOM.get("appointmentDateInput");
   if (dateInput && !dateInput.value)
     dateInput.value = new Date().toISOString().split("T")[0];
 
@@ -334,15 +334,15 @@ function openAddAppointmentModal() {
   }, 100);
 
   // Re-generate when user changes doctor/date
-  document.getElementById("appointmentDoctor")?.addEventListener("change", refreshTimeSlots);
-  document.getElementById("appointmentDateInput")?.addEventListener("change", refreshTimeSlots);
+  DOM.get("appointmentDoctor")?.addEventListener("change", refreshTimeSlots);
+  DOM.get("appointmentDateInput")?.addEventListener("change", refreshTimeSlots);
 }
 
 /**
  * Populate patient dropdown with searchable patient list
  */
 function populateAppointmentPatientDropdown() {
-  const patientSelect = document.getElementById("appointmentPatient");
+  const patientSelect = DOM.get("appointmentPatient");
 
   if (!patientSelect) {
     console.error("Patient select element not found");
@@ -389,9 +389,9 @@ function populateAppointmentPatientDropdown() {
  * Setup patient search functionality
  */
 function setupPatientSearch() {
-  const searchInput = document.getElementById("appointmentPatientSearch");
-  const resultsDiv = document.getElementById("patientSearchResults");
-  const hiddenInput = document.getElementById("appointmentPatientId");
+  const searchInput = DOM.get("appointmentPatientSearch");
+  const resultsDiv = DOM.get("patientSearchResults");
+  const hiddenInput = DOM.get("appointmentPatientId");
 
   if (!searchInput || !resultsDiv) return;
 
@@ -484,11 +484,11 @@ function setupPatientSearch() {
  * @param {Object} patient - The selected patient object
  */
 function showSelectedPatientInfo(patient) {
-  let infoDiv = document.getElementById("selectedPatientInfo");
+  let infoDiv = DOM.get("selectedPatientInfo");
 
   if (!infoDiv) {
-    const searchWrapper = document.getElementById("appointmentPatientSearch").parentElement;
-    infoDiv = document.createElement('div');
+    const searchWrapper = DOM.get("appointmentPatientSearch").parentElement;
+    infoDiv = DOM.createElement('div');
     infoDiv.id = "selectedPatientInfo";
     searchWrapper.appendChild(infoDiv);
   }
@@ -528,9 +528,9 @@ function showSelectedPatientInfo(patient) {
  * Clear selected patient
  */
 function clearSelectedPatient() {
-  const searchInput = document.getElementById("appointmentPatientSearch");
-  const hiddenInput = document.getElementById("appointmentPatientId");
-  const infoDiv = document.getElementById("selectedPatientInfo");
+  const searchInput = DOM.get("appointmentPatientSearch");
+  const hiddenInput = DOM.get("appointmentPatientId");
+  const infoDiv = DOM.get("selectedPatientInfo");
 
   if (searchInput) searchInput.value = '';
   if (hiddenInput) hiddenInput.value = '';
@@ -541,7 +541,7 @@ function clearSelectedPatient() {
  * Populate doctor dropdown
  */
 function populateAppointmentDoctorDropdown() {
-  const doctorSelect = document.getElementById("appointmentDoctor");
+  const doctorSelect = DOM.get("appointmentDoctor");
 
   if (!doctorSelect) return;
 
@@ -598,14 +598,14 @@ function navigateToAddPatient() {
  * @returns {void}
  */
 function saveAppointment() {
-  const patientId = document.getElementById("appointmentPatientId")?.value;
-  const date = document.getElementById("appointmentDateInput")?.value;
-  const doctor = document.getElementById("appointmentDoctor")?.value;
-  const type = document.getElementById("appointmentType")?.value;
-  const notes = document.getElementById("appointmentNotes")?.value;
+  const patientId = DOM.get("appointmentPatientId")?.value;
+  const date = DOM.get("appointmentDateInput")?.value;
+  const doctor = DOM.get("appointmentDoctor")?.value;
+  const type = DOM.get("appointmentType")?.value;
+  const notes = DOM.get("appointmentNotes")?.value;
 
   // Get selected time slot
-  const selectedSlot = document.querySelector(".appointment-slot.selected");
+  const selectedSlot = DOM.querySelector(".appointment-slot.selected");
 
   // Validation
   if (!patientId) {
@@ -722,15 +722,15 @@ function initializeTimeSlots() {
  * @param {string} [selectedDate] - Date (YYYY-MM-DD) to filter booked slots.
  */
 function generateTimeSlots(selectedDoctor, selectedDate) {
-  const container = document.getElementById("timeSlotsContainer");
+  const container = DOM.get("timeSlotsContainer");
   if (!container) {
     console.warn("[Appointments] Missing #timeSlotsContainer element");
     return;
   }
 
   // Resolve date context
-  const date = selectedDate || document.getElementById("appointmentDateInput")?.value;
-  const doctor = selectedDoctor || document.getElementById("appointmentDoctor")?.value;
+  const date = selectedDate || DOM.get("appointmentDateInput")?.value;
+  const doctor = selectedDoctor || DOM.get("appointmentDoctor")?.value;
 
   // Clear container
   container.innerHTML = "";
@@ -754,13 +754,13 @@ function generateTimeSlots(selectedDoctor, selectedDate) {
   const isToday = date === today;
 
   // Build slot HTML
-  const grid = document.createElement("div");
+  const grid = DOM.createElement("div");
   grid.style.display = "grid";
   grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(100px, 1fr))";
   grid.style.gap = "10px";
 
   slots.forEach(time => {
-    const slot = document.createElement("div");
+    const slot = DOM.createElement("div");
     slot.textContent = time;
     slot.dataset.time = time;
     slot.classList.add("appointment-slot");
@@ -783,8 +783,8 @@ function generateTimeSlots(selectedDoctor, selectedDate) {
   container.appendChild(grid);
 
   // Apply consistent styles (create once)
-  if (!document.getElementById("timeSlotStyles")) {
-    const style = document.createElement("style");
+  if (!DOM.get("timeSlotStyles")) {
+    const style = DOM.createElement("style");
     style.id = "timeSlotStyles";
     style.textContent = `
       .appointment-slot {
@@ -814,7 +814,7 @@ function generateTimeSlots(selectedDoctor, selectedDate) {
         border-color: #e5e7eb;
       }
     `;
-    document.head.appendChild(style);
+    DOM.head.appendChild(style);
   }
 }
 
@@ -843,7 +843,7 @@ function refreshTimeSlots() {
    * Generate time slots dynamically if they don't exist
    */
   function generateTimeSlots() {
-    const container = document.getElementById("timeSlotsContainer");
+    const container = DOM.get("timeSlotsContainer");
 
     if (!container) {
       console.warn("Time slots container not found");
@@ -879,8 +879,8 @@ function refreshTimeSlots() {
     initializeTimeSlots();
 
     // Add CSS for selected state
-    if (!document.getElementById('timeSlotStyles')) {
-      const style = document.createElement('style');
+    if (!DOM.get('timeSlotStyles')) {
+      const style = DOM.createElement('style');
       style.id = 'timeSlotStyles';
       style.textContent = `
       .appointment-slot:hover {
@@ -894,11 +894,11 @@ function refreshTimeSlots() {
         font-weight: 600;
       }
     `;
-      document.head.appendChild(style);
+      DOM.head.appendChild(style);
     }
   }
-  const doctor = document.getElementById("appointmentDoctor")?.value;
-  const date = document.getElementById("appointmentDateInput")?.value;
+  const doctor = DOM.get("appointmentDoctor")?.value;
+  const date = DOM.get("appointmentDateInput")?.value;
   generateTimeSlots(doctor, date);
 }
 
@@ -908,15 +908,11 @@ function refreshTimeSlots() {
 function clearAppointmentForm() {
   clearSelectedPatient();
 
-  const dateInput = document.getElementById("appointmentDateInput");
-  const doctorSelect = document.getElementById("appointmentDoctor");
-  const typeSelect = document.getElementById("appointmentType");
-  const notesInput = document.getElementById("appointmentNotes");
-
-  if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
-  if (doctorSelect) doctorSelect.value = "";
-  if (typeSelect) typeSelect.value = "";
-  if (notesInput) notesInput.value = "";
+  const dateInput = new Date().toISOString().split('T')[0]
+  DOM.setValue("appointmentDateInput", dateInput);
+  DOM.setValue("appointmentDoctor", "");
+  DOM.setValue("appointmentType", "");
+  DOM.setValue("appointmentNotes", "");
 
   // Clear selected time slot
   document.querySelectorAll(".appointment-slot.selected").forEach(slot => {
@@ -945,7 +941,7 @@ function exportAppointmentsData() {
 }
 
 // Initialize appointments when DOM is ready
-if (typeof document !== 'undefined') {
+if (typeof DOM !== 'undefined') {
   document.addEventListener("DOMContentLoaded", () => {
     initializeAppointments();
   });

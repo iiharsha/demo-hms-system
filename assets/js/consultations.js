@@ -40,8 +40,7 @@ const consultations = [
 ];
 
 function loadConsultations() {
-  const table = document.getElementById("consultationsTable");
-  table.innerHTML = consultations
+  const html = consultations
     .map(
       (consult) => `
                 <tr>
@@ -60,6 +59,7 @@ function loadConsultations() {
             `
     )
     .join("");
+  DOM.setHTML("consultationsTable", html);
 }
 
 function saveConsultation() {
@@ -80,9 +80,7 @@ function saveConsultation() {
 
 /* Search Consultations */
 function searchConsultations() {
-  const searchTerm = document
-    .getElementById("consultationSearch")
-    .value.toLowerCase();
+  const searchTerm = DOM.getValue("consultationSearch").toLowerCase();
   const filtered = consultations.filter(
     (c) =>
       c.patient.toLowerCase().includes(searchTerm) ||
@@ -90,8 +88,7 @@ function searchConsultations() {
       c.diagnosis.toLowerCase().includes(searchTerm)
   );
 
-  const table = document.getElementById("consultationsTable");
-  table.innerHTML = filtered
+  const html = filtered
     .map(
       (consult) => `
                 <tr>
@@ -109,6 +106,8 @@ function searchConsultations() {
             `
     )
     .join("");
+
+  DOM.setHTML("consultationsTable", html);
 }
 
 function openNewConsultationModal() {
@@ -123,9 +122,8 @@ function viewConsultation(id) {
     return;
   }
 
-  const modalBody = document.getElementById("viewConsultationModalBody");
 
-  modalBody.innerHTML = `
+  const html = `
         <table>
             <tr><td><strong>ID:</strong></td><td>${consultation.id}</td></tr>
             <tr><td><strong>Date:</strong></td><td>${consultation.date}</td></tr>
@@ -137,5 +135,6 @@ function viewConsultation(id) {
         </table>
     `;
 
+  DOM.setHTML("viewConsultationModalBody", html);
   openModal("viewConsultationModal");
 }

@@ -1,35 +1,8 @@
 /* Inventory Page */
 
-const inventory = [
-  {
-    code: "MED001",
-    name: "Paracetamol",
-    category: "Medicine",
-    quantity: 500,
-    unit: "Tablets",
-    status: "In Stock",
-  },
-  {
-    code: "MED002",
-    name: "Amoxicillin",
-    category: "Medicine",
-    quantity: 100,
-    unit: "Capsules",
-    status: "Low Stock",
-  },
-  {
-    code: "EQP001",
-    name: "Blood Pressure Monitor",
-    category: "Equipment",
-    quantity: 5,
-    unit: "Units",
-    status: "In Stock",
-  },
-];
 
 function loadInventory() {
-  const table = document.getElementById("inventoryTable");
-  table.innerHTML = inventory
+  const html = inventory
     .map(
       (item) => `
                 <tr>
@@ -38,18 +11,18 @@ function loadInventory() {
                     <td>${item.category}</td>
                     <td>${item.quantity}</td>
                     <td>${item.unit}</td>
-                    <td><span class="badge badge-${
-                      item.status === "In Stock" ? "success" : "warning"
-                    }">${item.status}</span></td>
+                    <td><span class="badge badge-${item.status === "In Stock" ? "success" : "warning"
+        }">${item.status}</span></td>
                     <td>
-                        <button class="btn btn-primary" onclick="viewInventoryItem('${
-                          item.code
-                        }')" style="padding: 6px 12px; font-size: 12px;">View</button>
+                        <button class="btn btn-primary" onclick="viewInventoryItem('${item.code
+        }')" style="padding: 6px 12px; font-size: 12px;">View</button>
                     </td>
                 </tr>
             `
     )
     .join("");
+
+  DOM.setHTML("inventoryTable", html);
 }
 
 function openAddInventoryModal() {
@@ -63,10 +36,9 @@ function viewInventoryItem(code) {
 }
 
 function filterInventory() {
-  const searchTerm = document
-    .getElementById("inventorySearch")
-    .value.toLowerCase();
-  const category = document.getElementById("categoryFilter").value;
+  const searchTerm = DOM.getValue("inventorySearch").toLowerCase();
+
+  const category = DOM.getValue("categoryFilter");
 
   let filtered = inventory;
   if (searchTerm) {
@@ -82,8 +54,7 @@ function filterInventory() {
     );
   }
 
-  const table = document.getElementById("inventoryTable");
-  table.innerHTML = filtered
+  const html = filtered
     .map(
       (item) => `
                 <tr>
@@ -92,16 +63,16 @@ function filterInventory() {
                     <td>${item.category}</td>
                     <td>${item.quantity}</td>
                     <td>${item.unit}</td>
-                    <td><span class="badge badge-${
-                      item.status === "In Stock" ? "success" : "warning"
-                    }">${item.status}</span></td>
+                    <td><span class="badge badge-${item.status === "In Stock" ? "success" : "warning"
+        }">${item.status}</span></td>
                     <td>
-                        <button class="btn btn-primary" onclick="viewInventoryItem('${
-                          item.code
-                        }')" style="padding: 6px 12px; font-size: 12px;">View</button>
+                        <button class="btn btn-primary" onclick="viewInventoryItem('${item.code
+        }')" style="padding: 6px 12px; font-size: 12px;">View</button>
                     </td>
                 </tr>
             `
     )
     .join("");
+
+  DOM.setHTML("inventoryTable", html);
 }

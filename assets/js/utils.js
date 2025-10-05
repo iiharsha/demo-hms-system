@@ -29,6 +29,30 @@ function showNotification(message) {
 }
 
 
+/** shows a warning toast notification on the top right of the screen */
+function showWarningNotification(message) {
+  // Create notification element
+  const notification = document.createElement("div");
+  notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--warning);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 8px;
+                box-shadow: var(--shadow-lg);
+                z-index: 2000;
+                animation: slideIn 0.3s ease;
+            `;
+  notification.textContent = message;
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.remove();
+  }, 3000);
+}
+
 /* shows a toast notification on the top right of the screen */
 function showErrorNotification(message) {
   // Create notification element
@@ -131,7 +155,7 @@ document.addEventListener("keydown", (e) => {
 
 /* functionality to export report to PDF */
 function exportReport() {
-  showNotification("Exporting report to PDF...");
+  showErrorNotification("Not yet implemented");
 }
 
 /* Keyboard shortcuts */
@@ -170,9 +194,9 @@ function closeModal(modalId) {
   document.getElementById(modalId).style.display = "none";
 }
 
-/* getOccupancyRate() fetches the
+/** getOccupancyRate() fetches the
  * rate of occupied beds
- * */
+ */
 function getOccupancyRate(rooms) {
   let totalBeds = 0;
   let occupiedBedsCount = 0;

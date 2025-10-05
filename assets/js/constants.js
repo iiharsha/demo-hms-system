@@ -554,3 +554,32 @@ const rooms = [
     rate: 1800,
   },
 ];
+
+
+/** Inventory page */
+const inventory = [
+  {
+    code: "MED001",
+    name: "Paracetamol",
+    category: "Medicine",
+    quantity: 500,
+    unit: "Tablets",
+    status: "In Stock",
+  },
+  {
+    code: "MED002",
+    name: "Amoxicillin",
+    category: "Medicine",
+    quantity: 100,
+    unit: "Capsules",
+    status: "Low Stock",
+  },
+  {
+    code: "EQP001",
+    name: "Blood Pressure Monitor",
+    category: "Equipment",
+    quantity: 5,
+    unit: "Units",
+    status: "In Stock",
+  },
+];

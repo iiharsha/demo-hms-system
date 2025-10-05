@@ -402,11 +402,11 @@ function populateAdmissionBedDropdown() {
  * Save a new admission
  */
 function saveAdmission() {
-  const patientId = document.getElementById("admissionPatient")?.value;
-  const roomId = document.getElementById("roomNumber")?.value;
-  const bedId = document.getElementById("bedNumber")?.value;
-  const doctorName = document.getElementById("admittingDoctor")?.value;
-  const reason = document.getElementById("admissionReason")?.value;
+  const patientId = DOM.getValue("admissionPatient");
+  const roomId = DOM.getValue("roomNumber");
+  const bedId = DOM.getValue("bedNumber");
+  const doctorName = DOM.getValue("admittingDoctor");
+  const reason = DOM.getValue("admissionReason");
 
   // Validation
   if (!patientId) {
@@ -511,12 +511,12 @@ function saveAdmission() {
   showNotification(`${patient.name} admitted successfully to Room ${roomId}, Bed ${bedId}`);
 
   // Clear form
-  document.getElementById("admissionPatient").value = "";
-  document.getElementById("roomNumber").value = "";
-  document.getElementById("bedNumber").innerHTML = '<option value="">Select a room first</option>';
-  document.getElementById("admittingDoctor").value = "";
-  if (document.getElementById("admissionReason")) {
-    document.getElementById("admissionReason").value = "";
+  DOM.setValue("admissionPatient", "");
+  DOM.setValue("roomNumber", "");
+  DOM.setValue("bedNumber", "");
+  DOM.setValue("admittingDoctor", "");
+  if (DOM.get("admissionReason")) {
+    DOM.setValue("admissionReason", "")
   }
   closeModal("newAdmissionModal");
 }
@@ -545,7 +545,7 @@ function dischargePatient(admissionId) {
           if (typeof dischargeFromRoom === 'function') {
             dischargeFromRoom();
 
-            const selectEl = document.getElementById('dischargePatientSelect');
+            const selectEl = DOM.get('dischargePatientSelect');
             if (selectEl) {
               selectEl.value = admission.bed;
             } else {

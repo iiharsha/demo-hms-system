@@ -1,20 +1,20 @@
 /* Report Page */
 
 function generateReport() {
-  const reportType = document.getElementById("reportType").value;
-  const fromDate = document.getElementById("reportFromDate").value;
-  const toDate = document.getElementById("reportToDate").value;
+  const reportType = DOM.getValue("reportType");
+  const fromDate = DOM.getValue("reportFromDate");
+  const toDate = DOM.getValue("reportToDate");
 
   showNotification(`Generating ${reportType} from ${fromDate} to ${toDate}`);
 }
 
-loadJSON("../assets/data/rooms.json")
-  .then(rooms => {
-    loadReports(rooms);
-  })
-  .catch(error => {
-    console.error("Error loading rooms:", error);
-  });
+// loadJSON("../assets/data/rooms.json")
+//   .then(rooms => {
+//     loadReports(rooms);
+//   })
+//   .catch(error => {
+//     console.error("Error loading rooms:", error);
+//   });
 
 function loadReports() {
 
@@ -22,8 +22,8 @@ function loadReports() {
   const occupancyRate = getOccupancyRate(rooms);
   const reviewValue = 4.5;
   const consultationsTotalValue = consultations.length;
-  document.getElementById("revenueReportValue").textContent = revenueValue;
-  document.getElementById("occupancyReportValue").textContent = occupancyRate + "%";
-  document.getElementById("patientReviewValue").textContent = reviewValue;
-  document.getElementById("consultationsReportValue").textContent = consultationsTotalValue;
+  DOM.setValue("revenueReportValue", revenueValue);
+  DOM.setValue("occupancyReportValue", `${occupancyRate}%`);
+  DOM.setValue("patientReviewValue", reviewValue);
+  DOM.setValue("consultationsReportValue", consultationsTotalValue);
 }
