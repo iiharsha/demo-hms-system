@@ -12,6 +12,7 @@ function initializeDashboard() {
     (b) => b.status === "Pending",
   ).length;
 
+  loadRecentTodayAppointments();
   loadRecentAppointments();
   loadRecentAdmissions();
   loadData();
@@ -35,6 +36,42 @@ function loadRecentAppointments() {
             `,
     )
     .join("");
+}
+
+/* Loads today's appointments into the recent appointments card */
+function loadRecentTodayAppointments() {
+  const table = document.getElementById("recentAppointmentsTable");
+
+  // Get today's date in YYYY-MM-DD format
+  const today = new Date().toISOString().split("T")[0];
+
+  // Filter appointments that are scheduled for today
+  const todaysAppointments = appointments.filter((apt) => {
+    const aptDate = new Date(apt.date).toISOString().split("T")[0];
+    return aptDate === today;
+  });
+
+  /* Render today's appointments */
+  table.innerHTML = todaysAppointments.length
+    ? todaysAppointments
+      .slice(0, 5)
+      .map(
+        (apt) => `
+            <tr>
+              <td>${apt.time}</td>
+              <td>${apt.patientName}</td>
+              <td>${apt.doctor}</td>
+              <td>${apt.type}</td>
+              <td>
+                <span class="badge badge-${apt.status === "Completed" ? "success" : "primary"}">
+                  ${apt.status}
+                </span>
+              </td>
+            </tr>
+          `
+      )
+      .join("")
+    : `<tr><td colspan="5" style="text-align:center;">No appointments today</td></tr>`;
 }
 
 /* loads the recent admissions table */

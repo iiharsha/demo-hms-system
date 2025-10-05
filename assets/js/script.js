@@ -119,16 +119,20 @@ document.querySelectorAll(".appointment-slot:not(.booked)").forEach((slot) => {
   });
 });
 
-// Tab switching
-function switchTab(tabName) {
-  document
-    .querySelectorAll(".tab-btn")
-    .forEach((btn) => btn.classList.remove("active"));
-  document
-    .querySelectorAll(".tab-content")
-    .forEach((content) => content.classList.remove("active"));
+/**
+ * switches tabs in a html container
+ * @param {string} tabName - the tab name to switch to.
+ * @param {string} btn - the reference from where switchTab is being called.
+ */
+function switchTab(tabName, btn) {
+  // Remove "active" from all tab buttons
+  document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
 
-  event.target.classList.add("active");
+  // Remove "active" from all tab contents
+  document.querySelectorAll(".tab-content").forEach((content) => content.classList.remove("active"));
+
+  // Add "active" to clicked button and related tab
+  btn.classList.add("active");
   document.getElementById(`${tabName}-tab`).classList.add("active");
 }
 

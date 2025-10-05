@@ -1,7 +1,7 @@
 <!-- Dashboard Page -->
 <div class="page-content" id="dashboard-page">
   <div class="stats-grid">
-    <div class="stat-card">
+    <div class="stat-card" onclick="showPage('patients.html')">
       <div class="stat-header">
         <div class="stat-icon blue" id="totalPatientsCard">
           <i class="ri-team-fill"></i>
@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <div class="stat-card">
+    <div class="stat-card" onclick="showPage('appointments.html')">
       <div class="stat-header">
         <div class="stat-icon green">
           <i class="ri-todo-fill"></i>
@@ -23,11 +23,11 @@
       </div>
       <div class="stat-value">
         <span id="todayAppointments">0</span>
-        <span class="stat-unit">Appointments Today</span>
+        <span class="stat-unit">Appointments Total</span>
       </div>
     </div>
 
-    <div class="stat-card">
+    <div class="stat-card" onclick="showPage('admissions.html')">
       <div class="stat-header">
         <div class="stat-icon yellow">
           <i class="ri-hospital-fill"></i>
@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <div class="stat-card">
+    <div class="stat-card" onclick="showPage('billing.html')">
       <div class="stat-header">
         <div class="stat-icon red">
           <i class="ri-money-rupee-circle-fill"></i>
@@ -55,24 +55,51 @@
   </div>
 
   <div class="card">
-    <div class="card-header">
-      <h3 class="card-title">Recent Appointments</h3>
+    <div class="card-header flex-between">
+      <h3 class="card-title">Appointments</h3>
       <button class="btn btn-primary" onclick="showPage('appointments')">View All</button>
     </div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Time</th>
-          <th>Patient</th>
-          <th>Doctor</th>
-          <th>Type</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="recentAppointmentsTable">
-        <!-- Dynamic content -->
-      </tbody>
-    </table>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('today', this); loadRecentTodayAppointments()">Today</button>
+      <button class="tab-btn" onclick="switchTab('recent', this); loadRecentAppointments()">Recent</button>
+    </div>
+
+    <!-- Tab contents -->
+    <div id="today-tab" class="tab-content active">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Type</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="recentAppointmentsTable">
+          <!-- Dynamic content -->
+        </tbody>
+      </table>
+    </div>
+
+    <div id="recent-tab" class="tab-content">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Type</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="recentAppointmentsTable">
+          <!-- Dynamic content -->
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <div class="card">
