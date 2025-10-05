@@ -246,7 +246,7 @@ body {
 
 .header {
   background: var(--white);
-  padding: 20px 30px;
+  padding: 1px 30px;
   box-shadow: var(--shadow);
   display: flex;
   justify-content: space-between;
