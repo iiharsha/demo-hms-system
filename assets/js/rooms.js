@@ -167,6 +167,7 @@ function renderRoomGrid(roomsList = rooms) {
   floorKeys.forEach((floor) => {
     const roomsForFloor = roomsByFloor[floor];
     html += `
+
         <div class="floor-section" style="grid-column: 1/-1;">
             <div class="floor-header">
                 <div class="floor-title">Floor ${floor}</div>
@@ -278,18 +279,20 @@ function loadRoomTable(roomsList = rooms) {
         .filter((b) => b.patient)
         .map((b) => b.patient);
 
-      let statusBadge = "";
-      if (room.status === "maintenance") {
-        statusBadge = '<span class="badge badge-danger">Maintenance</span>';
-      } else if (room.status === "reserved") {
-        statusBadge = '<span class="badge badge-primary">Reserved</span>';
-      } else if (occupiedCount === room.totalBeds) {
-        statusBadge = '<span class="badge badge-warning">Full</span>';
-      } else if (occupiedCount > 0) {
-        statusBadge = '<span class="badge badge-warning">Partial</span>';
-      } else {
-        statusBadge = '<span class="badge badge-success">Available</span>';
+      const badgeClassMap = {
+        maintenance: { class: "badge-danger", label: "Maintenance" },
+        reserved: { class: "badge-primary", label: "Reserved" },
+      };
+
+      console.log(room.status);
+      let badge = badgeClassMap[room.status];
+      if (!badge) {
+        if (occupiedCount === room.totalBeds) badge = { class: "badge-warning", label: "Full" };
+        else if (occupiedCount > 0) badge = { class: "badge-warning", label: "Partial" };
+        else badge = { class: "badge-success", label: "Available" };
       }
+
+      const statusBadge = `<span class="badge ${badge.class}">${badge.label}</span>`;
 
       return `
         <tr>
