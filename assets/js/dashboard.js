@@ -84,7 +84,7 @@ function loadRecentAdmissions() {
                     <td>${adm.id}</td>
                     <td>${adm.patientName}</td>
                     <td>${adm.roomId}</td>
-                    <td>${adm.admissionDate}</td>
+                    <td>${formatDate(adm.admissionDate)}</td>
                     <td><span class="badge badge-${adm.status === "Active" ? "success" : "warning"
         }">${adm.status}</span></td>
                 </tr>
@@ -96,6 +96,7 @@ function loadRecentAdmissions() {
 
 /*Auto - refresh dashboard stats every 30 seconds */
 document.addEventListener("DOMContentLoaded", () => {
+
   setInterval(() => {
     const dashboardPage = DOM.get("dashboard-page");
     if (dashboardPage && !dashboardPage.classList.contains("hide")) {

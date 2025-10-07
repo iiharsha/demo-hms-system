@@ -1,0 +1,128 @@
+/* ===================================
+   CONTENT AREA - content.css
+   Main content and header styles
+   =================================== */
+
+.content {
+  margin-left: 230px;
+  min-height: 100vh;
+  background: var(--background);
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar.collapsed ~ .content {
+  margin-left: 80px;
+}
+
+/* === Header === */
+.header {
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.header-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin: 0;
+}
+
+/* === User Info === */
+.user-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-left: 1rem;
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem;
+}
+
+.user-info > div {
+  text-align: left;
+}
+
+.user-info > div > div:first-child {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--foreground);
+}
+
+.user-info > div > div:last-child {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+  text-transform: capitalize;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+/* === Page Content === */
+.page-content {
+  padding: 1.5rem;
+  overflow-y: auto;
+  height: calc(100vh - 73px);
+}
+
+.page-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.page-content::-webkit-scrollbar-track {
+  background: var(--gray-100);
+}
+
+.page-content::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+  border-radius: 10px;
+}
+
+.page-content::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-400);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .content {
+    margin-left: 70px;
+  }
+  
+  .header {
+    padding: 0.875rem 1rem;
+  }
+  
+  .header-title {
+    font-size: 1.25rem;
+  }
+  
+  .page-content {
+    padding: 1rem;
+  }
+  
+  .user-info > div > div:first-child {
+    font-size: 0.8125rem;
+  }
+  
+  .user-avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 0.875rem;
+  }
+}

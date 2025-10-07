@@ -54,72 +54,144 @@
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-header flex-between">
-      <h3 class="card-title">Appointments</h3>
-      <button class="btn btn-primary" onclick="showPage('appointments')">View All</button>
+  <div class="dashboard-grid">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Appointments</h3>
+        <button class="btn btn-primary" onclick="showPage('appointments')">View All</button>
+      </div>
+
+      <!-- Tabs -->
+      <!-- <div class="tabs"> -->
+      <!--   <button class="tab-btn active" onclick="switchTab('today', this); loadRecentTodayAppointments()">Today</button> -->
+      <!--   <button class="tab-btn" onclick="switchTab('recent', this); loadRecentAppointments()">Recent</button> -->
+      <!-- </div> -->
+
+      <!-- Tab contents -->
+      <div id="today-tab" class="tab-content active">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Patient</th>
+              <th>Doctor</th>
+              <th>Type</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="recentAppointmentsTable">
+            <!-- Dynamic content -->
+          </tbody>
+        </table>
+      </div>
+
+      <div id="recent-tab" class="tab-content">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Patient</th>
+              <th>Doctor</th>
+              <th>Type</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="recentAppointmentsTable">
+            <!-- Dynamic content -->
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <!-- Tabs -->
-    <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('today', this); loadRecentTodayAppointments()">Today</button>
-      <button class="tab-btn" onclick="switchTab('recent', this); loadRecentAppointments()">Recent</button>
-    </div>
-
-    <!-- Tab contents -->
-    <div id="today-tab" class="tab-content active">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Recent Admissions</h3>
+        <button class="btn btn-primary" onclick="showPage('admissions')">View All</button>
+      </div>
       <table class="table">
         <thead>
           <tr>
-            <th>Time</th>
+            <th>Admission ID</th>
             <th>Patient</th>
-            <th>Doctor</th>
-            <th>Type</th>
+            <th>Room</th>
+            <th>Date</th>
             <th>Status</th>
           </tr>
         </thead>
-        <tbody id="recentAppointmentsTable">
+        <tbody id="recentAdmissionsTable">
           <!-- Dynamic content -->
         </tbody>
       </table>
     </div>
 
-    <div id="recent-tab" class="tab-content">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Time</th>
-            <th>Patient</th>
-            <th>Doctor</th>
-            <th>Type</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="recentAppointmentsTable">
-          <!-- Dynamic content -->
-        </tbody>
-      </table>
-    </div>
-  </div>
+    <!-- Add Patient Form -->
+    <div class="add-patient-form">
+      <h3>New Patient</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" id="dashboardPatientFirstName">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" id="dashboardPatientLastName">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input type="date" id="dashboardPatientDOB">
+        </div>
+        <div class="form-group">
+          <label>Gender</label>
+          <select id="dashboardPatientGender">
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
 
-  <div class="card">
-    <div class="card-header">
-      <h3 class="card-title">Recent Admissions</h3>
-      <button class="btn btn-primary" onclick="showPage('admissions')">View All</button>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" id="dashboardPatientPhone">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="dashboardPatientEmail">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Address</label>
+        <textarea id="dashboardPatientAddress" rows="3"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Blood Group</label>
+          <select id="dashboardPatientBloodGroup">
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Emergency Contact</label>
+          <input type="tel" id="dashboardPatientEmergency">
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-outline" onclick="resetPatientForm()">Clear</button>
+        <button class="btn btn-primary" onclick="saveDashboardPatient()">Save Patient</button>
+      </div>
     </div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Admission ID</th>
-          <th>Patient</th>
-          <th>Room</th>
-          <th>Date</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="recentAdmissionsTable">
-        <!-- Dynamic content -->
-      </tbody>
-    </table>
   </div>
 </div>

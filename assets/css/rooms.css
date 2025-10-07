@@ -7,10 +7,11 @@
 }
 
 .room-card {
-  background: var(--white);
+  background: #ffffff;
   border-radius: 12px;
+  border: 1px solid var(--border);
   padding: 20px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-lg);
   transition: all 0.3s;
   cursor: pointer;
   position: relative;
@@ -368,7 +369,7 @@
 
 .room-actions .btn-warning {
   background: var(--warning);
-  color: var(--white);
+  color: white;
 }
 
 .room-actions .btn-warning:hover {

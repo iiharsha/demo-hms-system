@@ -43,8 +43,8 @@ function login(username, role) {
   DOM.get("userAvatar").textContent = username.charAt(0).toUpperCase();
 
   // Load default page
-  // loadPage("dashboard.html");
 
+  // showPage('dashboard.html')
   // Call init data if exists
   if (typeof loadData === "function") {
     loadData();

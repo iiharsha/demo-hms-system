@@ -1,7 +1,8 @@
 /* patients page */
 
 
-/* Initialize Patients Page */
+/** Initialize Patients Page 
+ * */
 function loadPatients() {
   // Update statistics
   DOM.setValue("totalPatientsCount", patients.length);

@@ -39,6 +39,9 @@ const consultations = [
   },
 ];
 
+/**
+ * Initlialize the Cosultations page
+ */
 function loadConsultations() {
   const html = consultations
     .map(

@@ -24,10 +24,7 @@ async function showPage(pageParam) {
     return;
   }
 
-  // Normalize page name (strip .html if present)
-  const pageName = pageParam.replace(/\.html$/i, ""); // e.g. "dashboard"
-
-  // Build fetch URL (ensure you request the .html file)
+  const pageName = pageParam.replace(/\.html$/i, "");
   const fetchHtml = `pages/${pageName}.html`;
 
   try {
@@ -40,28 +37,24 @@ async function showPage(pageParam) {
     console.error("Page load error:", err);
   }
 
-  // Update nav active classes (works whether data-page is "dashboard" or "dashboard.html")
   document.querySelectorAll(".nav-menu .nav-item[data-page]").forEach((item) => {
     const itemPageName = (item.dataset.page || "").replace(/\.html$/i, "");
     item.classList.toggle("active", itemPageName === pageName);
   });
 
-  // Update header title (your markup has <h1 class="header-title">)
   const titleEl = document.querySelector(".header-title") || document.getElementById("pageTitle");
   if (titleEl) {
     titleEl.textContent = pageName.charAt(0).toUpperCase() + pageName.slice(1);
   }
 
-  // Optionally call initialize<Page>() if you defined it, e.g. initializeDashboard()
   const initFnName = "initialize" + pageName.charAt(0).toUpperCase() + pageName.slice(1);
   const initFn = window[initFnName];
   if (typeof initFn === "function") {
-    requestAnimationFrame(() => initFn())
+    requestAnimationFrame(() => initFn());
   }
 
-  // Optionally call loadPageData(pageName) if you use it
   if (typeof window.loadPageData === "function") {
-    try { window.loadPageData(pageName); } catch (e) { console.error("loadPageData error:", e); }
+    try { window.loadPageData(pageName); } catch (e) { console.error(e); }
   }
 }
 
@@ -139,16 +132,16 @@ function switchTab(tabName, btn) {
 
 /* Responsive sidebar toggle for mobile */
 function toggleSidebar() {
-  const sidebar = document.querySelector(".sidebar");
-  const content = document.querySelector(".content");
 
-  if (sidebar.style.width === "70px") {
-    sidebar.style.width = "250px";
-    content.style.marginLeft = "250px";
-  } else {
-    sidebar.style.width = "70px";
-    content.style.marginLeft = "70px";
-  }
+  const sidebar = document.querySelector(".sidebar");
+  const toggleBtn = document.getElementById("toggleSidebar");
+
+  toggleBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("collapsed");
+    const icon = toggleBtn.querySelector("i");
+    icon.classList.toggle("ri-menu-3-line");
+    icon.classList.toggle("ri-close-line");
+  });
 }
 
 /* Add hamburger menu for mobile (would need to add button in HTML) */

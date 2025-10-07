@@ -12,7 +12,7 @@ function showNotification(message) {
                 position: fixed;
                 top: 20px;
                 right: 20px;
-                background: var(--secondary);
+                background-color: var(--success);
                 color: white;
                 padding: 15px 20px;
                 border-radius: 8px;
@@ -231,5 +231,20 @@ function loadJSON(filePath) {
       }
       return response.json();
     });
+}
+
+
+function formatDate(dateStr) {
+  const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+    "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+  const date = new Date(dateStr);
+  if (isNaN(date)) return ""
+
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+
+  return `${day}-${month}-${year}`;
 }
 

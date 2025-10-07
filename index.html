@@ -4,12 +4,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>medicare pro - clinic management system</title>
+  <title>ClinicCare - Healthcare Management System</title>
+
+  <!-- Base Styles -->
   <link rel="stylesheet" href="assets/css/styles.css">
+
+  <!-- Component Styles -->
+  <link rel="stylesheet" href="assets/css/login.css">
+  <link rel="stylesheet" href="assets/css/sidebar.css">
+  <link rel="stylesheet" href="assets/css/content.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/utilities.css">
+
+  <!-- Additional Page Styles -->
   <link rel="stylesheet" href="assets/css/rooms.css">
   <link rel="stylesheet" href="assets/css/error.css">
-  <link rel="stylesheet" href="assets/css/utiliies.css">
-  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css" />
+
+  <!-- External Libraries -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
 </head>
 
@@ -19,8 +31,8 @@
   <div class="login-container" id="loginScreen">
     <div class="login-box">
       <div class="login-header">
-        <h1>🏥 MediCare Pro</h1>
-        <p>Clinic Management System</p>
+        <h1> DR. SHRUTHI</h1>
+        <p>ENT Clinic</p>
       </div>
       <form id="loginForm">
         <div class="form-group">
@@ -49,28 +61,38 @@
       </p>
     </div>
   </div>
-  <!-- main application -->
+
+  <!-- Main Application -->
   <div class="main-container" id="mainApp">
-    <!-- sidebar -->
-    <div class="sidebar">
+    <!-- Sidebar -->
+    <aside class="sidebar expanded">
       <div class="sidebar-header">
-        <h2>🏥 <span>Medicare Pro</span></h2>
+        <div class="logo-section">
+          <div class="logo-icon">
+            <i class="ri-heart-pulse-fill"></i>
+          </div>
+          <div class="logo-text">
+            <h2 class="logo-title">DR. SHRUTHI</h2>
+            <p class="logo-subtitle">ENT Clini</p>
+          </div>
+        </div>
       </div>
+
       <nav class="nav-menu">
         <button class="nav-item active" data-page="dashboard.html">
-          <i class="ri-home-heart-fill"></i>
+          <i class="ri-dashboard-fill"></i>
           <span>Dashboard</span>
         </button>
         <button class="nav-item" data-page="patients.html">
-          <i class="ri-team-fill"></i>
+          <i class="ri-user-heart-fill"></i>
           <span>Patients</span>
         </button>
         <button class="nav-item" data-page="appointments.html">
-          <i class="ri-todo-fill"></i>
+          <i class="ri-calendar-check-fill"></i>
           <span>Appointments</span>
         </button>
         <button class="nav-item" data-page="consultations.html">
-          <i class="ri-stethoscope-line"></i>
+          <i class="ri-stethoscope-fill"></i>
           <span>Consultations</span>
         </button>
         <button class="nav-item" data-page="admissions.html">
@@ -90,33 +112,36 @@
           <span>Inventory</span>
         </button>
         <button class="nav-item" data-page="reports.html">
-          <i class="ri-bar-chart-2-line"></i>
+          <i class="ri-bar-chart-fill"></i>
           <span>Reports</span>
         </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div>
+            <div style="font-weight: 600;" id="userDisplay">Admin User</div>
+            <div style="font-size: 12px; color: #6b7280;" id="roleDisplay">Administrator</div>
+          </div>
+          <div class="user-avatar" id="userAvatar">A</div>
+        </div>
         <button class="nav-item-logout" onclick="logout()">
           <i class="ri-logout-box-line"></i>
           <span>Log Out</span>
         </button>
-      </nav>
-    </div>
+      </div>
+    </aside>
 
-    <!-- content area -->
+    <!-- Content Area -->
     <div class="content">
       <div class="header">
         <h1 class="header-title">Dashboard</h1>
-        <div class="user-info">
-          <div>
-            <div style="font-weight: 600;" id="userDisplay">admin user</div>
-            <div style="font-size: 12px; color: #6b7280;" id="roleDisplay">administrator</div>
-          </div>
-          <div class="user-avatar" id="userAvatar">a</div>
-        </div>
       </div>
-      <div class="page-content"></div> <!-- only this gets replaced -->
+      <div class="page-content"></div>
     </div>
   </div>
 
-  <!-- js files -->
+  <!-- JavaScript Files -->
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/utils.js"></script>
   <script src="assets/js/constants.js"></script>

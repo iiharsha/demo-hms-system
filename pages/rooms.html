@@ -147,19 +147,6 @@
   </div>
 </div>
 
-<!-- Discharge Patient Modal -->
-<div class="modal" id="dischargePatientModal">
-  <div class="modal-content" style="max-width: 600px;">
-    <div class="modal-header">
-      <h3>Discharge Patient</h3>
-      <button class="close-btn" onclick="closeDischargeModal()">
-        <i class="ri-close-line"></i>
-      </button>
-    </div>
-    <div class="modal-body" id="dischargeModalBody">
-    </div>
-  </div>
-</div>
 
 <!-- Room Management Modal -->
 <div class="modal" id="roomManagementModal">
@@ -171,8 +158,8 @@
       </button>
     </div>
     <div class="modal-body">
-      <div style="margin-bottom: 20px;">
-        <p style="color: #6b7280; font-size: 14px;">Manage room allocation, availability, and maintenance status</p>
+      <div style="mb-5">
+        <p class="text-gray-500 text-xs">Manage room allocation, availability, and maintenance status</p>
       </div>
 
       <div class="room-search" style="margin-bottom: 20px;">
@@ -186,6 +173,74 @@
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal('roomManagementModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Discharge Patient Modal -->
+<div class="modal" id="dischargePatientModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Discharge Patient</h3>
+      <button class="close-btn" onclick="closeModal('dischargePatientModal')">
+        <i class="ri-close-line"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div id="dischargeFormContainer">
+        <h4 id="dischargeRoomHeader"></h4>
+
+        <form id="dischargePatientForm" onsubmit="handlePatientDischarge(event); return false;">
+          <div class="mb-3" id="dischargePatientSelectContainer">
+          </div>
+
+          <div id="patientDetailsSection" class="mb-3 p-3" style="display: none;">
+            <h5 class="mb-2">Patient Details</h5>
+            <div id="patientDetailsContent" class="text-gray-500 text-sm"></div>
+          </div>
+
+          <div class="mb-3">
+            <label for="dischargeDate" class="mb-2 show text-sm">Discharge Date *</label>
+            <input type="date" id="dischargeDate" required class="p-2 show w-full border rounded-sm">
+          </div>
+
+          <div class="mb-3">
+            <select id="dischargeReason" required class="select-filter p-2 show w-full">
+              <option value="">Select Reason</option>
+              <option value="recovered">Recovered</option>
+              <option value="transferred">Transferred to Another Facility</option>
+              <option value="home_care">Home Care</option>
+              <option value="ama">Against Medical Advice (AMA)</option>
+              <option value="deceased">Deceased</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="dischargeNotes" class="mb-2 show text-sm">Discharge Summary / Notes</label>
+            <textarea id="dischargeNotes" rows="4"
+              placeholder="Enter discharge summary, follow-up instructions, prescriptions, etc..."
+              class="p-2 show w-full rounded-lg"></textarea>
+          </div>
+
+          <div class="warning-box"
+            style="background: #fef3c7; padding: 15px; border-radius: 8px; border-left: 4px solid var(--warning); margin-bottom: 20px;">
+            <i class="ri-alert-line"></i>
+            <div class="warning-content">
+              <strong>Important</strong>
+              <p>
+                This will mark the bed as available and remove the patient from the room.
+                Make sure all billing and documentation is complete before discharge.
+              </p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline" onclick="closeModal('dischargePatientModal')">Cancel</button>
+            <button type="submit" class="btn btn-primary">Discharge Patient</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

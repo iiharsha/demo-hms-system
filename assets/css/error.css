@@ -25,3 +25,33 @@
   margin-right: auto;
 }
 
+/* === Warning Box Styles === */
+.warning-box {
+  background: #fef3c7; /* soft yellow background */
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 4px solid var(--warning);
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.warning-box i {
+  color: var(--warning);
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.warning-content strong {
+  color: var(--warning);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.warning-content p {
+  font-size: 14px;
+  color: #92400e;
+  margin: 0;
+  line-height: 1.4;
+}

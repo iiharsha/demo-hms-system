@@ -68,8 +68,8 @@ function assignPatientToRoom() {
 
   // Build the assignment form
   const html = `
-    <div style="margin-bottom: 20px;">
-      <h4 style="margin-bottom: 10px;">Room ${room.id}</h4>
+    <div class="mb-4">
+      <h4 class="mb-3">Room ${room.id}</h4>
     </div>
 
     <form id="assignPatientForm" onsubmit="handlePatientAssignment(event); return false;">
@@ -221,84 +221,34 @@ function dischargeFromRoom() {
       return;
     }
 
-    // Get occupied beds in this room
     const occupiedBeds = room.occupiedBeds.filter(bed => bed.patient);
-
     if (occupiedBeds.length === 0) {
       showNotification('No patients to discharge from this room', 'warning');
       return;
     }
 
-    // Build the discharge form
-    const html = `
-<div class="mb3">
-  <h4 class="mb2">Room ${room.id}</h4>
-</div>
+    // Build the dropdown markup
+    const selectHTML = `
+      <select id="dischargePatientSelect" required onchange="updateDischargeDetails()" class="select-filter p-2 show w-full">
+        <option value="">Select Patient</option>
+        ${occupiedBeds.map(bed => `
+          <option value="${bed.bed}" data-patient-id="${bed.patientId}" data-admission="${bed.admissionDate}">
+            Bed ${bed.bed}: ${bed.patient} (${bed.patientId})
+          </option>
+        `).join('')}
+      </select>
+    `;
 
-<form id="dischargePatientForm" onsubmit="handlePatientDischarge(event); return false;">
-  <div class="mb3">
-    <select id="dischargePatientSelect" required onchange="updateDischargeDetails()" class="select-filter pa2 db w-100 ba b--light-gray br2">
-      <option value="">Select Patient</option>
-      ${occupiedBeds.map(bed => `
-        <option value="${bed.bed}" data-patient-id="${bed.patientId}" data-admission="${bed.admissionDate}">
-          Bed ${bed.bed}: ${bed.patient} (${bed.patientId})
-        </option>
-      `).join('')}
-    </select>
-  </div>
+    // Inject it into container
+    DOM.setHTML('dischargePatientSelectContainer', selectHTML);
 
-  <div id="patientDetailsSection" class="mb3 bg-near-white pa3 br2" style="display: none;">
-    <h5 class="mb2 f6">Patient Details</h5>
-    <div id="patientDetailsContent" class="f6 gray"></div>
-  </div>
+    // Set default discharge date
+    DOM.get('dischargeDate').value = new Date().toISOString().split('T')[0];
 
-  <div class="mb3">
-    <label for="dischargeDate" class="i mb2 db f6">Discharge Date *</label>
-    <input type="date" id="dischargeDate" required value="${new Date().toISOString().split('T')[0]}" 
-           class="pa2 db w-100 ba b--light-gray br2 f6">
-  </div>
-
-  <div class="mb3">
-    <select id="dischargeReason" required class="select-filter pa2 db w-100 ba b--light-gray br2">
-      <option value="">Select Reason</option>
-      <option value="recovered">Recovered</option>
-      <option value="transferred">Transferred to Another Facility</option>
-      <option value="home_care">Home Care</option>
-      <option value="ama">Against Medical Advice (AMA)</option>
-      <option value="deceased">Deceased</option>
-      <option value="other">Other</option>
-    </select>
-  </div>
-
-  <div class="mb3">
-    <label for="dischargeNotes" class="i mb2 db f6">Discharge Summary / Notes</label>
-    <textarea id="dischargeNotes" rows="4" placeholder="Enter discharge summary, follow-up instructions, prescriptions, etc..."
-              class="pa2 db w-100 ba b--light-gray br2 f6 resize-vertical"></textarea>
-  </div>
-
-  <div
-    style="background: #fef3c7; padding: 15px; border-radius: 8px; border-left: 4px solid var(--warning); margin-bottom: 20px;">
-    <div style="display: flex; gap: 10px;"> <i class="ri-alert-line" style="color: var(--warning); font-size: 20px;"></i>
-      <div> <strong style="color: var(--warning);">Important</strong>
-        <p style="font-size: 14px; color: #92400e; margin-top: 5px; margin-bottom: 0;"> This will mark the bed as
-          available and remove the patient from the room. Make sure all billing and documentation is complete before
-          discharge. </p>
-      </div>
-    </div>
-  </div>
-
-  <div class="flex gap2 mt3">
-    <button type="button" class="btn btn-outline flex-auto pa2" onclick="closeDischargeModal()">Cancel</button>
-    <button type="submit" class="btn btn-primary flex-auto pa2">Discharge Patient</button>
-  </div>
-</form>
-`;
-
-    DOM.setHTML('dischargeModalBody', html);
     openModal('dischargePatientModal');
   } catch (err) {
-    console.error('Error in dischargeFromRoom(): ', err)
-    showErrorNotification('Unexpected error occured. Please Try Again!');
+    console.error('Error in dischargeFromRoom(): ', err);
+    showErrorNotification('Unexpected error occurred. Please try again!');
   }
 }
 
@@ -315,6 +265,7 @@ function updateDischargeDetails() {
   }
 
   const patientId = selectedOption.dataset.patientId;
+  console.log(selectedOption.dataset.patientId);
   const admissionDate = selectedOption.dataset.admission;
   const patient = patients.find(p => p.id === patientId);
 
