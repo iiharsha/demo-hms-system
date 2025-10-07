@@ -11,7 +11,6 @@
  * Open modal to assign a patient to a room
  */
 function assignPatientToRoom() {
-
   if (!currentRoomId) {
     showNotification('Please select a room first', 'error');
     return;
@@ -23,124 +22,78 @@ function assignPatientToRoom() {
     return;
   }
 
-  // Check if room is under maintenance
   if (room.status === 'maintenance') {
     showNotification('Cannot assign patients to rooms under maintenance', 'error');
     return;
   }
 
-  // Get available beds in this room
   const availableBeds = room.occupiedBeds.filter(bed => !bed.patient);
-
   if (availableBeds.length === 0) {
     showNotification('No available beds in this room', 'error');
     return;
   }
 
-  // Check if patients array exists
-  if (typeof patients === 'undefined' || !patients || patients.length === 0) {
+  if (!patients?.length) {
     showNotification('No patients found in the system. Please add patients first.', 'error');
-    console.error('Patients array not found or empty:', patients);
     return;
   }
 
-  // Get patients who are NOT currently admitted
-  const admittedPatientIds = new Set();
+  // Get patients not admitted
+  const admittedIds = new Set();
   rooms.forEach(r => {
     r.occupiedBeds.forEach(bed => {
-      if (bed.patient && bed.patientId) {
-        admittedPatientIds.add(bed.patientId);
-      }
+      if (bed.patientId) admittedIds.add(bed.patientId);
     });
   });
 
-  console.log('Total patients:', patients.length);
-  console.log('Admitted patient IDs:', Array.from(admittedPatientIds));
-
-  const availablePatients = patients.filter(p => !admittedPatientIds.has(p.id));
-
-  console.log('Available patients for admission:', availablePatients.length, availablePatients);
-
+  const availablePatients = patients.filter(p => !admittedIds.has(p.id));
   if (availablePatients.length === 0) {
-    showNotification('All patients are currently admitted. No patients available for new admission.', 'warning');
+    showNotification('All patients are currently admitted.', 'warning');
     return;
   }
 
-  // Build the assignment form
-  const html = `
-    <div class="mb-4">
-      <h4 class="mb-3">Room ${room.id}</h4>
-    </div>
+  // Update room header
+  DOM.setHTML('assignRoomHeader', `<h4>Room ${room.id}</h4>`);
 
-    <form id="assignPatientForm" onsubmit="handlePatientAssignment(event); return false;">
-      <div style="margin-bottom: 20px;">
-        <select id="patientSelect" required class="select-filter">
-          <option value=""> Select Patient </option>
-          ${availablePatients.map(p => `
-            <option value="${p.id}">
-              ${p.name} (${p.id}) - Age: ${p.age}, ${p.gender}
-            </option>
-          `).join('')}
-        </select>
-      </div>
+  // Populate patient dropdown
+  DOM.setHTML(
+    'patientSelect',
+    `<option value="">Select Patient</option>` +
+    availablePatients
+      .map(
+        p => `<option value="${p.id}">${p.name} (${p.id}) — ${p.age}y, ${p.gender}</option>`
+      )
+      .join('')
+  );
 
-      <div style="margin-bottom: 20px;">
-        <select id="bedSelect" required class="select-filter">
-          <option value=""> Select Bed </option>
-          ${availableBeds.map(bed => `
-            <option value="${bed.bed}">Bed ${bed.bed}</option>
-          `).join('')}
-        </select>
-      </div>
+  // Populate bed dropdown
+  DOM.setHTML(
+    'bedSelect',
+    `<option value="">Select Bed</option>` +
+    availableBeds.map(b => `<option value="${b.bed}">Bed ${b.bed}</option>`).join('')
+  );
 
-      <div style="margin-bottom: 20px;">
-        <label 
-        style="display: block;
-        margin-bottom: 8px;
-        font-size: 14px;
-        color: var(--dark);"
-        >
-        Admission Date *
-        </label>
-        <input type="date" id="admissionDate" required value="${new Date().toISOString().split('T')[0]}" 
-               style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
-      </div>
+  // Set today's date
+  DOM.get('admissionDate').value = new Date().toISOString().split('T')[0];
 
-      <div style="margin-bottom: 20px;">
-        <label 
-        style="display: block;
-        margin-bottom: 8px;
-        font-size: 14px;
-        color: var(--dark);"
-        >
-        Admission Notes
-        </label>
-        <textarea id="admissionNotes" rows="3" placeholder="Enter any admission notes or special instructions..."
-                  style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; resize: vertical;"></textarea>
-      </div>
-
-      <div style="background: #eff6ff; padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary);">
-        <div style="display: flex; gap: 10px; margin-bottom: 8px;">
-          <i class="ri-information-line" style="color: var(--primary); font-size: 20px;"></i>
-          <div>
-            <strong style="color: var(--primary);">Room Details</strong>
-            <div style="font-size: 14px; color: #6b7280; margin-top: 5px;">
-              <div>Type: ${formatRoomType(room.type)}</div>
-              <div>Daily Rate: ₹${room.rate}</div>
-              <div>Floor: ${room.floor}</div>
-            </div>
-          </div>
+  // Update room info box
+  DOM.setHTML(
+    'roomInfoBox',
+    `
+    <div style="display: flex; gap: 10px;">
+      <i class="ri-information-line" style="color: var(--primary); font-size: 20px;"></i>
+      <div>
+        <strong style="color: var(--primary);">Room Details</strong>
+        <div style="font-size: 14px; color: #6b7280; margin-top: 5px;">
+          <div>Type: ${formatRoomType(room.type)}</div>
+          <div>Daily Rate: ₹${room.rate}</div>
+          <div>Floor: ${room.floor}</div>
         </div>
       </div>
+    </div>
+  `
+  );
 
-      <div style="display: flex; gap: 10px; margin-top: 20px;">
-        <button type="button" class="btn btn-outline" onclick="closeAssignmentModal()" style="flex: 1;">Cancel</button>
-        <button type="submit" class="btn btn-primary" style="flex: 1;">Assign Patient</button>
-      </div>
-    </form>
-  `;
-
-  document.getElementById('assignModalBody').innerHTML = html;
   openModal('assignPatientModal');
 }
 

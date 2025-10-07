@@ -142,7 +142,49 @@
         <i class="ri-close-line"></i>
       </button>
     </div>
-    <div class="modal-body" id="assignModalBody">
+
+    <div class="modal-body">
+      <div id="assignRoomHeader" class="mb-3"></div>
+
+      <form id="assignPatientForm" onsubmit="handlePatientAssignment(event); return false;">
+        <!-- Patient Select -->
+        <div class="mb-3">
+          <label for="patientSelect" class="text-sm mb-1 block">Select Patient *</label>
+          <select id="patientSelect" required class="select-filter w-full p-2"></select>
+        </div>
+
+        <!-- Bed Select -->
+        <div class="mb-3">
+          <label for="bedSelect" class="text-sm mb-1 block">Select Bed *</label>
+          <select id="bedSelect" required class="select-filter w-full p-2"></select>
+        </div>
+
+        <!-- Admission Date -->
+        <div class="mb-3">
+          <label for="admissionDate" class="text-sm mb-1 block">Admission Date *</label>
+          <input type="date" id="admissionDate" required class="p-2 show w-full border rounded-sm" />
+        </div>
+
+        <!-- Admission Notes -->
+        <div class="mb-3">
+          <label for="admissionNotes" class="text-sm mb-1 block">Admission Notes</label>
+          <textarea id="admissionNotes" rows="3" placeholder="Enter any admission notes or special instructions..."
+            class="p-2 show w-full border rounded-sm resize-vertical"></textarea>
+        </div>
+
+        <!-- Room Info Box -->
+        <div id="roomInfoBox" class="info-box"
+          style="background: #eff6ff; padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary);"></div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" onclick="closeAssignmentModal()" style="flex: 1;">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary" style="flex: 1;">
+            Assign Patient
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -176,7 +218,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- Discharge Patient Modal -->
 <div class="modal" id="dischargePatientModal">
