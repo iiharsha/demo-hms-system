@@ -1,11 +1,11 @@
 <!-- Patients Page -->
 <div class="page-content" id="patients-page">
   <div class="search-bar">
-    <button class="btn" onclick="document.getElementById('patientSearch').value = ''">
-      Clear
-    </button>
-    <input type="text" placeholder="Search patients by name, ID, or phone..." id="patientSearch">
-    <button class="btn btn-primary" onclick="searchPatients()">Search</button>
+    <div class="search-container">
+      <input type="text" placeholder="Search patients by name, ID or phone..." id="patientSearch"
+        oninput="searchPatients()">
+      <span class="clear-icon" onclick="clearPatientSearchBar('patientSearch', 'patient')">&#10006;</span>
+    </div>
     <button class="btn btn-secondary" onclick="openAddPatientModal()">+ Add Patient</button>
   </div>
 

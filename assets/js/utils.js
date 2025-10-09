@@ -248,3 +248,12 @@ function formatDate(dateStr) {
   return `${day}-${month}-${year}`;
 }
 
+/**
+ * This function clears the search bars in the application
+ * @param {string} searchBarElementId - the element of the search bar
+ * @param {string} pageName - the page name so that the page will reload
+*/
+function clearSearchBar(searchBarElementId, pageName) {
+  DOM.get(searchBarElementId).value = '';
+  loadPageData(pageName);
+}

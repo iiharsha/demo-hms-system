@@ -1,11 +1,10 @@
 <!-- Consultations Page -->
 <div class="page-content" id="consultations-page">
   <div class="search-bar">
-    <button class="btn" onclick="document.getElementById('consultationSearch').value = ''">
-      Clear
-    </button>
-    <input type="text" placeholder="Search consultations..." id="consultationSearch">
-    <button class="btn btn-primary" onclick="searchConsultations()">Search</button>
+    <div class="search-container">
+      <input type="text" placeholder="Search consultations..." id="consultationSearch" oninput="searchConsultations()">
+      <span class="clear-icon" onclick="clearPatientSearchBar('patientSearch', 'patient')">&#10006;</span>
+    </div>
     <button class="btn btn-secondary" onclick="openNewConsultationModal()">+ New Consultation</button>
   </div>
 
