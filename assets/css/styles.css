@@ -146,30 +146,3 @@ body {
   padding: 1.25rem;
 }
 
-.search-container {
-  position: relative;
-  flex: 1;
-  min-width: 250px;
-}
-
-#inventorySearch {
-  padding-right: 25px; /* space for the icon */
-  height: 30px;
-  font-size: 14px;
-}
-
-.clear-icon {
-  position: absolute;
-  padding: 8px;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #999;
-  font-size: 14px;
-  display: none; /* hidden by default */
-}
-
-#inventorySearch:not(:placeholder-shown) + .clear-icon {
-  display: block; /* show only when input has text */
-}
