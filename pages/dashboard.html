@@ -1,5 +1,11 @@
 <!-- Dashboard Page -->
 <div class="page-content" id="dashboard-page">
+  <!-- Dashboard/Pharmacy Tabs -->
+  <div class="dashboard-tabs">
+    <div class="tab-item active" data-page="dashboard.html">Dashboard</div>
+    <div class="tab-item" data-page="pharmacy.html">Pharmacy</div>
+  </div>
+
   <div class="stats-grid">
     <div class="stat-card" onclick="showPage('patients.html')">
       <div class="stat-header">
@@ -58,9 +64,9 @@
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Appointments</h3>
-        <button class="btn btn-primary" onclick="showPage('appointments')">
+        <button class="action-btn action-btn-primary" onclick="showPage('appointments')" title="View All">
           <i class="ri-external-link-line"></i>
-          View All</button>
+        </button>
       </div>
 
       <div class="tab-content active">
@@ -101,7 +107,9 @@
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Recent Admissions</h3>
-        <button class="btn btn-primary" onclick="showPage('admissions')">View All</button>
+        <button class="action-btn action-btn-primary" onclick="showPage('admissions')">
+          <i class="ri-external-link-line"></i>
+        </button>
       </div>
       <table class="table">
         <thead>

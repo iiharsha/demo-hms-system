@@ -24,10 +24,10 @@ function loadInventory() {
                     </td>
 
                     <td>
-                        <button class="action-btn action-btn-primary" onclick="editInventoryItem('${item.code}')">
+                        <button class="action-btn action-btn-primary" onclick="editInventoryItem('${item.code}')" title="Edit Item">
                           <i class="ri-edit-2-line"></i>
                         </button>
-                        <button class="action-btn action-btn-danger" onclick="deleteInventoryItem('${item.code}')">
+                        <button class="action-btn action-btn-danger" onclick="deleteInventoryItem('${item.code}')" title="Delete Item">
                           <i class="ri-delete-bin-6-line"></i>
                         </button>
                     </td>

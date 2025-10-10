@@ -39,7 +39,14 @@ async function showPage(pageParam) {
 
   document.querySelectorAll(".nav-menu .nav-item[data-page]").forEach((item) => {
     const itemPageName = (item.dataset.page || "").replace(/\.html$/i, "");
-    item.classList.toggle("active", itemPageName === pageName);
+
+    const isDashboardGroup = pageName === "dashboard" || pageName === "pharmacy";
+
+    if (itemPageName === "dashboard") {
+      item.classList.toggle("active", isDashboardGroup);
+    } else {
+      item.classList.toggle("active", itemPageName === pageName);
+    }
   });
 
   const titleEl = document.querySelector(".header-title") || document.getElementById("pageTitle");
@@ -56,6 +63,21 @@ async function showPage(pageParam) {
   if (typeof window.loadPageData === "function") {
     try { window.loadPageData(pageName); } catch (e) { console.error(e); }
   }
+
+  switchDashboardTabs();
+}
+
+function switchDashboardTabs() {
+  const tabs = document.querySelectorAll(".dashboard-tabs .tab-item[data-page]");
+  if (tabs.length === 0) return;
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", (e) => {
+      e.preventDefault();
+      const page = tab.dataset.page;
+      showPage(page);
+    });
+  });
 }
 
 function loadPageData(pageName) {
@@ -187,53 +209,3 @@ function resetSessionTimeout() {
 document.addEventListener("mousemove", resetSessionTimeout);
 document.addEventListener("keypress", resetSessionTimeout);
 
-/* DOM Helpers */
-const DOM = {
-  /**
-   * get element by ID with error handling 
-   * @param {string} id
-   * @returns {HTMLElement|null}
-   */
-  get(id) {
-    const element = document.getElementById(id);
-    if (!element) {
-      console.warn(`element with id "${id}" not found`)
-    }
-    return element;
-  },
-
-  /**
-   * get input value
-   * @param {string} id
-   * @returns {string}
-  */
-  getValue(id) {
-    const element = this.get(id);
-    return element ? element.value : "";
-  },
-
-  /**
-   * set the text value
-   * @param {string} id
-   * @param {string|number} text
-   * @returns {string|number} text
-  */
-  setValue(id, text) {
-    const element = this.get(id);
-    if (element) {
-      element.textContent = text;
-    }
-  },
-
-  /**
-   * set the text value
-   * @param {string} id - element id
-   * @param {string} html - html string
-  */
-  setHTML(id, html) {
-    const element = this.get(id);
-    if (element) {
-      element.innerHTML = html;
-    }
-  },
-}

@@ -65,7 +65,7 @@
 .action-btn {
   border: none;
   border-radius: 6px;              /* soft corners */
-  padding: 6px 6px;
+  padding: 5px 5px;
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 1rem;                 /* icon size */

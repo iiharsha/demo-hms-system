@@ -122,17 +122,12 @@ body {
 }
 
 .card-header {
-  padding: 1.25rem;
+  padding: 1rem;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-}
-
-.card-header i {
-  font-size: 1.25rem;
-  color: var(--primary);
 }
 
 .card-title {
@@ -144,5 +139,35 @@ body {
 
 .card-body {
   padding: 1.25rem;
+}
+
+.dashboard-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--border-color, #e0e0e0);
+  margin-bottom: 1.25rem;
+  background: var(--card, #fff);
+  border-radius: 0.5rem 0.5rem 0 0;
+  overflow: hidden;
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-muted, #555);
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.tab-item:hover {
+  background: var(--hover-bg, #f9f9f9);
+}
+
+.tab-item.active {
+  color: var(--primary, #007bff);
+  border-bottom-color: var(--primary, #007bff);
+  background: var(--background, #fdfdfd);
 }
 

@@ -1,0 +1,89 @@
+<!-- Pharmacy Dashboard Page -->
+<div class="page-content" id="pharmacy-page">
+  <!-- Dashboard/Pharmacy Tabs -->
+  <div class="dashboard-tabs">
+    <div class="tab-item" data-page="dashboard.html">Dashboard</div>
+    <div class="tab-item active" data-page="pharmacy.html">Pharmacy</div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card" onclick="showPage('sales.html')">
+      <div class="stat-header">
+        <div class="stat-icon blue" id="totalSalesCard">
+          <i class="ri-money-rupee-circle-fill"></i>
+        </div>
+        <div class="stat-title">Sales</div>
+      </div>
+      <div class="stat-value">
+        <span id="totalSales">0</span>
+        <span class="stat-unit">Total Sales Today</span>
+      </div>
+    </div>
+
+    <div class="stat-card" onclick="showPage('sales.html')">
+      <div class="stat-header">
+        <div class="stat-icon green">
+          <i class="ri-shopping-bag-2-fill"></i>
+        </div>
+        <div class="stat-title">Orders</div>
+      </div>
+      <div class="stat-value">
+        <span id="todayAppointments">0</span>
+        <span class="stat-unit">Orders Today</span>
+      </div>
+    </div>
+
+    <div class="stat-card" onclick="showPage('admissions.html')">
+      <div class="stat-header">
+        <div class="stat-icon yellow">
+          <i class="ri-hospital-fill"></i>
+        </div>
+        <div class="stat-title">Admissions</div>
+      </div>
+      <div class="stat-value">
+        <span id="activeAdmissions">0</span>
+        <span class="stat-unit">Active Admissions</span>
+      </div>
+    </div>
+
+    <div class="stat-card" onclick="showPage('billing.html')">
+      <div class="stat-header">
+        <div class="stat-icon red">
+          <i class="ri-money-rupee-circle-fill"></i>
+        </div>
+        <div class="stat-title">Bills</div>
+      </div>
+      <div class="stat-value">
+        <span id="pendingBills">0</span>
+        <span class="stat-unit">Pending Bills</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Sales</h3>
+        <button class="action-btn action-btn-primary" onclick="showPage('appointments')" title="View All">
+          <i class="ri-external-link-line"></i>
+        </button>
+      </div>
+
+      <div class="tab-content active">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Date</th>
+              <th>Name</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="recentSalesTable">
+            <!-- Dynamic content -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

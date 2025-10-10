@@ -52,7 +52,7 @@
  * List of patients
  * @type {Patient[]}
  */
-const patients = [
+let patients = [
   {
     id: "P001",
     name: "John Doe",
@@ -259,7 +259,7 @@ const patients = [
 
 
 /** Billing */
-const bills = [
+let bills = [
   {
     id: "B001",
     patient: "John Doe",
@@ -299,7 +299,7 @@ const bills = [
  * List of hospital rooms with bed and patient occupancy information.
  * @type {Room[]}
  */
-const rooms = [
+let rooms = [
   // First Floor - General Ward
   {
     id: "R101",
@@ -556,8 +556,19 @@ const rooms = [
 ];
 
 
-/** Inventory page */
-const inventory = [
+/** @typedef {Object} Inventory
+ *  @param {string} code
+ *  @param {string} name
+ *  @param {string} category
+ *  @param {string} quantity
+ *  @param {string} unitPrice
+ *  @param {string} status
+ *  @param {string} expiryDate
+ */
+
+/** The pharmacy inventory
+ * @type {Inventory[]}*/
+let inventory = [
   {
     code: "MED001",
     name: "Paracetamol",
@@ -659,3 +670,83 @@ const inventory = [
   },
 ];
 
+
+/** @typedef {Object} Sales
+ * @param {string} id
+ * @param {string} date
+ * @param {string} customerName
+ * @param {string} prescriptionNumber
+ * @param {string} medicine
+ * @param {number} quantity
+ * @param {string[]} modeOfPatment
+ * @param {string} totalPrice
+ * @param {string} status
+ * */
+
+/** @type {Sales[]} */
+let sales = [
+  {
+    id: "SL001",
+    date: "2025-10-28",
+    customerName: "John Doe",
+    prescriptionNumber: "1234123",
+    medicine: "Paracetamol 500mg",
+    quantity: 1,
+    modeOfPatment: ["UPI", "Cash"],
+    totalPrice: "₹30",
+    status: "Completed"
+  },
+  {
+    id: "SL002",
+    date: "2025-10-28",
+    customerName: "Sarah Bill",
+    prescriptionNumber: "1234123",
+    medicine: "Amoxicillin 500mg",
+    quantity: 2,
+    modeOfPatment: ["UPI"],
+    totalPrice: "₹420",
+    status: "Pending"
+  },
+  {
+    id: "SL003",
+    date: "2025-10-28",
+    customerName: "Bill Gates",
+    prescriptionNumber: "1234123",
+    medicine: "Metformin 500mg",
+    quantity: 100,
+    modeOfPatment: ["Card"],
+    totalPrice: "₹85",
+    status: "Completed"
+  },
+]
+
+let orders = [
+  {
+    id: "#ORD001",
+    customerName: "John Doe",
+    items: 5,
+    totalPrice: "₹185",
+    status: "Completed",
+  },
+  {
+    id: "#ORD002",
+    customerName: "Jane Smith",
+    items: 1,
+    totalPrice: "₹85",
+    status: "Completed",
+  },
+  {
+    id: "#ORD003",
+    customerName: "Donald Duck",
+    items: 6,
+    totalPrice: "₹185",
+    status: "Pending",
+  },
+  {
+    id: "#ORD004",
+    customerName: "Ram Singh",
+    items: 9,
+    totalPrice: "₹420",
+    status: "Completed",
+  }
+]

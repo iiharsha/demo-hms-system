@@ -1,3 +1,54 @@
+/* DOM Helpers */
+const DOM = {
+  /**
+   * get element by ID with error handling 
+   * @param {string} id
+   * @returns {HTMLElement|null}
+   */
+  get(id) {
+    const element = document.getElementById(id);
+    if (!element) {
+      console.warn(`element with id "${id}" not found`)
+    }
+    return element;
+  },
+
+  /**
+   * get input value
+   * @param {string} id
+   * @returns {string}
+  */
+  getValue(id) {
+    const element = this.get(id);
+    return element ? element.value : "";
+  },
+
+  /**
+   * set the text value
+   * @param {string} id
+   * @param {string|number} text
+   * @returns {string|number} text
+  */
+  setValue(id, text) {
+    const element = this.get(id);
+    if (element) {
+      element.textContent = text;
+    }
+  },
+
+  /**
+   * set the text value
+   * @param {string} id - element id
+   * @param {string} html - html string
+  */
+  setHTML(id, html) {
+    const element = this.get(id);
+    if (element) {
+      element.innerHTML = html;
+    }
+  },
+}
+
 /* calculates age based on the DOB */
 function calculateAge(dob) {
   const diff = Date.now() - new Date(dob).getTime();
