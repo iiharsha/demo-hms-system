@@ -14,8 +14,8 @@
         <div class="stat-title">Sales</div>
       </div>
       <div class="stat-value">
-        <span id="totalSales">0</span>
-        <span class="stat-unit">Total Sales Today</span>
+        <span id="todaySales">0</span>
+        <span class="stat-unit">Sales Today</span>
       </div>
     </div>
 
@@ -27,7 +27,7 @@
         <div class="stat-title">Orders</div>
       </div>
       <div class="stat-value">
-        <span id="todayAppointments">0</span>
+        <span id="todayOrders">0</span>
         <span class="stat-unit">Orders Today</span>
       </div>
     </div>
@@ -37,11 +37,11 @@
         <div class="stat-icon yellow">
           <i class="ri-hospital-fill"></i>
         </div>
-        <div class="stat-title">Admissions</div>
+        <div class="stat-title">Stock</div>
       </div>
       <div class="stat-value">
-        <span id="activeAdmissions">0</span>
-        <span class="stat-unit">Active Admissions</span>
+        <span id="lowStockItems">0</span>
+        <span class="stat-unit">Low Stock Items</span>
       </div>
     </div>
 
@@ -50,40 +50,39 @@
         <div class="stat-icon red">
           <i class="ri-money-rupee-circle-fill"></i>
         </div>
-        <div class="stat-title">Bills</div>
+        <div class="stat-title">Customers</div>
       </div>
       <div class="stat-value">
-        <span id="pendingBills">0</span>
-        <span class="stat-unit">Pending Bills</span>
+        <span id="totalActiveCustomers">0</span>
+        <span class="stat-unit">Customers this month.</span>
       </div>
     </div>
   </div>
 
-  <div class="dashboard-grid">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">Sales</h3>
-        <button class="action-btn action-btn-primary" onclick="showPage('appointments')" title="View All">
-          <i class="ri-external-link-line"></i>
-        </button>
-      </div>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Sales</h3>
+      <button class="action-btn action-btn-primary" onclick="showPage('sales')" title="View All">
+        <i class="ri-external-link-line"></i>
+      </button>
+    </div>
 
-      <div class="tab-content active">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Date</th>
-              <th>Name</th>
-              <th>Items</th>
-              <th>Total</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="recentSalesTable">
-            <!-- Dynamic content -->
-          </tbody>
-        </table>
-      </div>
+    <div class="tab-content active">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="recentSalesTable">
+          <!-- Dynamic content -->
+        </tbody>
+      </table>
     </div>
   </div>

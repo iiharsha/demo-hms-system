@@ -183,16 +183,6 @@ function renderRoomGrid(roomsList = rooms) {
       const totalBeds = Number(room.totalBeds) || (room.occupiedBeds ? room.occupiedBeds.length : 0);
       const availableCount = totalBeds - occupiedCount;
 
-
-      let statusClass = "available";
-      if (room.status === "maintenance") {
-        statusClass = "maintenance";
-      } else if (room.status === "reserved") {
-        statusClass = "reserved";
-      } else if (occupiedCount === totalBeds && totalBeds > 0) {
-        statusClass = "occupied";
-      }
-
       const bedIndicators = (room.occupiedBeds || [])
         .map((bed) => {
           let bedClass = bed.patient ? "occupied" : "available";
@@ -203,7 +193,7 @@ function renderRoomGrid(roomsList = rooms) {
         .join("");
 
       html += `
-        <div class="room-card ${statusClass}" onclick="viewRoomDetails('${room.id}')">
+        <div class="room-card " onclick="viewRoomDetails('${room.id}')">
           <div class="room-header">
             <div>
               <div class="room-number">${room.id} 
@@ -215,19 +205,8 @@ function renderRoomGrid(roomsList = rooms) {
         }
               </div>
         <div class="room-type">${typeof formatRoomType === 'function' ? formatRoomType(room.type) : room.type}</div>
-            </div >
-        <div style="text-align: right;">
-          <div style="font-size: 20px; font-weight: 600; color: ${occupiedCount === 0
-          ? "var(--secondary)"
-          : occupiedCount === totalBeds
-            ? "var(--danger)"
-            : "var(--warning)"
-        }">
-          ${occupiedCount}/${totalBeds}
-        </div>
-
-            </div >
-          </div >
+            </div>
+          </div>
 
           <div class="bed-indicators">${bedIndicators}</div>
 

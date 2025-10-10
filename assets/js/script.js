@@ -103,6 +103,9 @@ function loadPageData(pageName) {
     case "inventory":
       loadInventory();
       break;
+    case "pharmacy":
+      loadPharmacy();
+      break;
     case "reports":
       loadReports();
       break;

@@ -2,7 +2,7 @@
 .room-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 15px;
+  gap: 8px;
   margin-top: 20px;
 }
 
@@ -21,23 +21,6 @@
 .room-card:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-lg);
-}
-
-.room-card.available {
-  border-left: 4px solid var(--secondary);
-}
-
-.room-card.occupied {
-  border-left: 4px solid var(--warning);
-}
-
-.room-card.maintenance {
-  border-left: 4px solid var(--danger);
-  opacity: 0.7;
-}
-
-.room-card.reserved {
-  border-left: 4px solid var(--primary);
 }
 
 .room-header {
