@@ -91,7 +91,7 @@
 
 .nav-menu::-webkit-scrollbar-thumb {
   background: var(--gray-300);
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
 }
 
 /* === Nav Items === */
@@ -105,7 +105,7 @@
   align-items: center;
   gap: 0.75rem;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   background: none;
   width: calc(100% - 1rem);
   text-align: left;
@@ -161,7 +161,7 @@
   text-align: left;
   font-size: 0.875rem;
   font-weight: 500;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
 }
 
 .nav-item-logout i {
