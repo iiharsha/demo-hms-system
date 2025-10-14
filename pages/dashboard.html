@@ -1,61 +1,57 @@
 <!-- Dashboard Page -->
 <div class="page-content" id="dashboard-page">
-  <!-- Dashboard/Pharmacy Tabs -->
-  <div class="dashboard-tabs">
-    <div class="tab-item active" data-page="dashboard.html">Dashboard</div>
-    <div class="tab-item" data-page="pharmacy.html">Pharmacy</div>
-  </div>
 
   <div class="stats-grid">
     <div class="stat-card" onclick="showPage('patients.html')">
-      <div class="stat-header">
-        <div class="stat-icon blue" id="totalPatientsCard">
+      <div class="stat-content">
+        <div class="stat-text">
+          <p class="stat-label">Patients</p>
+          <h2 class="stat-number" id="totalPatients" title="Total Patients"></h2>
+          <p class="stat-change">↑ 12% from yesterday</p>
+        </div>
+        <div class="stat-icon blue">
           <i class="ri-team-fill"></i>
         </div>
-        <div class="stat-title">Patients</div>
-      </div>
-      <div class="stat-value">
-        <span id="totalPatients">0</span>
-        <span class="stat-unit">Total Patients</span>
       </div>
     </div>
 
     <div class="stat-card" onclick="showPage('appointments.html')">
-      <div class="stat-header">
+      <div class="stat-content">
+        <div class="stat-text">
+          <p class="stat-label">Appointments</p>
+          <h2 class="stat-number" id="todayAppointments" title="Appointments Today"></h2>
+          <p class="stat-change">↑ 12% from yesterday</p>
+        </div>
         <div class="stat-icon green">
           <i class="ri-todo-fill"></i>
         </div>
-        <div class="stat-title">Appointments</div>
-      </div>
-      <div class="stat-value">
-        <span id="todayAppointments">0</span>
-        <span class="stat-unit">Appointments Total</span>
       </div>
     </div>
 
     <div class="stat-card" onclick="showPage('admissions.html')">
-      <div class="stat-header">
+      <div class="stat-content">
+        <div class="stat-text">
+          <p class="stat-label">Admissions</p>
+          <h2 class="stat-number" id="activeAdmissions" title="Total Admissions"></h2>
+          <p class="stat-change">↑ 12% from yesterday</p>
+        </div>
         <div class="stat-icon yellow">
           <i class="ri-hospital-fill"></i>
         </div>
-        <div class="stat-title">Admissions</div>
-      </div>
-      <div class="stat-value">
-        <span id="activeAdmissions">0</span>
-        <span class="stat-unit">Active Admissions</span>
       </div>
     </div>
 
+
     <div class="stat-card" onclick="showPage('billing.html')">
-      <div class="stat-header">
+      <div class="stat-content">
+        <div class="stat-text">
+          <p class="stat-label">Bills</p>
+          <h2 class="stat-number" id="pendingBills" title="Pending Bills"></h2>
+          <p class="stat-change">↑ 12% from yesterday</p>
+        </div>
         <div class="stat-icon red">
           <i class="ri-money-rupee-circle-fill"></i>
         </div>
-        <div class="stat-title">Bills</div>
-      </div>
-      <div class="stat-value">
-        <span id="pendingBills">0</span>
-        <span class="stat-unit">Pending Bills</span>
       </div>
     </div>
   </div>

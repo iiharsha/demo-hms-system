@@ -40,13 +40,7 @@ async function showPage(pageParam) {
   document.querySelectorAll(".nav-menu .nav-item[data-page]").forEach((item) => {
     const itemPageName = (item.dataset.page || "").replace(/\.html$/i, "");
 
-    const isDashboardGroup = pageName === "dashboard" || pageName === "pharmacy";
-
-    if (itemPageName === "dashboard") {
-      item.classList.toggle("active", isDashboardGroup);
-    } else {
-      item.classList.toggle("active", itemPageName === pageName);
-    }
+    item.classList.toggle("active", itemPageName === pageName);
   });
 
   const titleEl = document.querySelector(".header-title") || document.getElementById("pageTitle");

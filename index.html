@@ -111,10 +111,10 @@
           <i class="ri-capsule-fill"></i>
           <span>Inventory</span>
         </button>
-        <!-- <button class="nav-item active" data-page="pharmacy.html"> -->
-        <!--   <i class="ri-dashboard-fill"></i> -->
-        <!--   <span>Pharmacy</span> -->
-        <!-- </button> -->
+        <button class="nav-item active" data-page="pharmacy.html">
+          <i class="ri-dashboard-fill"></i>
+          <span>Pharmacy</span>
+        </button>
         <button class="nav-item active" data-page="sales.html">
           <i class="ri-shopping-bag-2-fill"></i>
           <span>Sales</span>
@@ -126,13 +126,6 @@
       </nav>
 
       <div class="sidebar-footer">
-        <div class="user-info">
-          <div>
-            <div style="font-weight: 600;" id="userDisplay">Admin User</div>
-            <div style="font-size: 12px; color: #6b7280;" id="roleDisplay">Administrator</div>
-          </div>
-          <div class="user-avatar" id="userAvatar">A</div>
-        </div>
         <button class="nav-item-logout" onclick="logout()">
           <i class="ri-logout-box-line"></i>
           <span>Log Out</span>
@@ -144,6 +137,16 @@
     <div class="content">
       <div class="header">
         <h1 class="header-title">Dashboard</h1>
+        <div class="header-right">
+          <img src="assets/images/logo.png" alt="Fiscal Ox Logo" class="header-logo">
+          <div class="user-info">
+            <div>
+              <div id="userDisplay">Admin User</div>
+              <div id="roleDisplay">Administrator</div>
+            </div>
+            <div class="user-avatar" id="userAvatar">A</div>
+          </div>
+        </div>
       </div>
       <div class="page-content"></div>
     </div>

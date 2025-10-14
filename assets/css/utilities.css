@@ -177,6 +177,10 @@
   font-size: 1.5rem;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
+
 .font-normal {
   font-weight: 400;
 }

@@ -156,11 +156,9 @@ function renderAppointments(filteredAppointments) {
           <td>${apt.type}</td>
           <td><span class="badge badge-${statusClass}">${apt.status}</span></td>
           <td>
-            <button class="btn btn-primary" onclick="viewAppointment('${apt.id}')" 
-                    style="padding: 6px 12px; font-size: 12px;">View</button>
+            <button class="btn btn-primary" onclick="viewAppointment('${apt.id}')">View</button>
             ${apt.status === "Scheduled" ? `
-              <button class="btn btn-outline" onclick="cancelAppointment('${apt.id}')" 
-                      style="padding: 6px 12px; font-size: 12px;">Cancel</button>
+              <button class="btn btn-outline" onclick="cancelAppointment('${apt.id}')">Cancel</button>
             ` : ''}
           </td>
         </tr>
@@ -359,8 +357,7 @@ function populateAppointmentPatientDropdown() {
       <input type="text" 
              id="appointmentPatientSearch" 
              placeholder="Search patient by name, ID, or phone..."
-             autocomplete="off"
-             style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px;">
+             autocomplete="off">
       <div id="patientSearchResults" 
            style="display: none; position: absolute; top: 100%; left: 0; right: 0; 
                   background: white; border: 1px solid #d1d5db; border-radius: 8px; 
@@ -368,8 +365,7 @@ function populateAppointmentPatientDropdown() {
                   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);"></div>
       <input type="hidden" id="appointmentPatientId" value="">
       <div style="margin-top: 8px;">
-        <button type="button" class="btn btn-outline" onclick="navigateToAddPatient()" 
-                style="padding: 8px 16px; font-size: 13px;">
+        <button type="button" class="btn btn-outline" onclick="navigateToAddPatient()">
           <i class="ri-add-line"></i> Add New Patient
         </button>
       </div>
@@ -417,12 +413,8 @@ function setupPatientSearch() {
 
     if (filteredPatients.length === 0) {
       resultsDiv.innerHTML = `
-        <div style="padding: 12px; text-align: center; color: #6b7280;">
+        <div class="p-2 text-center">
           No patients found. 
-          <a href="#" onclick="navigateToAddPatient(); return false;" 
-             style="color: var(--primary); text-decoration: underline;">
-            Add new patient
-          </a>
         </div>
       `;
       resultsDiv.style.display = 'block';
@@ -497,11 +489,11 @@ function showSelectedPatientInfo(patient) {
   const hasChronic = patient.chronicConditions && patient.chronicConditions.length > 0;
 
   infoDiv.innerHTML = `
-    <div class="card" style="margin-top: 12px; background: #f9fafb; padding: 12px;">
-      <div style="display: flex; justify-content: space-between; align-items: start;">
+    <div class="card" class="mt-3 p-3">
+      <div class="flex justify-between items-start">
         <div>
-          <div style="font-weight: 600; margin-bottom: 4px;">${patient.name}</div>
-          <div style="font-size: 13px; color: #6b7280;">
+          <div class="font-semibold mt-1">${patient.name}</div>
+          <div class="text-xs text-gray-300">
             ${patient.age}y, ${patient.gender} • ${patient.bloodGroup || "Unknown"}
           </div>
           ${hasAllergies ? `

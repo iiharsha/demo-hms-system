@@ -5,11 +5,11 @@
 
 /* === Buttons === */
 .btn {
-  padding: 0.625rem 1.25rem;
+  padding: 0.5rem 0.75rem;
   border: none;
   border-radius: var(--radius-sm);
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 500;
   cursor: pointer;
   transition: var(--transition);
   display: inline-flex;
@@ -64,8 +64,8 @@
 
 .action-btn {
   border: none;
-  border-radius: 6px;              /* soft corners */
-  padding: 5px 5px;
+  border-radius: var(--radius-sm);              /* soft corners */
+  padding: 4px;
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 1rem;                 /* icon size */

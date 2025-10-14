@@ -58,13 +58,59 @@
     </div>
     <div class="modal-body">
       <div class="tab-buttons">
-        <button class="tab-btn active" onclick="switchTab('vitals', this)">Vitals</button>
+        <button class="tab-btn active" onclick="switchTab('patient', this)">Patient</button>
+        <button class="tab-btn" onclick="switchTab('vitals', this)">Vitals</button>
         <button class="tab-btn" onclick="switchTab('symptoms', this)">Symptoms</button>
         <button class="tab-btn" onclick="switchTab('diagnosis', this)">Diagnosis</button>
         <button class="tab-btn" onclick="switchTab('prescription', this)">Prescription</button>
       </div>
 
-      <div class="tab-content active" id="vitals-tab">
+      <div class="tab-content active" id="patient-tab">
+        <!-- Patient Search or Add -->
+        <div class="form-group">
+          <label>Patient</label>
+          <select id="searchConsultationPatient">
+            <option>Select Patient</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Department</label>
+            <select id="department">
+              <option value="">Select Department</option>
+              <option>General Medicine</option>
+              <option>Cardiology</option>
+              <option>Pediatrics</option>
+              <option>Orthopedics</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Doctor</label>
+            <select id="doctor">
+              <option value="">Select Doctor</option>
+              <!-- dynamically populate -->
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Consultation Type</label>
+            <select id="consultationType">
+              <option>New</option>
+              <option>Follow-up</option>
+              <option>Emergency</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Consultation Date</label>
+            <input type="date" id="consultationDate">
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="vitals-tab">
         <div class="form-row">
           <div class="form-group">
             <label>Blood Pressure</label>

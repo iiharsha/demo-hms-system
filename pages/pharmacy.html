@@ -1,67 +1,62 @@
 <!-- Pharmacy Dashboard Page -->
 <div class="page-content" id="pharmacy-page">
-  <!-- Dashboard/Pharmacy Tabs -->
-  <div class="dashboard-tabs">
-    <div class="tab-item" data-page="dashboard.html">Dashboard</div>
-    <div class="tab-item active" data-page="pharmacy.html">Pharmacy</div>
-  </div>
   <div class="stats-grid">
     <div class="stat-card" onclick="showPage('sales.html')">
-      <div class="stat-header">
-        <div class="stat-icon blue" id="totalSalesCard">
+      <div class="stat-content">
+        <div class="stat-text">
+          <p class="stat-label">Sales</p>
+          <h2 class="stat-number">$12,847</h2>
+          <p class="stat-change">↑ 12% from yesterday</p>
+        </div>
+        <div class="stat-icon green">
           <i class="ri-money-rupee-circle-fill"></i>
         </div>
-        <div class="stat-title">Sales</div>
-      </div>
-      <div class="stat-value">
-        <span id="todaySales">0</span>
-        <span class="stat-unit">Sales Today</span>
       </div>
     </div>
 
     <div class="stat-card" onclick="showPage('sales.html')">
-      <div class="stat-header">
-        <div class="stat-icon green">
+      <div class="stat-content">
+        <div class="stat-text">
+          <p class="stat-label">Orders</p>
+          <h2 class="stat-number">145</h2>
+          <p class="stat-change">↑ 8% from yesterday</p>
+        </div>
+        <div class="stat-icon yellow">
           <i class="ri-shopping-bag-2-fill"></i>
         </div>
-        <div class="stat-title">Orders</div>
-      </div>
-      <div class="stat-value">
-        <span id="todayOrders">0</span>
-        <span class="stat-unit">Orders Today</span>
       </div>
     </div>
 
     <div class="stat-card" onclick="showPage('admissions.html')">
-      <div class="stat-header">
-        <div class="stat-icon yellow">
-          <i class="ri-hospital-fill"></i>
+      <div class="stat-content">
+        <div class="stat-text">
+          <p class="stat-label">Stock</p>
+          <h2 class="stat-number">23</h2>
+          <p class="stat-change">↑ 5 items</p>
         </div>
-        <div class="stat-title">Stock</div>
-      </div>
-      <div class="stat-value">
-        <span id="lowStockItems">0</span>
-        <span class="stat-unit">Low Stock Items</span>
+        <div class="stat-icon red">
+          <i class="ri-alert-line"></i>
+        </div>
       </div>
     </div>
 
     <div class="stat-card" onclick="showPage('billing.html')">
-      <div class="stat-header">
-        <div class="stat-icon red">
-          <i class="ri-money-rupee-circle-fill"></i>
+      <div class="stat-content">
+        <div class="stat-text">
+          <p class="stat-label">Customers</p>
+          <h2 class="stat-number">1,247</h2>
+          <p class="stat-change">+3% from last month</p>
         </div>
-        <div class="stat-title">Customers</div>
-      </div>
-      <div class="stat-value">
-        <span id="totalActiveCustomers">0</span>
-        <span class="stat-unit">Customers this month.</span>
+        <div class="stat-icon blue">
+          <i class="ri-group-fill"></i>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Sales</h3>
+      <h3 class="card-title">Recent Orders</h3>
       <button class="action-btn action-btn-primary" onclick="showPage('sales')" title="View All">
         <i class="ri-external-link-line"></i>
       </button>
