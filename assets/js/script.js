@@ -1,183 +1,161 @@
-/* main script i guess */
+/* ===============================================
+   SPA Main Script - Handles page routing, sidebar,
+   submenu, collapse toggle, and session management
+   =============================================== */
 
-/* navigation and rendering of pages */
 document.addEventListener("DOMContentLoaded", () => {
-  // attach listeners to nav items that have data-page
-  document.querySelectorAll(".nav-menu .nav-item[data-page]").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-      const page = btn.dataset.page; // might be "dashboard" or "dashboard.html"
-      showPage(page);
-    });
-  });
+  const container = document.querySelector(".page-content");
 
-  // load initial page (use the nav-item that already has .active, or fallback)
+  /* -------------------------
+     Navigation Handlers
+  ------------------------- */
+  function attachNavHandlers() {
+    document.querySelectorAll(".nav-item[data-page], .nav-submenu-item[data-page]").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const page = btn.dataset.page;
+        showPage(page);
+      });
+    });
+  }
+  attachNavHandlers();
+
+  /* -------------------------
+     Load Initial Page
+  ------------------------- */
   const initial = document.querySelector(".nav-menu .nav-item.active");
   const startPage = initial ? initial.dataset.page : "dashboard.html";
   showPage(startPage);
+
+  /* -------------------------
+     Sidebar & Pharmacy Submenu
+  ------------------------- */
+  const sidebar = document.querySelector('.sidebar');
+  const pharmacyToggle = document.getElementById("pharmacyToggle");
+  const pharmacySubmenu = document.getElementById("pharmacySubmenu");
+
+  // Pharmacy submenu toggle
+  if (pharmacyToggle && pharmacySubmenu) {
+    pharmacyToggle.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (sidebar?.classList.contains('collapsed')) return; // don't toggle if collapsed
+      pharmacyToggle.classList.toggle("expanded");
+      pharmacySubmenu.classList.toggle("expanded");
+    });
+  }
+
+  // Sidebar collapse toggle
+  const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+  if (sidebarToggleBtn && sidebar) {
+    sidebarToggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+
+      // Close submenu when collapsed
+      if (sidebar.classList.contains('collapsed')) {
+        pharmacySubmenu?.classList.remove('expanded');
+        pharmacyToggle?.classList.remove('expanded');
+      }
+
+      // Save state
+      localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+    });
+  }
+
+  // Restore sidebar state
+  const savedState = localStorage.getItem('sidebarCollapsed');
+  if (savedState === 'true' && sidebar) sidebar.classList.add('collapsed');
+
+  /* -------------------------
+     SPA Page Loading
+  ------------------------- */
+  async function showPage(pageParam) {
+    if (!container) return console.error("page container not found.");
+
+    const pageName = pageParam.replace(/\.html$/i, "");
+    const fetchHtml = `pages/${pageName}.html`;
+
+    try {
+      const res = await fetch(fetchHtml);
+      if (!res.ok) throw new Error(`Failed to load ${fetchHtml}: ${res.status}`);
+      container.innerHTML = await res.text();
+    } catch (err) {
+      container.innerHTML = showErrorPage();
+      console.error("Page load error:", err);
+    }
+
+    // Activate nav item or submenu item
+    activateNavItem(pageName);
+
+    // Update header title
+    const titleEl = document.querySelector(".header-title");
+    if (titleEl) titleEl.textContent = pageName.charAt(0).toUpperCase() + pageName.slice(1);
+
+    // Initialize page-specific JS function if exists
+    const initFnName = "initialize" + pageName.charAt(0).toUpperCase() + pageName.slice(1);
+    const initFn = window[initFnName];
+    if (typeof initFn === "function") requestAnimationFrame(() => initFn());
+
+    // Load page-specific data
+    if (typeof window.loadPageData === "function") {
+      try { window.loadPageData(pageName); } catch (e) { console.error(e); }
+    }
+  }
+
+  function activateNavItem(pageName) {
+    document.querySelectorAll(".nav-item, .nav-submenu-item").forEach(el => el.classList.remove("active"));
+    document.querySelectorAll(`[data-page="${pageName}.html"], [data-page="${pageName}"]`).forEach(el => el.classList.add("active"));
+  }
+
+  // Expose globally
+  window.showPage = showPage;
+
+  /* -------------------------
+     Session Timeout
+  ------------------------- */
+  let sessionTimeout;
+  function resetSessionTimeout() {
+    clearTimeout(sessionTimeout);
+    sessionTimeout = setTimeout(() => {
+      if (confirm("Your session is about to expire. Do you want to continue?")) {
+        resetSessionTimeout();
+      } else {
+        logout();
+      }
+    }, 15 * 60 * 1000);
+  }
+  document.addEventListener("mousemove", resetSessionTimeout);
+  document.addEventListener("keypress", resetSessionTimeout);
 });
 
-async function showPage(pageParam) {
-  const container = document.querySelector(".page-content");
-  if (!container) {
-    console.error("page container not found.");
-    return;
-  }
-
-  const pageName = pageParam.replace(/\.html$/i, "");
-  const fetchHtml = `pages/${pageName}.html`;
-
-  try {
-    const res = await fetch(fetchHtml);
-    if (!res.ok) throw new Error(`Failed to load ${fetchHtml}: ${res.status}`);
-    const html = await res.text();
-    container.innerHTML = html;
-  } catch (err) {
-    container.innerHTML = showErrorPage();
-    console.error("Page load error:", err);
-  }
-
-  document.querySelectorAll(".nav-menu .nav-item[data-page]").forEach((item) => {
-    const itemPageName = (item.dataset.page || "").replace(/\.html$/i, "");
-
-    item.classList.toggle("active", itemPageName === pageName);
-  });
-
-  const titleEl = document.querySelector(".header-title") || document.getElementById("pageTitle");
-  if (titleEl) {
-    titleEl.textContent = pageName.charAt(0).toUpperCase() + pageName.slice(1);
-  }
-
-  const initFnName = "initialize" + pageName.charAt(0).toUpperCase() + pageName.slice(1);
-  const initFn = window[initFnName];
-  if (typeof initFn === "function") {
-    requestAnimationFrame(() => initFn());
-  }
-
-  if (typeof window.loadPageData === "function") {
-    try { window.loadPageData(pageName); } catch (e) { console.error(e); }
-  }
-
-  switchDashboardTabs();
-}
-
-function switchDashboardTabs() {
-  const tabs = document.querySelectorAll(".dashboard-tabs .tab-item[data-page]");
-  if (tabs.length === 0) return;
-
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", (e) => {
-      e.preventDefault();
-      const page = tab.dataset.page;
-      showPage(page);
-    });
-  });
-}
-
+/* -------------------------
+   Global Functions
+------------------------- */
 function loadPageData(pageName) {
   switch (pageName) {
-    case "patients":
-      loadPatients();
-      break;
-    case "appointments":
-      loadAppointments();
-      break;
-    case "consultations":
-      loadConsultations();
-      break;
-    case "admissions":
-      loadAdmissions();
-      break;
-    case "rooms":
-      loadRooms();
-      break;
-    case "billing":
-      loadBills();
-      break;
-    case "inventory":
-      loadInventory();
-      break;
-    case "pharmacy":
-      loadPharmacy();
-      break;
-    case "reports":
-      loadReports();
-      break;
+    case "patients": loadPatients(); break;
+    case "appointments": loadAppointments(); break;
+    case "consultations": loadConsultations(); break;
+    case "admissions": loadAdmissions(); break;
+    case "rooms": loadRooms(); break;
+    case "billing": loadBills(); break;
+    case "inventory": loadInventory(); break;
+    case "pharmacy": loadPharmacy(); break;
+    case "reports": loadReports(); break;
   }
 }
 
-function loadData() {
-  // Load patient options in dropdowns
-  const patientSelects = ["appointmentPatient", "admissionPatient"];
-  patientSelects.forEach((selectId) => {
-    const select = document.getElementById(selectId);
-    if (select) {
-      select.innerHTML =
-        "<option>Select Patient</option>" +
-        patients
-          .map((p) => `<option value="${p.id}">${p.name}</option>`)
-          .join("");
-    }
-  });
-}
-
-// Time slot selection
-document.querySelectorAll(".appointment-slot:not(.booked)").forEach((slot) => {
-  slot.addEventListener("click", function() {
-    document
-      .querySelectorAll(".appointment-slot")
-      .forEach((s) => s.classList.remove("selected"));
-    this.classList.add("selected");
-  });
-});
-
-/**
- * switches tabs in a html container
- * @param {string} tabName - the tab name to switch to.
- * @param {string} btn - the reference from where switchTab is being called.
- */
 function switchTab(tabName, btn) {
-  // Remove "active" from all tab buttons
-  document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
-
-  // Remove "active" from all tab contents
-  document.querySelectorAll(".tab-content").forEach((content) => content.classList.remove("active"));
-
-  // Add "active" to clicked button and related tab
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
   btn.classList.add("active");
   document.getElementById(`${tabName}-tab`).classList.add("active");
 }
 
-
-/* Responsive sidebar toggle for mobile */
-function toggleSidebar() {
-
-  const sidebar = document.querySelector(".sidebar");
-  const toggleBtn = document.getElementById("toggleSidebar");
-
-  toggleBtn.addEventListener("click", () => {
-    sidebar.classList.toggle("collapsed");
-    const icon = toggleBtn.querySelector("i");
-    icon.classList.toggle("ri-menu-3-line");
-    icon.classList.toggle("ri-close-line");
-  });
-}
-
-/* Add hamburger menu for mobile (would need to add button in HTML) */
-if (window.innerWidth <= 768) {
-  document.querySelector(".sidebar").style.width = "70px";
-  document.querySelector(".content").style.marginLeft = "70px";
-}
-
-/* Form validation */
 function validateForm(formId) {
   const form = document.getElementById(formId);
-  const inputs = form.querySelectorAll(
-    "input[required], select[required], textarea[required]"
-  );
+  const inputs = form.querySelectorAll("input[required], select[required], textarea[required]");
   let isValid = true;
-
-  inputs.forEach((input) => {
+  inputs.forEach(input => {
     if (!input.value.trim()) {
       input.style.borderColor = "var(--danger)";
       isValid = false;
@@ -185,24 +163,6 @@ function validateForm(formId) {
       input.style.borderColor = "var(--border)";
     }
   });
-
   return isValid;
 }
-
-/* Session timeout warning (would implement in production) */
-let sessionTimeout;
-function resetSessionTimeout() {
-  clearTimeout(sessionTimeout);
-  sessionTimeout = setTimeout(() => {
-    if (confirm("Your session is about to expire. Do you want to continue?")) {
-      resetSessionTimeout();
-    } else {
-      logout();
-    }
-  }, 15 * 60 * 1000); // 15 minutes
-}
-
-/* Start session timeout when logged in */
-document.addEventListener("mousemove", resetSessionTimeout);
-document.addEventListener("keypress", resetSessionTimeout);
 

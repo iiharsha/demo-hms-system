@@ -65,16 +65,20 @@
   <!-- Main Application -->
   <div class="main-container" id="mainApp">
     <!-- Sidebar -->
+    <!-- Sidebar Navigation with Nested Pharmacy Menu -->
     <aside class="sidebar expanded">
       <div class="sidebar-header">
         <div class="logo-section">
-          <div class="logo-icon">
+          <div class="logo-icon" id="logoIcon">
             <i class="ri-heart-pulse-fill"></i>
           </div>
-          <div class="logo-text">
+          <div class="logo-text" id="logoText">
             <h2 class="logo-title">DR. SHRUTHI</h2>
-            <p class="logo-subtitle">ENT Clini</p>
+            <p class="logo-subtitle">ENT Clinic</p>
           </div>
+          <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Sidebar">
+            <i class="ri-menu-fold-line"></i>
+          </button>
         </div>
       </div>
 
@@ -83,42 +87,73 @@
           <i class="ri-dashboard-fill"></i>
           <span>Dashboard</span>
         </button>
+
         <button class="nav-item" data-page="patients.html">
           <i class="ri-user-heart-fill"></i>
           <span>Patients</span>
         </button>
+
         <button class="nav-item" data-page="appointments.html">
           <i class="ri-calendar-check-fill"></i>
           <span>Appointments</span>
         </button>
+
         <button class="nav-item" data-page="consultations.html">
           <i class="ri-stethoscope-fill"></i>
           <span>Consultations</span>
         </button>
+
         <button class="nav-item" data-page="admissions.html">
           <i class="ri-hospital-fill"></i>
           <span>Admissions</span>
         </button>
+
         <button class="nav-item" data-page="rooms.html">
           <i class="ri-hotel-bed-fill"></i>
           <span>Rooms</span>
         </button>
+
         <button class="nav-item" data-page="billing.html">
           <i class="ri-money-rupee-circle-fill"></i>
           <span>Billing</span>
         </button>
+
         <button class="nav-item" data-page="inventory.html">
           <i class="ri-capsule-fill"></i>
           <span>Inventory</span>
         </button>
-        <button class="nav-item active" data-page="pharmacy.html">
-          <i class="ri-dashboard-fill"></i>
+
+        <!-- Pharmacy Parent Menu with Submenu -->
+        <button class="nav-item has-submenu" id="pharmacyToggle">
+          <i class="ri-medicine-bottle-fill"></i>
           <span>Pharmacy</span>
+          <i class="ri-arrow-right-s-line toggle-icon"></i>
         </button>
-        <button class="nav-item active" data-page="sales.html">
-          <i class="ri-shopping-bag-2-fill"></i>
-          <span>Sales</span>
-        </button>
+
+        <!-- Pharmacy Submenu -->
+        <div class="nav-submenu" id="pharmacySubmenu">
+          <button class="nav-submenu-item" data-page="pharmacy.html">
+            <i class="ri-dashboard-line"></i>
+            <span>Dashboard</span>
+          </button>
+          <button class="nav-submenu-item" data-page="pharmacy-medicines.html">
+            <i class="ri-capsule-line"></i>
+            <span>Medicines</span>
+          </button>
+          <button class="nav-submenu-item" data-page="pharmacy-sales.html">
+            <i class="ri-shopping-bag-2-line"></i>
+            <span>Sales</span>
+          </button>
+          <button class="nav-submenu-item" data-page="pharmacy-stock.html">
+            <i class="ri-archive-line"></i>
+            <span>Stock</span>
+          </button>
+          <button class="nav-submenu-item" data-page="pharmacy-suppliers.html">
+            <i class="ri-truck-line"></i>
+            <span>Suppliers</span>
+          </button>
+        </div>
+
         <button class="nav-item" data-page="reports.html">
           <i class="ri-bar-chart-fill"></i>
           <span>Reports</span>

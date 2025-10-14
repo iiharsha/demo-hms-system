@@ -92,11 +92,6 @@ body {
   height: 100vh;
 }
 
-/* === Utility Classes === */
-.hide {
-  display: none !important;
-}
-
 /* === Fade Animations === */
 .fade-out {
   opacity: 0;
