@@ -91,6 +91,8 @@
   padding-left: 1rem;
   padding-right: 1rem;
   padding-top: 0.25rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
   overflow-y: auto;
   height: calc(100vh - 73px);
 }

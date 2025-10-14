@@ -27,7 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem 1rem;
+  padding: 0.75rem 0.75rem;
   border-bottom: 1px solid var(--border);
   position: relative;
 }
@@ -112,7 +112,7 @@
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 0.75rem 0;
+  padding: 0.5rem 0;
 }
 
 .nav-menu::-webkit-scrollbar {
@@ -131,7 +131,7 @@
 /* === Nav Items === */
 .nav-item {
   color: var(--gray-600);
-  padding: 0.625rem 1rem;
+  padding: 0.625rem 0.75rem;
   margin: 0.125rem 0.5rem;
   cursor: pointer;
   transition: var(--transition);

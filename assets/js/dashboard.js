@@ -16,7 +16,7 @@ function initializeDashboard() {
   loadRecentTodayAppointments();
   loadRecentAppointments();
   loadRecentAdmissions();
-  loadData();
+  loadRooms();
 }
 
 /* loads the recent appointments table */
