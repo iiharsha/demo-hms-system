@@ -113,26 +113,62 @@ function searchConsultations() {
 }
 
 function viewConsultation(id) {
-  // showNotification(`Viewing consultation ${id}`);
-  const consultation = consultations.find((a) => a.id === id);
+  const consultation = consultations.find(c => c.id === id);
   if (!consultation) {
-    console.error("Appointment not found", id);
+    showNotification("Consultation not found", "error");
     return;
   }
 
-  const html = `
-        <table>
-            <tr><td><strong>ID:</strong></td><td>${consultation.id}</td></tr>
-            <tr><td><strong>Date:</strong></td><td>${consultation.date}</td></tr>
-            <tr><td><strong>Date:</strong></td><td>${consultation.time}</td></tr>
-            <tr><td><strong>Patient:</strong></td><td>${consultation.patient}</td></tr>
-            <tr><td><strong>Doctor:</strong></td><td>${consultation.doctor}</td></tr>
-            <tr><td><strong>Diagnosis:</strong></td><td>${consultation.diagnosis}</td></tr>
-            <tr><td><span class="badge badge-${consultation.status === "Completed" ? "success" : "primary"}">${consultation.status}</span></td></tr>
-        </table>
-    `;
+  const modalBody = DOM.get("viewConsultationModalBody");
 
-  DOM.setHTML("viewConsultationModalBody", html);
+  modalBody.innerHTML = `
+    <div class="table-container">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Consultation Info</h4>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td><strong>ID</strong></td>
+                <td>${consultation.id}</td>
+              </tr>
+              <tr>
+                <td><strong>Date</strong></td>
+                <td>${consultation.date}</td>
+              </tr>
+              <tr>
+                <td><strong>Time</strong></td>
+                <td>${consultation.time}</td>
+              </tr>
+              <tr>
+                <td><strong>Patient</strong></td>
+                <td>${consultation.patient}</td>
+              </tr>
+              <tr>
+                <td><strong>Doctor</strong></td>
+                <td>${consultation.doctor}</td>
+              </tr>
+              <tr>
+                <td><strong>Diagnosis</strong></td>
+                <td>${consultation.diagnosis}</td>
+              </tr>
+              <tr>
+                <td><strong>Status</strong></td>
+                <td>
+                  <span class="badge badge-${consultation.status === "Completed" ? "success" : "primary"}">
+                    ${consultation.status}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `;
+
   openModal("viewConsultationModal");
 }
 

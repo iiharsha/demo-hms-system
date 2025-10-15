@@ -189,93 +189,112 @@ function filterAppointments() {
  * @returns {void}
  */
 function viewAppointment(id) {
-  const apt = appointments.find((a) => a.id === id);
+  const apt = appointments.find(a => a.id === id);
   if (!apt) {
     showNotification("Appointment not found", "error");
     return;
   }
 
   const patient = patients.find(p => p.id === apt.patientId);
-
   const modalBody = DOM.get("viewAppointmentModalBody");
 
   modalBody.innerHTML = `
-    <div style="display: grid; gap: 20px;">
-      <div class="card">
-        <h4 style="margin-bottom: 15px;">Appointment Details</h4>
-        <table style="width: 100%;">
-          <tr>
-            <td style="padding: 8px;"><strong>Appointment ID:</strong></td>
-            <td style="padding: 8px;">${apt.id}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px;"><strong>Date:</strong></td>
-            <td style="padding: 8px;">${apt.date}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px;"><strong>Time:</strong></td>
-            <td style="padding: 8px;">${apt.time}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px;"><strong>Type:</strong></td>
-            <td style="padding: 8px;">${apt.type}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px;"><strong>Doctor:</strong></td>
-            <td style="padding: 8px;">${apt.doctor}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px;"><strong>Status:</strong></td>
-            <td style="padding: 8px;">
-              <span class="badge badge-${apt.status === "Completed" ? "success" : apt.status === "Cancelled" ? "danger" : "primary"}">
-                ${apt.status}
-              </span>
-            </td>
-          </tr>
-          ${apt.notes ? `
-          <tr>
-            <td style="padding: 8px;"><strong>Notes:</strong></td>
-            <td style="padding: 8px;">${apt.notes}</td>
-          </tr>
-          ` : ''}
-        </table>
-      </div>
+    <div class="table-container" style="display: grid; gap: 1.5rem;">
       
-      ${patient ? `
+      <!-- Appointment Details Card -->
       <div class="card">
-        <h4 style="margin-bottom: 15px;">Patient Information</h4>
-        <table style="width: 100%;">
-          <tr>
-            <td style="padding: 8px;"><strong>Patient Name:</strong></td>
-            <td style="padding: 8px;">${patient.name}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px;"><strong>Patient ID:</strong></td>
-            <td style="padding: 8px;">${patient.id}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px;"><strong>Age:</strong></td>
-            <td style="padding: 8px;">${patient.age} years</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px;"><strong>Phone:</strong></td>
-            <td style="padding: 8px;">${patient.phone}</td>
-          </tr>
-          <tr>
-            <td style="padding: 8px;"><strong>Blood Group:</strong></td>
-            <td style="padding: 8px;">${patient.bloodGroup || "Unknown"}</td>
-          </tr>
-          ${patient.allergies && patient.allergies.length > 0 ? `
-          <tr>
-            <td style="padding: 8px;"><strong>Allergies:</strong></td>
-            <td style="padding: 8px;">
-              ${patient.allergies.map(a => `<span class="badge badge-danger">${a}</span>`).join(' ')}
-            </td>
-          </tr>
-          ` : ''}
-        </table>
+        <div class="card-header">
+          <h4 class="card-title">Appointment Info</h4>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td><strong>ID</strong></td>
+                <td>${apt.id}</td>
+              </tr>
+              <tr>
+                <td><strong>Date</strong></td>
+                <td>${apt.date}</td>
+              </tr>
+              <tr>
+                <td><strong>Time</strong></td>
+                <td>${apt.time}</td>
+              </tr>
+              <tr>
+                <td><strong>Type</strong></td>
+                <td>${apt.type}</td>
+              </tr>
+              <tr>
+                <td><strong>Doctor</strong></td>
+                <td>${apt.doctor}</td>
+              </tr>
+              <tr>
+                <td><strong>Status</strong></td>
+                <td>
+                  <span class="badge badge-${apt.status === "Completed"
+      ? "success"
+      : apt.status === "Cancelled"
+        ? "danger"
+        : "primary"}">
+                    ${apt.status}
+                  </span>
+                </td>
+              </tr>
+              ${apt.notes ? `
+              <tr>
+                <td><strong>Notes</strong></td>
+                <td>${apt.notes}</td>
+              </tr>
+              ` : ''}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      ${patient ? `
+      <!-- Patient Information Card -->
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Patient Info</h4>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <tbody>
+              <tr>
+                <td><strong>Patient Name</strong></td>
+                <td>${patient.name}</td>
+              </tr>
+              <tr>
+                <td><strong>Patient ID</strong></td>
+                <td>${patient.id}</td>
+              </tr>
+              <tr>
+                <td><strong>Age</strong></td>
+                <td>${patient.age} years</td>
+              </tr>
+              <tr>
+                <td><strong>Phone</strong></td>
+                <td>${patient.phone}</td>
+              </tr>
+              <tr>
+                <td><strong>Blood Group</strong></td>
+                <td>${patient.bloodGroup || "Unknown"}</td>
+              </tr>
+              ${patient.allergies && patient.allergies.length > 0 ? `
+              <tr>
+                <td><strong>Allergies</strong></td>
+                <td>
+                  ${patient.allergies.map(a => `<span class="badge badge-danger">${a}</span>`).join(' ')}
+                </td>
+              </tr>
+              ` : ''}
+            </tbody>
+          </table>
+        </div>
       </div>
       ` : ''}
+
     </div>
   `;
 
