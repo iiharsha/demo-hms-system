@@ -245,12 +245,17 @@
 }
 
 /* === Search Bar === */
-/* ===== Search Bar Container ===== */
 .search-bar {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 1.5rem;
+}
+/* ===== Search Bar Container ===== */
+.search-container {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
 }
 /* ===== Search Input ===== */
 .search-bar input {

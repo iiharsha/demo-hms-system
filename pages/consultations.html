@@ -2,33 +2,66 @@
 <div class="page-content" id="consultations-page">
   <div class="search-bar">
     <div class="search-container">
-      <input type="text" placeholder="Search consultations..." id="consultationSearch" oninput="searchConsultations()">
-      <span class="clear-icon" onclick="clearPatientSearchBar('patientSearch', 'patient')">&#10006;</span>
+      <input
+        type="text"
+        placeholder="Search consultations..."
+        id="consultationSearch"
+        oninput="searchConsultations()"
+      />
     </div>
-    <button class="btn btn-secondary" onclick="openNewConsultationModal()">+ New Consultation</button>
+    <button class="btn btn-secondary" onclick="openNewConsultationModal()">
+      + Consultation
+    </button>
   </div>
 
-  <div class="card">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Date</th>
-          <th>Time</th>
-          <th>Patient</th>
-          <th>Doctor</th>
-          <th>Diagnosis</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="consultationsTable">
-        <!-- Dynamic content -->
-      </tbody>
-    </table>
+  <div class="flex-col items-center justify-center gap-4">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-header-title">Manage Patient Queue</h3>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Patient ID</th>
+              <th>Patient Name</th>
+              <th>Mobile</th>
+              <th>Age</th>
+              <th>Sex</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="consultationsTable">
+            <!-- Dynamic content -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-header-title">Today's Invoice</h3>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Patient ID</th>
+              <th>Patient Name</th>
+              <th>Mobile</th>
+              <th>Age</th>
+              <th>Sex</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="consultationsTable">
+            <!-- Dynamic content -->
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
-
 
 <!-- View Consulation Details Modal -->
 <div class="modal" id="viewConsultationModal">
@@ -42,7 +75,12 @@
     <!-- the admission details will be injected here-->
     <div class="modal-body" id="viewConsultationModalBody"></div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('viewConsultationModal')">Cancel</button>
+      <button
+        class="btn btn-outline"
+        onclick="closeModal('viewConsultationModal')"
+      >
+        Cancel
+      </button>
     </div>
   </div>
 </div>
@@ -58,11 +96,21 @@
     </div>
     <div class="modal-body">
       <div class="tab-buttons">
-        <button class="tab-btn active" onclick="switchTab('patient', this)">Patient</button>
-        <button class="tab-btn" onclick="switchTab('vitals', this)">Vitals</button>
-        <button class="tab-btn" onclick="switchTab('symptoms', this)">Symptoms</button>
-        <button class="tab-btn" onclick="switchTab('diagnosis', this)">Diagnosis</button>
-        <button class="tab-btn" onclick="switchTab('prescription', this)">Prescription</button>
+        <button class="tab-btn active" onclick="switchTab('patient', this)">
+          Patient
+        </button>
+        <button class="tab-btn" onclick="switchTab('vitals', this)">
+          Vitals
+        </button>
+        <button class="tab-btn" onclick="switchTab('symptoms', this)">
+          Symptoms
+        </button>
+        <button class="tab-btn" onclick="switchTab('diagnosis', this)">
+          Diagnosis
+        </button>
+        <button class="tab-btn" onclick="switchTab('prescription', this)">
+          Prescription
+        </button>
       </div>
 
       <div class="tab-content active" id="patient-tab">
@@ -105,7 +153,7 @@
           </div>
           <div class="form-group">
             <label>Consultation Date</label>
-            <input type="date" id="consultationDate">
+            <input type="date" id="consultationDate" />
           </div>
         </div>
       </div>
@@ -114,21 +162,21 @@
         <div class="form-row">
           <div class="form-group">
             <label>Blood Pressure</label>
-            <input type="text" placeholder="120/80" id="bloodPressure">
+            <input type="text" placeholder="120/80" id="bloodPressure" />
           </div>
           <div class="form-group">
             <label>Heart Rate</label>
-            <input type="text" placeholder="72 bpm" id="heartRate">
+            <input type="text" placeholder="72 bpm" id="heartRate" />
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label>Temperature</label>
-            <input type="text" placeholder="98.6°F" id="temperature">
+            <input type="text" placeholder="98.6°F" id="temperature" />
           </div>
           <div class="form-group">
             <label>Weight</label>
-            <input type="text" placeholder="70 kg" id="weight">
+            <input type="text" placeholder="70 kg" id="weight" />
           </div>
         </div>
       </div>
@@ -158,7 +206,11 @@
       <div class="tab-content" id="prescription-tab">
         <div class="form-group">
           <label>Medications</label>
-          <textarea id="medications" rows="4" placeholder="Medicine name - Dosage - Frequency - Duration"></textarea>
+          <textarea
+            id="medications"
+            rows="4"
+            placeholder="Medicine name - Dosage - Frequency - Duration"
+          ></textarea>
         </div>
         <div class="form-group">
           <label>Lab Tests</label>
@@ -166,13 +218,20 @@
         </div>
         <div class="form-group">
           <label>Follow-up</label>
-          <input type="date" id="followUpDate">
+          <input type="date" id="followUpDate" />
         </div>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('newConsultationModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveConsultation()">Save Consultation</button>
+      <button
+        class="btn btn-outline"
+        onclick="closeModal('newConsultationModal')"
+      >
+        Cancel
+      </button>
+      <button class="btn btn-primary" onclick="saveConsultation()">
+        Save Consultation
+      </button>
     </div>
   </div>
 </div>
