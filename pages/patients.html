@@ -2,14 +2,19 @@
 <div class="page-content" id="patients-page">
   <div class="search-bar">
     <div class="search-container">
-      <input type="text" placeholder="Search patients by name, ID or phone..." id="patientSearch"
-        oninput="searchPatients()">
-      <span class="clear-icon" onclick="clearPatientSearchBar('patientSearch', 'patient')">&#10006;</span>
+      <input
+        type="text"
+        placeholder="Enter Patient ID"
+        id="patientSearch"
+        oninput="searchPatients()"
+      />
     </div>
-    <button class="btn btn-secondary" onclick="openAddPatientModal()">+ Add Patient</button>
+    <button class="btn btn-primary" onclick="searchPatientById()">
+      Search
+    </button>
   </div>
 
-  <div class="patient-stats">
+  <div class="patient-stats hide">
     <div class="patient-stat-card">
       <div class="patient-stat-value" id="totalPatientsCount">0</div>
       <div class="patient-stat-label">Total Patients</div>
@@ -28,32 +33,122 @@
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-header">
-      <h3 class="card-title">Patient Records</h3>
-      <div class="action-buttons">
-        <button class="btn btn-outline" onclick="exportPatientData()">Export CSV</button>
-        <button class="btn btn-outline" onclick="printPatientList()">Print List</button>
+  <div class="display-grid">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-header-title">Add Patient Queue</h3>
+      </div>
+      <div class="p-4 flex-col items-center justify-center">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Patient Name</label>
+            <input type="text" id="addPatientQueueName" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Age</label>
+            <input type="number" id="addPatientQueueAge" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Weight</label>
+            <input type="number" id="addPatientQueueWeight" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Sex</label>
+            <select id="addPatientQueueSex" required>
+              <option value="">Select</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" id="addPatientQueuePhone" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Address</label>
+            <textarea rows="2" id="addPatientQueueAddress"></textarea>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Complain</label>
+            <div class="flex gap-2">
+              <label class="flex items-center gap-2">
+                <input type="checkbox" name="complain" value="Ear" />
+                Ear
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" name="complain" value="Nose" />
+                Nose
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" name="complain" value="Throat" />
+                Throat
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pl-4 pb-4">
+        <button class="btn btn-outline" onclick="resetAddPatientQueueForm()">
+          Clear
+        </button>
+        <button class="btn btn-primary" onclick="saveDashboardPatient()">
+          Save
+        </button>
       </div>
     </div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Age</th>
-          <th>Gender</th>
-          <th>Phone</th>
-          <th>Blood Group</th>
-          <th>Last Visit</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="patientsTable">
-        <!-- Dynamic content -->
-      </tbody>
-    </table>
+
+    <div class="p-4">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Patient In Queue</h3>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="patientsInQueueTable">
+            <!-- Dynamic content -->
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Today's Invoice</h3>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="patientsTodaysInvoiceTable">
+            <!-- Dynamic content -->
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -70,17 +165,17 @@
       <div class="form-row">
         <div class="form-group">
           <label>First Name</label>
-          <input type="text" id="patientFirstName">
+          <input type="text" id="patientFirstName" />
         </div>
         <div class="form-group">
           <label>Last Name</label>
-          <input type="text" id="patientLastName">
+          <input type="text" id="patientLastName" />
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label>Date of Birth</label>
-          <input type="date" id="patientDOB">
+          <input type="date" id="patientDOB" />
         </div>
         <div class="form-group">
           <label>Gender</label>
@@ -94,11 +189,11 @@
       <div class="form-row">
         <div class="form-group">
           <label>Phone</label>
-          <input type="tel" id="patientPhone">
+          <input type="tel" id="patientPhone" />
         </div>
         <div class="form-group">
           <label>Email</label>
-          <input type="email" id="patientEmail">
+          <input type="email" id="patientEmail" />
         </div>
       </div>
       <div class="form-group">
@@ -121,20 +216,24 @@
         </div>
         <div class="form-group">
           <label>Emergency Contact</label>
-          <input type="tel" id="patientEmergency">
+          <input type="tel" id="patientEmergency" />
         </div>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('addPatientModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="savePatient()">Save Patient</button>
+      <button class="btn btn-outline" onclick="closeModal('addPatientModal')">
+        Cancel
+      </button>
+      <button class="btn btn-primary" onclick="savePatient()">
+        Save Patient
+      </button>
     </div>
   </div>
 </div>
 
 <!-- View Patient Modal -->
 <div class="modal" id="viewPatientModal">
-  <div class="modal-content" style="max-width: 900px;">
+  <div class="modal-content" style="max-width: 900px">
     <div class="modal-header">
       <h3>Patient Details</h3>
       <button class="close-btn" onclick="closeModal('viewPatientModal')">
@@ -143,65 +242,108 @@
     </div>
     <div class="modal-body">
       <div class="tab-buttons">
-        <button class="tab-btn active" onclick="switchPatientTab('info')">Basic Info</button>
-        <button class="tab-btn" onclick="switchPatientTab('medical')">Medical History</button>
-        <button class="tab-btn" onclick="switchPatientTab('medications')">Medications</button>
-        <button class="tab-btn" onclick="switchPatientTab('labs')">Lab Reports</button>
-        <button class="tab-btn" onclick="switchPatientTab('immunizations')">Immunizations</button>
+        <button class="tab-btn active" onclick="switchPatientTab('info')">
+          Basic Info
+        </button>
+        <button class="tab-btn" onclick="switchPatientTab('medical')">
+          Medical History
+        </button>
+        <button class="tab-btn" onclick="switchPatientTab('medications')">
+          Medications
+        </button>
+        <button class="tab-btn" onclick="switchPatientTab('labs')">
+          Lab Reports
+        </button>
+        <button class="tab-btn" onclick="switchPatientTab('immunizations')">
+          Immunizations
+        </button>
       </div>
 
       <div class="tab-content active" id="info-patient-tab">
-        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
-          <div style="text-align: center; padding: 20px; background: var(--light); border-radius: 8px;">
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px">
+          <div
+            style="
+              text-align: center;
+              padding: 20px;
+              background: var(--light);
+              border-radius: 8px;
+            "
+          >
             <div
-              style="width: 100px; height: 100px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto 15px;"
-              id="patientAvatar">JD</div>
+              style="
+                width: 100px;
+                height: 100px;
+                background: var(--primary);
+                color: white;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 36px;
+                margin: 0 auto 15px;
+              "
+              id="patientAvatar"
+            >
+              JD
+            </div>
             <h3 id="patientNameDisplay">John Doe</h3>
-            <p style="color: #6b7280;" id="patientIdDisplay">P001</p>
-            <div style="margin-top: 15px;">
-              <span class="badge badge-primary" id="patientBloodGroupDisplay">O+</span>
+            <p style="color: #6b7280" id="patientIdDisplay">P001</p>
+            <div style="margin-top: 15px">
+              <span class="badge badge-primary" id="patientBloodGroupDisplay"
+                >O+</span
+              >
             </div>
           </div>
           <div>
-            <h4 style="margin-bottom: 15px; color: var(--primary);">Personal Information</h4>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <h4 style="margin-bottom: 15px; color: var(--primary)">
+              Personal Information
+            </h4>
+            <div
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px"
+            >
               <div>
-                <label style="color: #6b7280; font-size: 12px;">Age</label>
+                <label style="color: #6b7280; font-size: 12px">Age</label>
                 <p id="patientAgeDisplay">35 years</p>
               </div>
               <div>
-                <label style="color: #6b7280; font-size: 12px;">Gender</label>
+                <label style="color: #6b7280; font-size: 12px">Gender</label>
                 <p id="patientGenderDisplay">Male</p>
               </div>
               <div>
-                <label style="color: #6b7280; font-size: 12px;">Phone</label>
+                <label style="color: #6b7280; font-size: 12px">Phone</label>
                 <p id="patientPhoneDisplay">9876543210</p>
               </div>
               <div>
-                <label style="color: #6b7280; font-size: 12px;">Email</label>
+                <label style="color: #6b7280; font-size: 12px">Email</label>
                 <p id="patientEmailDisplay">john@email.com</p>
               </div>
-              <div style="grid-column: span 2;">
-                <label style="color: #6b7280; font-size: 12px;">Address</label>
+              <div style="grid-column: span 2">
+                <label style="color: #6b7280; font-size: 12px">Address</label>
                 <p id="patientAddressDisplay">123 Main Street, Ahmedabad</p>
               </div>
-              <div style="grid-column: span 2;">
-                <label style="color: #6b7280; font-size: 12px;">Emergency Contact</label>
+              <div style="grid-column: span 2">
+                <label style="color: #6b7280; font-size: 12px"
+                  >Emergency Contact</label
+                >
                 <p id="patientEmergencyDisplay">9876543211</p>
               </div>
             </div>
 
-            <h4 style="margin: 20px 0 15px; color: var(--primary);">Medical Information</h4>
+            <h4 style="margin: 20px 0 15px; color: var(--primary)">
+              Medical Information
+            </h4>
             <div>
-              <label style="color: #6b7280; font-size: 12px;">Allergies</label>
-              <div id="patientAllergiesDisplay" style="margin-top: 5px;">
+              <label style="color: #6b7280; font-size: 12px">Allergies</label>
+              <div id="patientAllergiesDisplay" style="margin-top: 5px">
                 <span class="badge badge-danger">Penicillin</span>
                 <span class="badge badge-danger">Peanuts</span>
               </div>
             </div>
-            <div style="margin-top: 15px;">
-              <label style="color: #6b7280; font-size: 12px;">Chronic Conditions</label>
-              <div id="patientConditionsDisplay" style="margin-top: 5px;">
+            <div style="margin-top: 15px">
+              <label style="color: #6b7280; font-size: 12px"
+                >Chronic Conditions</label
+              >
+              <div id="patientConditionsDisplay" style="margin-top: 5px">
                 <span class="badge badge-warning">Hypertension</span>
                 <span class="badge badge-warning">Type 2 Diabetes</span>
               </div>
@@ -211,21 +353,25 @@
       </div>
 
       <div class="tab-content" id="medical-patient-tab">
-        <h4 style="margin-bottom: 20px; color: var(--primary);">Medical History</h4>
+        <h4 style="margin-bottom: 20px; color: var(--primary)">
+          Medical History
+        </h4>
         <div id="medicalHistoryList">
           <!-- Dynamic content -->
         </div>
       </div>
 
       <div class="tab-content" id="medications-patient-tab">
-        <h4 style="margin-bottom: 20px; color: var(--primary);">Current Medications</h4>
+        <h4 style="margin-bottom: 20px; color: var(--primary)">
+          Current Medications
+        </h4>
         <div id="currentMedicationsList">
           <!-- Dynamic content -->
         </div>
       </div>
 
       <div class="tab-content" id="labs-patient-tab">
-        <h4 style="margin-bottom: 20px; color: var(--primary);">Lab Reports</h4>
+        <h4 style="margin-bottom: 20px; color: var(--primary)">Lab Reports</h4>
         <table class="table">
           <thead>
             <tr>
@@ -242,7 +388,9 @@
       </div>
 
       <div class="tab-content" id="immunizations-patient-tab">
-        <h4 style="margin-bottom: 20px; color: var(--primary);">Immunization Records</h4>
+        <h4 style="margin-bottom: 20px; color: var(--primary)">
+          Immunization Records
+        </h4>
         <table class="table">
           <thead>
             <tr>
@@ -259,9 +407,15 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="printPatientRecord()">Print Record</button>
-      <button class="btn btn-secondary" onclick="editPatient()">Edit Patient</button>
-      <button class="btn btn-primary" onclick="closeModal('viewPatientModal')">Close</button>
+      <button class="btn btn-outline" onclick="printPatientRecord()">
+        Print Record
+      </button>
+      <button class="btn btn-secondary" onclick="editPatient()">
+        Edit Patient
+      </button>
+      <button class="btn btn-primary" onclick="closeModal('viewPatientModal')">
+        Close
+      </button>
     </div>
   </div>
 </div>

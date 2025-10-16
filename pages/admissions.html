@@ -7,7 +7,9 @@
       <option value="discharged">Discharged</option>
     </select>
     <button class="btn btn-primary" onclick="filterAdmissions()">Filter</button>
-    <button class="btn btn-secondary" onclick="openNewAdmissionModal()">+ New Admission</button>
+    <button class="btn btn-secondary" onclick="openNewAdmissionModal()">
+      + New Admission
+    </button>
   </div>
 
   <div class="card">
@@ -36,12 +38,19 @@
   <div class="modal-content">
     <div class="modal-header">
       <h3>Admission Details</h3>
-      <button class="close-btn" onclick="closeModal('viewAdmissionModal')">×</button>
+      <button class="close-btn" onclick="closeModal('viewAdmissionModal')">
+        ×
+      </button>
     </div>
     <!-- the admission details will be injected here-->
     <div class="modal-body" id="viewAdmissionModalBody"></div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('viewAdmissionModal')">Cancel</button>
+      <button
+        class="btn btn-outline"
+        onclick="closeModal('viewAdmissionModal')"
+      >
+        Cancel
+      </button>
     </div>
   </div>
 </div>
@@ -51,7 +60,9 @@
   <div class="modal-content">
     <div class="modal-header">
       <h3>New Admission</h3>
-      <button class="close-btn" onclick="closeModal('newAdmissionModal')">×</button>
+      <button class="close-btn" onclick="closeModal('newAdmissionModal')">
+        ×
+      </button>
     </div>
     <div class="modal-body">
       <div class="form-group">
@@ -112,12 +123,20 @@
       </div>
       <div class="form-group">
         <label>Insurance Information</label>
-        <input type="text" id="insuranceInfo" placeholder="Insurance Provider - Policy Number">
+        <input
+          type="text"
+          id="insuranceInfo"
+          placeholder="Insurance Provider - Policy Number"
+        />
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('newAdmissionModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveAdmission()">Admit Patient</button>
+      <button class="btn btn-outline" onclick="closeModal('newAdmissionModal')">
+        Cancel
+      </button>
+      <button class="btn btn-primary" onclick="saveAdmission()">
+        Admit Patient
+      </button>
     </div>
   </div>
 </div>
