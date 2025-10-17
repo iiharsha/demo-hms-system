@@ -55,7 +55,7 @@ const consultations = [
  * Initlialize the Cosultations page
  */
 function loadConsultations() {
-    const html = consultations
+    const htmlPatientQueue = consultations
         .map(
             (consult) => `
                 <tr>
@@ -76,7 +76,31 @@ function loadConsultations() {
             `,
         )
         .join("");
-    DOM.setHTML("consultationsTable", html);
+
+    const htmlTodaysInvoice = invoices
+        .map(
+            (invoice) => `
+                <tr>
+                    <td>${invoice.id}</td>
+                    <td>${invoice.name}</td>
+                    <td>${invoice.phone}</td>
+                    <td>${invoice.age}</td>
+                    <td>${invoice.gender}</td>
+                    <td>
+                        <button class="action-btn action-btn-primary" onclick="editPatientInQueue('${invoice.id}')" title="Edit Patient In Queue">
+                          <i class="ri-edit-2-line"></i>
+                        </button>
+                        <button class="action-btn action-btn-primary" onclick="viewPatientInQueue('${invoice.id}')" title="View Patient In Queue">
+                            <i class="ri-eye-line"></i>
+                        </button>
+                    </td>
+                </tr>
+            `,
+        )
+        .join("");
+
+    DOM.setHTML("consultationsManagePatientsQueue", htmlPatientQueue);
+    DOM.setHTML("consultationsTodaysInvoice", htmlTodaysInvoice);
 }
 
 function saveConsultation() {

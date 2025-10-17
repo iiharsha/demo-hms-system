@@ -33,20 +33,15 @@ function loadPatients() {
                         </td>
                         <td>
                             <div class="action-buttons">
-                                <button class="btn btn-primary" onclick="viewPatient('${
-                                    patient.id
-                                }')" style="padding: 6px 12px; font-size: 12px;">
-                                View
+                                <button class="action-btn action-btn-primary" onclick="viewPatient('${patient.id}')" title="View Patient in Queue">
+                                    <i class="ri-eye-line"></i>
                                 </button>
-                                <button class="action-btn action-btn-primary" onclick="editPatientInQueue('${patient.id}')" title="Edit Patient In Queue">
+                                <button class="action-btn action-btn-primary" onclick="editPatientInQueue('${patient.id}')" title="Edit Patient in Queue">
                                     <i class="ri-edit-2-line"></i>
                                 </button>
-                                <button class="action-btn action-btn-danger" onclick="deletePatientInQueue('${patient.id}')" title="Delete Patient In Queue">
+                                <button class="action-btn action-btn-danger" onclick="deletePatientInQueue('${patient.id}')" title="Delete Patient in Queue">
                                     <i class="ri-delete-bin-6-line"></i>
                                 </button>
-                                <button class="btn btn-outline" onclick="quickConsultation('${
-                                    patient.id
-                                }')" style="padding: 6px 12px; font-size: 12px;">Consult</button>
                             </div>
                         </td>
                     </tr>
