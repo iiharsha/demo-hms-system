@@ -1,220 +1,251 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClinicCare - Healthcare Management System</title>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ClinicCare - Healthcare Management System</title>
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
 
-  <!-- Base Styles -->
-  <link rel="stylesheet" href="assets/css/styles.css">
+    <!-- Component Styles -->
+    <link rel="stylesheet" href="assets/css/login.css" />
+    <link rel="stylesheet" href="assets/css/sidebar.css" />
+    <link rel="stylesheet" href="assets/css/content.css" />
+    <link rel="stylesheet" href="assets/css/dashboard.css" />
+    <link rel="stylesheet" href="assets/css/components.css" />
+    <link rel="stylesheet" href="assets/css/utilities.css" />
 
-  <!-- Component Styles -->
-  <link rel="stylesheet" href="assets/css/login.css">
-  <link rel="stylesheet" href="assets/css/sidebar.css">
-  <link rel="stylesheet" href="assets/css/content.css">
-  <link rel="stylesheet" href="assets/css/dashboard.css">
-  <link rel="stylesheet" href="assets/css/components.css">
-  <link rel="stylesheet" href="assets/css/utilities.css">
+    <!-- Additional Page Styles -->
+    <link rel="stylesheet" href="assets/css/rooms.css" />
+    <link rel="stylesheet" href="assets/css/error.css" />
 
-  <!-- Additional Page Styles -->
-  <link rel="stylesheet" href="assets/css/rooms.css">
-  <link rel="stylesheet" href="assets/css/error.css">
+    <!-- External Libraries -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+  </head>
 
-  <!-- External Libraries -->
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
-</head>
-
-<body>
-
-  <!-- Login Screen -->
-  <div class="login-container" id="loginScreen">
-    <div class="login-box">
-      <div class="login-header">
-        <h1> DR. SHRUTHI</h1>
-        <p>ENT Clinic</p>
-      </div>
-      <form id="loginForm">
-        <div class="form-group">
-          <label>Username</label>
-          <input type="text" id="username" placeholder="Enter your username" required>
+  <body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginScreen">
+      <div class="login-box">
+        <div class="login-header">
+          <h1>DR. SHRUTHI</h1>
+          <p>ENT Clinic</p>
         </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="password" placeholder="Enter your password" required>
-        </div>
-        <div class="form-group">
-          <label>Role</label>
-          <select id="role">
-            <option value="admin">Administrator</option>
-            <option value="doctor">Doctor</option>
-            <option value="nurse">Nurse</option>
-            <option value="receptionist">Receptionist</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%;">
-          Login
-        </button>
-      </form>
-      <p style="margin-top: 20px; text-align: center; color: #6b7280; font-size: 12px;">
-        Demo: Use any username/password to login
-      </p>
-    </div>
-  </div>
-
-  <!-- Main Application -->
-  <div class="main-container" id="mainApp">
-    <!-- Sidebar -->
-    <!-- Sidebar Navigation with Nested Pharmacy Menu -->
-    <aside class="sidebar expanded">
-      <div class="sidebar-header">
-        <div class="logo-section">
-          <div class="logo-icon" id="logoIcon">
-            <i class="ri-heart-pulse-fill"></i>
+        <form id="loginForm">
+          <div class="form-group">
+            <label>Username</label>
+            <input
+              type="text"
+              id="username"
+              placeholder="Enter your username"
+              required
+            />
           </div>
-          <div class="logo-text" id="logoText">
-            <h2 class="logo-title">DR. SHRUTHI</h2>
-            <p class="logo-subtitle">ENT Clinic</p>
+          <div class="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Enter your password"
+              required
+            />
           </div>
-          <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Sidebar">
-            <i class="ri-menu-fold-line"></i>
+          <div class="form-group">
+            <label>Role</label>
+            <select id="role">
+              <option value="admin">Administrator</option>
+              <option value="doctor">Doctor</option>
+              <option value="nurse">Nurse</option>
+              <option value="receptionist">Receptionist</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%">
+            Login
           </button>
-        </div>
+        </form>
+        <p
+          style="
+            margin-top: 20px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 12px;
+          "
+        >
+          Demo: Use any username/password to login
+        </p>
       </div>
+    </div>
 
-      <nav class="nav-menu">
-        <button class="nav-item active" data-page="dashboard.html">
-          <i class="ri-dashboard-fill"></i>
-          <span>Dashboard</span>
-        </button>
+    <!-- Main Application -->
+    <div class="main-container" id="mainApp">
+      <!-- Sidebar -->
+      <!-- Sidebar Navigation with Nested Pharmacy Menu -->
+      <aside class="sidebar expanded">
+        <div class="sidebar-header">
+          <div class="logo-section">
+            <div class="logo-icon" id="logoIcon">
+              <i class="ri-heart-pulse-fill"></i>
+            </div>
+            <div class="logo-text" id="logoText">
+              <h2 class="logo-title">DR. SHRUTHI</h2>
+              <p class="logo-subtitle">ENT Clinic</p>
+            </div>
+            <button
+              class="sidebar-toggle-btn"
+              id="sidebarToggleBtn"
+              title="Toggle Sidebar"
+            >
+              <i class="ri-menu-fold-line"></i>
+            </button>
+          </div>
+        </div>
 
-        <button class="nav-item" data-page="patients.html">
-          <i class="ri-user-heart-fill"></i>
-          <span>Patients</span>
-        </button>
-
-        <button class="nav-item" data-page="appointments.html">
-          <i class="ri-calendar-check-fill"></i>
-          <span>Appointments</span>
-        </button>
-
-        <button class="nav-item" data-page="consultations.html">
-          <i class="ri-stethoscope-fill"></i>
-          <span>Consultations</span>
-        </button>
-
-        <button class="nav-item" data-page="admissions.html">
-          <i class="ri-hospital-fill"></i>
-          <span>Admissions</span>
-        </button>
-
-        <button class="nav-item" data-page="rooms.html">
-          <i class="ri-hotel-bed-fill"></i>
-          <span>Rooms</span>
-        </button>
-
-        <button class="nav-item" data-page="billing.html">
-          <i class="ri-money-rupee-circle-fill"></i>
-          <span>Billing</span>
-        </button>
-
-        <button class="nav-item" data-page="inventory.html">
-          <i class="ri-capsule-fill"></i>
-          <span>Inventory</span>
-        </button>
-
-        <!-- Pharmacy Parent Menu with Submenu -->
-        <button class="nav-item has-submenu" id="pharmacyToggle">
-          <i class="ri-medicine-bottle-fill"></i>
-          <span>Pharmacy</span>
-          <i class="ri-arrow-right-s-line toggle-icon"></i>
-        </button>
-
-        <!-- Pharmacy Submenu -->
-        <div class="nav-submenu" id="pharmacySubmenu">
-          <button class="nav-submenu-item" data-page="pharmacy.html">
-            <i class="ri-dashboard-line"></i>
+        <nav class="nav-menu">
+          <button class="nav-item active" data-page="dashboard.html">
+            <i class="ri-dashboard-fill"></i>
             <span>Dashboard</span>
           </button>
-          <button class="nav-submenu-item" data-page="prescription.html">
-            <i class="ri-capsule-line"></i>
-            <span>Prescription</span>
+
+          <button class="nav-item" data-page="patients.html">
+            <i class="ri-user-heart-fill"></i>
+            <span>Patients</span>
           </button>
-          <button class="nav-submenu-item" data-page="inventory.html">
+
+          <button class="nav-item" data-page="appointments.html">
+            <i class="ri-calendar-check-fill"></i>
+            <span>Appointments</span>
+          </button>
+
+          <button class="nav-item" data-page="consultations.html">
+            <i class="ri-stethoscope-fill"></i>
+            <span>Consultations</span>
+          </button>
+
+          <button class="nav-item" data-page="admissions.html">
+            <i class="ri-hospital-fill"></i>
+            <span>Admissions</span>
+          </button>
+
+          <button class="nav-item" data-page="rooms.html">
+            <i class="ri-hotel-bed-fill"></i>
+            <span>Rooms</span>
+          </button>
+
+          <button class="nav-item" data-page="billing.html">
+            <i class="ri-money-rupee-circle-fill"></i>
+            <span>Billing</span>
+          </button>
+
+          <button class="nav-item" data-page="inventory.html">
             <i class="ri-capsule-fill"></i>
             <span>Inventory</span>
           </button>
-          <button class="nav-submenu-item" data-page="pharmacy-medicines.html">
-            <i class="ri-capsule-line"></i>
-            <span>Medicines</span>
+
+          <!-- Pharmacy Parent Menu with Submenu -->
+          <button class="nav-item has-submenu" id="pharmacyToggle">
+            <i class="ri-medicine-bottle-fill"></i>
+            <span>Pharmacy</span>
+            <i class="ri-arrow-right-s-line toggle-icon"></i>
           </button>
-          <button class="nav-submenu-item" data-page="pharmacy-sales.html">
-            <i class="ri-shopping-bag-2-line"></i>
-            <span>Sales</span>
+
+          <!-- Pharmacy Submenu -->
+          <div class="nav-submenu" id="pharmacySubmenu">
+            <button class="nav-submenu-item" data-page="pharmacy.html">
+              <i class="ri-dashboard-line"></i>
+              <span>Dashboard</span>
+            </button>
+            <button class="nav-submenu-item" data-page="prescription.html">
+              <i class="ri-capsule-line"></i>
+              <span>Prescription</span>
+            </button>
+            <button class="nav-submenu-item" data-page="inventory.html">
+              <i class="ri-capsule-fill"></i>
+              <span>Inventory</span>
+            </button>
+            <button
+              class="nav-submenu-item"
+              data-page="pharmacy-medicines.html"
+            >
+              <i class="ri-capsule-line"></i>
+              <span>Medicines</span>
+            </button>
+            <button class="nav-submenu-item" data-page="pharmacy-sales.html">
+              <i class="ri-shopping-bag-2-line"></i>
+              <span>Sales</span>
+            </button>
+            <button class="nav-submenu-item" data-page="pharmacy-stock.html">
+              <i class="ri-archive-line"></i>
+              <span>Stock</span>
+            </button>
+            <button
+              class="nav-submenu-item"
+              data-page="pharmacy-suppliers.html"
+            >
+              <i class="ri-truck-line"></i>
+              <span>Suppliers</span>
+            </button>
+          </div>
+
+          <button class="nav-item" data-page="reports.html">
+            <i class="ri-bar-chart-fill"></i>
+            <span>Reports</span>
           </button>
-          <button class="nav-submenu-item" data-page="pharmacy-stock.html">
-            <i class="ri-archive-line"></i>
-            <span>Stock</span>
-          </button>
-          <button class="nav-submenu-item" data-page="pharmacy-suppliers.html">
-            <i class="ri-truck-line"></i>
-            <span>Suppliers</span>
+        </nav>
+
+        <div class="sidebar-footer">
+          <button class="nav-item-logout" onclick="logout()">
+            <i class="ri-logout-box-line"></i>
+            <span>Log Out</span>
           </button>
         </div>
+      </aside>
 
-        <button class="nav-item" data-page="reports.html">
-          <i class="ri-bar-chart-fill"></i>
-          <span>Reports</span>
-        </button>
-      </nav>
-
-      <div class="sidebar-footer">
-        <button class="nav-item-logout" onclick="logout()">
-          <i class="ri-logout-box-line"></i>
-          <span>Log Out</span>
-        </button>
-      </div>
-    </aside>
-
-    <!-- Content Area -->
-    <div class="content">
-      <div class="header">
-        <h1 class="header-title">Dashboard</h1>
-        <div class="header-right">
-          <img src="assets/images/logo.png" alt="Fiscal Ox Logo" class="header-logo">
-          <div class="user-info">
-            <div>
-              <div id="userDisplay">Admin User</div>
-              <div id="roleDisplay">Administrator</div>
+      <!-- Content Area -->
+      <div class="content">
+        <div class="header">
+          <h1 class="header-title">Dashboard</h1>
+          <div class="header-right">
+            <img
+              src="assets/images/logo.png"
+              alt="Fiscal Ox Logo"
+              class="header-logo"
+            />
+            <div class="user-info">
+              <div>
+                <div id="userDisplay">Admin User</div>
+                <div id="roleDisplay">Administrator</div>
+              </div>
+              <div class="user-avatar" id="userAvatar">A</div>
             </div>
-            <div class="user-avatar" id="userAvatar">A</div>
           </div>
         </div>
+        <div class="page-content"></div>
       </div>
-      <div class="page-content"></div>
     </div>
-  </div>
 
-  <!-- JavaScript Files -->
-  <script src="assets/js/auth.js"></script>
-  <script src="assets/js/utils.js"></script>
-  <script src="assets/js/constants.js"></script>
-  <script src="assets/js/script.js"></script>
-  <script src="assets/js/dashboard.js"></script>
-  <script src="assets/js/patients.js"></script>
-  <script src="assets/js/appointments.js"></script>
-  <script src="assets/js/consultations.js"></script>
-  <script src="assets/js/admissions.js"></script>
-  <script src="assets/js/rooms.js"></script>
-  <script src="assets/js/room-management.js"></script>
-  <script src="assets/js/billing.js"></script>
-  <script src="assets/js/inventory.js"></script>
-  <script src="assets/js/pharmacy.js"></script>
-  <script src="assets/js/prescription.js"></script>
-  <script src="assets/js/sales.js"></script>
-  <script src="assets/js/reports.js"></script>
-  <script src="assets/js/error.js"></script>
-
-</body>
-
+    <!-- JavaScript Files -->
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/constants.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/patients.js"></script>
+    <script src="assets/js/appointments.js"></script>
+    <script src="assets/js/consultations.js"></script>
+    <script src="assets/js/admissions.js"></script>
+    <script src="assets/js/data/rooms.js"></script>
+    <script src="assets/js/rooms.js"></script>
+    <script src="assets/js/room-management.js"></script>
+    <script src="assets/js/billing.js"></script>
+    <script src="assets/js/inventory.js"></script>
+    <script src="assets/js/pharmacy.js"></script>
+    <script src="assets/js/prescription.js"></script>
+    <script src="assets/js/sales.js"></script>
+    <script src="assets/js/reports.js"></script>
+    <script src="assets/js/error.js"></script>
+  </body>
 </html>
