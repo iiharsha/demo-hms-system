@@ -2,7 +2,7 @@
 
 const consultations = [
     {
-        id: "C001",
+        id: "P001",
         date: "2024-01-14",
         time: "10:00",
         patientName: "John Doe",
@@ -14,7 +14,7 @@ const consultations = [
         status: "Completed",
     },
     {
-        id: "C002",
+        id: "P002",
         date: "2024-01-14",
         time: "11:00",
         patientName: "Jane Smith",
@@ -26,7 +26,7 @@ const consultations = [
         status: "Completed",
     },
     {
-        id: "C003",
+        id: "P003",
         date: "2024-01-15",
         time: "12:00",
         patientName: "Donald Trump",
@@ -38,10 +38,10 @@ const consultations = [
         status: "Scheduled",
     },
     {
-        id: "C004",
+        id: "P069",
         date: "2025-01-15",
         time: "15:00",
-        patientName: "Micheal Jackson",
+        patientName: "Ram Singh",
         mobile: "9949489384",
         age: 34,
         sex: "M",
@@ -68,7 +68,7 @@ function loadConsultations() {
                         <button class="action-btn action-btn-primary" onclick="editPatientInQueue('${consult.id}')" title="Edit Patient In Queue">
                           <i class="ri-edit-2-line"></i>
                         </button>
-                        <button class="action-btn action-btn-primary" onclick="viewPatientInQueue('${consult.id}')" title="View Patient In Queue">
+                        <button class="action-btn action-btn-primary" onclick="viewPatient('${consult.id}')" title="View Patient In Queue">
                             <i class="ri-eye-line"></i>
                         </button>
                     </td>

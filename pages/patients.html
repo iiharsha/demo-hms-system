@@ -6,11 +6,7 @@
         <h3 id="patientNameDisplay" style="margin-bottom: 5px">John Doe</h3>
         <span class="text-gray-500 text-sm">
           Patient ID:
-          <span id="patientIdDisplay" class="text-gray-500 text-sm">P001</span>
-          • Blood Group:
-          <span id="patientBloodGroupDisplay" class="text-gray-500 text-sm"
-            >O+</span
-          >
+          <span id="patientIdDisplay" class="text-gray-500 text-sm"></span>
         </span>
       </div>
       <button class="btn btn-outline" onclick="backToPatients()">← Back</button>
@@ -24,14 +20,8 @@
         <button class="tab-btn" onclick="switchPatientTab('medical')">
           Medical History
         </button>
-        <button class="tab-btn" onclick="switchPatientTab('medications')">
-          Medications
-        </button>
         <button class="tab-btn" onclick="switchPatientTab('labs')">
           Lab Reports
-        </button>
-        <button class="tab-btn" onclick="switchPatientTab('immunizations')">
-          Immunizations
         </button>
       </div>
 
@@ -52,32 +42,8 @@
               <td id="patientPhoneDisplay">9876543210</td>
             </tr>
             <tr>
-              <td class="font-semibold">Email</td>
-              <td id="patientEmailDisplay">john@email.com</td>
-            </tr>
-            <tr>
               <td class="font-semibold">Address</td>
               <td id="patientAddressDisplay">123 Main Street, Ahmedabad</td>
-            </tr>
-            <tr>
-              <td class="font-semibold">Emergency Contact</td>
-              <td id="patientEmergencyDisplay">9876543211</td>
-            </tr>
-            <tr>
-              <td class="font-semibold">Allergies</td>
-              <td>
-                <div id="patientAllergiesDisplay">
-                  <span class="badge badge-danger">Penicillin</span>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td class="font-semibold">Chronic Conditions</td>
-              <td>
-                <div id="patientConditionsDisplay">
-                  <span class="badge badge-warning">Hypertension</span>
-                </div>
-              </td>
             </tr>
           </tbody>
         </table>
@@ -86,17 +52,9 @@
       <div class="tab-content" id="medical-patient-tab">
         <div id="medicalHistoryList"></div>
       </div>
-      <div class="tab-content" id="medications-patient-tab">
-        <div id="currentMedicationsList"></div>
-      </div>
       <div class="tab-content" id="labs-patient-tab">
         <table class="table">
           <tbody id="labReportsTable"></tbody>
-        </table>
-      </div>
-      <div class="tab-content" id="immunizations-patient-tab">
-        <table class="table">
-          <tbody id="immunizationsTable"></tbody>
         </table>
       </div>
     </div>
@@ -118,26 +76,6 @@
     <button class="btn btn-primary hide" onclick="searchPatientById()">
       Search
     </button>
-  </div>
-
-  <!-- Patient Stats -->
-  <div class="patient-stats hide">
-    <div class="patient-stat-card">
-      <div class="patient-stat-value" id="totalPatientsCount">0</div>
-      <div class="patient-stat-label">Total Patients</div>
-    </div>
-    <div class="patient-stat-card">
-      <div class="patient-stat-value" id="newPatientsMonth">0</div>
-      <div class="patient-stat-label">New This Month</div>
-    </div>
-    <div class="patient-stat-card">
-      <div class="patient-stat-value" id="activePatients">0</div>
-      <div class="patient-stat-label">Active Patients</div>
-    </div>
-    <div class="patient-stat-card">
-      <div class="patient-stat-value" id="criticalPatients">0</div>
-      <div class="patient-stat-label">Critical Cases</div>
-    </div>
   </div>
 
   <div class="display-grid">

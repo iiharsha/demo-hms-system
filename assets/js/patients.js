@@ -9,20 +9,8 @@ function loadPatients() {
     DOM.setValue("activePatients", patients.length - 1);
     DOM.setValue("criticalPatients", 1);
 
-    const html = patients
+    const queueTable = patients
         .map((patient) => {
-            // const lastVisit =
-            //     patient.medicalHistory && patient.medicalHistory.length > 0
-            //         ? patient.medicalHistory[0].date
-            //         : "No visits";
-            // const hasAllergies =
-            //     patient.allergies && patient.allergies.length > 0;
-            // const hasChronic =
-            //     patient.chronicConditions &&
-            //     patient.chronicConditions.length > 0;
-            // const status = hasChronic ? "Chronic" : "Regular";
-            // const statusClass = hasChronic ? "warning" : "success";
-
             return `
                     <tr>
                         <td>${patient.id}</td>
@@ -45,27 +33,36 @@ function loadPatients() {
         })
         .join("");
 
-    DOM.setHTML("patientsInQueueTable", html);
-    DOM.setHTML("patientsTodaysInvoiceTable", html);
+    DOM.setHTML("patientsInQueueTable", queueTable);
+    const invoiceTable = invoices
+        .map((invoice) => {
+            return `
+                    <tr>
+                        <td>${invoice.id}</td>
+                        <td> ${getPatientName(invoice.patientId)}</td>
+                        <td>
+                            <div class="action-buttons">
+                        <button class="action-btn action-btn-primary" onclick="viewPatient('${getPatientName(invoice.patientId)}')" title="View Patient">
+                                    <i class="ri-eye-line"></i>
+                                </button>
+                        <button class="action-btn action-btn-primary" onclick="editPatientInQueue('${getPatientName(invoice.patientId)}')" title="Edit Patient">
+                                    <i class="ri-edit-2-line"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+        })
+        .join("");
+
+    DOM.setHTML("patientsTodaysInvoiceTable", invoiceTable);
 }
 
-/**
- * Update the dashboard statistics (counts).
- * @param {Patient[]} patientList
- */
-function updatePatientStats(patientList) {
-    const total = patientList.length;
-
-    DOM.setValue("totalPatientsCount", total);
-    DOM.setValue("newPatientsMonth", 2);
-    DOM.setValue("activePatients", total - 1);
-    DOM.setValue("criticalPatients", 1);
+function getPatientName(patientId) {
+    const patient = patients.find((p) => p.id === patientId);
+    return patient ? patient.name : "Unknown";
 }
 
-/**
- * Render the patients table rows.
- * @param {Patient[]} patientList
- */
 function renderPatientsTable(patientList) {
     const rows = patientList.map((patient) => {
         const lastVisit = getLastPatientVisit(patient);
@@ -96,36 +93,6 @@ function renderPatientsTable(patientList) {
     DOM.setHTML("patientsInQueueTable", rows.join(""));
 }
 
-/**
- * Helper: get the last visit date of the patient.
- * @param {Patient} patient
- * @returns {string}
- */
-function getLastPatientVisit(patient) {
-    if (patient.medicalHistory?.length) {
-        return patient.medicalHistory[0].date; //TODO: ensure sorted by date.
-    }
-
-    return "No Visits";
-}
-
-/**
- * Helper: Derive the patient status.
- * @param {Patient} patient
- * @returns {string}
- */
-function getPatientStatus(patient) {
-    if (patient.chronicConditions?.length) {
-        return { label: "Chronic", class: "warning" };
-    }
-    return { label: "Regular", class: "success" };
-}
-
-/**
- * Render the action buttons for the patient row.
- * @param {string} patientId - the id of the patient.
- * @returns {string} - HTML string of the div with the buttons.
- */
 function renderPatientActions(patientId) {
     return `
     <div class="action-buttons">
@@ -255,7 +222,6 @@ function viewPatientInfo(patient) {
 
     setText("patientNameDisplay", patient.name || "NA");
     setText("patientIdDisplay", patient.id || "");
-    setText("patientBloodGroupDisplay", patient.bloodGroup || "NA");
     setText("patientAgeDisplay", patient.age ? patient.age + " years" : "—");
     setText("patientGenderDisplay", patient.gender || "NA");
     setText("patientPhoneDisplay", patient.phone || "NA");
@@ -300,24 +266,45 @@ function viewPatientMedicalHistory(patient) {
 
     if (patient.medicalHistory && patient.medicalHistory.length > 0) {
         medicalHistoryDiv.innerHTML = patient.medicalHistory
-            .map(
-                (h) => `
-            <div class="card" class="mb-3">
-                <div class="flex justify-between items-start">
-                    <div class="p-3">
-                        <div style="flex items-center gap-2">
-                            <span class="uppercase font-semibold">${h.type}</span>
-                            <span class="text-gray-400 text-xs">${formatDate(h.date)}</span>
-                        </div>
-                        <div class="pl-2">
-                            <h4>${h.diagnosis || ""}</h4>
-                            <p class="text-sm">${h.notes || ""}</p>
+            .map((h) => {
+                const medsHTML =
+                    h.medications && h.medications.length > 0
+                        ? `
+                            <div class="mt-2 pl-4">
+                                <h5 class="font-semibold mb-1 text-sm">Medications:</h5>
+                                <ul class="list-disc pl-5 text-sm">
+                                    ${h.medications
+                                        .map(
+                                            (m) => `
+                                            <li>
+                                                <strong>${m.name}</strong> — ${m.dose || "NA"} (${m.frequency || "NA"})
+                                            </li>
+                                        `,
+                                        )
+                                        .join("")}
+                                </ul>
+                            </div>
+                          `
+                        : "";
+
+                return `
+                    <div class="card mb-3 p-3">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="uppercase font-semibold">${h.type}</span>
+                                    <span class="text-gray-400 text-xs">${formatDate(h.date)}</span>
+                                </div>
+                                <div class="pl-2 mt-1">
+                                    <h4 class="font-semibold">${h.diagnosis || "—"}</h4>
+                                    <p class="text-sm text-gray-700">${h.notes || ""}</p>
+                                    ${medsHTML}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        `,
-            )
+                `;
+            })
             .join("");
     } else {
         medicalHistoryDiv.innerHTML =

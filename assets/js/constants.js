@@ -1,298 +1,12 @@
-/**
- * @typedef {Object} PatientMedication
- * @property {string} name - Name of the medication.
- * @property {string} dose - Dosage prescribed.
- * @property {string} frequency - Frequency of intake.
- */
-
-/**
- * @typedef {Object} MedicalHistory
- * @property {string} date - Date of the medical record.
- * @property {string} type - Type of medical encounter (Consultation, Admission, Emergency, Follow-up, etc.).
- * @property {string} doctor - Name of the doctor involved.
- * @property {string} diagnosis - Diagnosis given.
- * @property {string} notes - Additional notes.
- */
-
-/**
- * @typedef {Object} LabReport
- * @property {string} date - Date of the lab test.
- * @property {string} test - Name of the test.
- * @property {string} result - Result of the test.
- * @property {string} file - File name/path for the report.
- */
-
-/**
- * @typedef {Object} Immunization
- * @property {string} vaccine - Vaccine name.
- * @property {string} date - Date the vaccine was administered.
- * @property {string} nextDue - Next due date or status (e.g., "Completed").
- */
-
-/**
- * @typedef {Object} Patient
- * @property {string} id - Patient ID
- * @property {string} name - Name of the patient.
- * @property {number} age - Age of the patient.
- * @property {"Male"|"Female"|"Other"} gender - gender of the patient.
- * @property {string} phone - Phone number of the patient.
- * @property {string} email - Email of the patient.
- * @property {"A+"|"A-"|"B+"|"B-"|"O+"|"O-"|"AB+"|"AB-"} bloodGroup - blood group of the patient.
- * @property {string} address - address of the patient.
- * @property {string} emergencyContact - emergency contact of the patient.
- * @property {string[]} allergies - list of allergies of the patient.
- * @property {string[]} chronicConditions - list of chronic conditions of the patient.
- * @property {PatientMedication[]} currentMedications - list of current medications of the patient.
- * @property {MedicalHistory[]} medicalHistory - list of medical history of the patient.
- * @property {LabReport[]} labReports - list of lab reports of the patient.
- * @property {Immunization[]} immunizations - list of immunizations of the patient.
- */
-
-/**
- * List of patients
- * @type {Patient[]}
- */
+// --- PATIENTS ---
 let patients = [
     {
-        id: "P001",
+        id: "PT1234",
         name: "John Doe",
-        age: 35,
-        gender: "Male",
-        phone: "9876543210",
-        email: "john@email.com",
-        bloodGroup: "O+",
-        address: "123 Main Street, Ahmedabad",
-        emergencyContact: "9876543211",
-        allergies: ["Penicillin", "Peanuts"],
-        chronicConditions: ["Hypertension", "Type 2 Diabetes"],
-        currentMedications: [
-            { name: "Metformin", dose: "500mg", frequency: "Twice daily" },
-            { name: "Lisinopril", dose: "10mg", frequency: "Once daily" },
-        ],
-        medicalHistory: [
-            {
-                date: "2024-01-10",
-                type: "Consultation",
-                doctor: "Dr. Smith",
-                diagnosis: "Hypertension",
-                notes: "Blood pressure elevated, started on Lisinopril",
-            },
-            {
-                date: "2023-12-15",
-                type: "Emergency",
-                doctor: "Dr. Jones",
-                diagnosis: "Acute Bronchitis",
-                notes: "Prescribed antibiotics and rest",
-            },
-            {
-                date: "2023-11-20",
-                type: "Check-up",
-                doctor: "Dr. Smith",
-                diagnosis: "Routine Check-up",
-                notes: "All vitals normal",
-            },
-        ],
-        labReports: [
-            {
-                date: "2024-01-10",
-                test: "Complete Blood Count",
-                result: "Normal",
-                file: "CBC_001.pdf",
-            },
-            {
-                date: "2024-01-10",
-                test: "Lipid Profile",
-                result: "High Cholesterol",
-                file: "LIPID_001.pdf",
-            },
-        ],
-        immunizations: [
-            { vaccine: "COVID-19", date: "2023-03-15", nextDue: "2024-03-15" },
-            { vaccine: "Influenza", date: "2023-10-01", nextDue: "2024-10-01" },
-        ],
-    },
-    {
-        id: "P002",
-        name: "Jane Smith",
-        age: 28,
-        gender: "Female",
-        phone: "9876543211",
-        email: "jane@email.com",
-        bloodGroup: "A+",
-        address: "456 Park Avenue, Ahmedabad",
-        emergencyContact: "9876543212",
-        allergies: ["Sulfa drugs"],
-        chronicConditions: ["Asthma"],
-        currentMedications: [
-            {
-                name: "Albuterol Inhaler",
-                dose: "90mcg",
-                frequency: "As needed",
-            },
-        ],
-        medicalHistory: [
-            {
-                date: "2024-01-08",
-                type: "Follow-up",
-                doctor: "Dr. Williams",
-                diagnosis: "Asthma Management",
-                notes: "Well controlled on current medication",
-            },
-            {
-                date: "2023-09-10",
-                type: "Consultation",
-                doctor: "Dr. Smith",
-                diagnosis: "Migraine",
-                notes: "Prescribed Sumatriptan for acute episodes",
-            },
-        ],
-        labReports: [
-            {
-                date: "2023-12-20",
-                test: "Thyroid Function",
-                result: "Normal",
-                file: "THYROID_002.pdf",
-            },
-        ],
-        immunizations: [
-            { vaccine: "COVID-19", date: "2023-04-20", nextDue: "2024-04-20" },
-            { vaccine: "Tetanus", date: "2022-06-15", nextDue: "2032-06-15" },
-        ],
-    },
-    {
-        id: "P003",
-        name: "Robert Johnson",
-        age: 42,
-        gender: "Male",
-        phone: "9876543212",
-        email: "robert@email.com",
-        bloodGroup: "B+",
-        address: "789 Lake Road, Ahmedabad",
-        emergencyContact: "9876543213",
-        allergies: [],
-        chronicConditions: ["High Cholesterol"],
-        currentMedications: [
-            {
-                name: "Atorvastatin",
-                dose: "20mg",
-                frequency: "Once daily at night",
-            },
-        ],
-        medicalHistory: [
-            {
-                date: "2024-01-12",
-                type: "Admission",
-                doctor: "Dr. Williams",
-                diagnosis: "Appendicitis",
-                notes: "Appendectomy performed, recovery ongoing",
-            },
-            {
-                date: "2023-10-05",
-                type: "Consultation",
-                doctor: "Dr. Jones",
-                diagnosis: "High Cholesterol",
-                notes: "Started on statin therapy",
-            },
-        ],
-        labReports: [
-            {
-                date: "2024-01-05",
-                test: "Lipid Profile",
-                result: "Improving",
-                file: "LIPID_003.pdf",
-            },
-            {
-                date: "2024-01-12",
-                test: "Pre-operative Panel",
-                result: "Normal",
-                file: "PREOP_003.pdf",
-            },
-        ],
-        immunizations: [
-            { vaccine: "COVID-19", date: "2023-05-10", nextDue: "2024-05-10" },
-            {
-                vaccine: "Hepatitis B",
-                date: "2023-01-15",
-                nextDue: "Completed",
-            },
-        ],
-    },
-    {
-        id: "P069",
-        name: "Ram Singh",
-        age: 21,
-        gender: "Male",
-        phone: "1234123412",
-        email: "ramsingh@email.com",
-        bloodGroup: "B+",
-        address: "789 Lake Road, Ahmedabad",
-        emergencyContact: "9876543213",
-        allergies: [],
-        chronicConditions: ["High Cholesterol"],
-        currentMedications: [
-            {
-                name: "Atorvastatin",
-                dose: "20mg",
-                frequency: "Once daily at night",
-            },
-        ],
-        medicalHistory: [
-            {
-                date: "2024-01-12",
-                type: "Admission",
-                doctor: "Dr. Williams",
-                diagnosis: "Appendicitis",
-                notes: "Appendectomy performed, recovery ongoing",
-            },
-            {
-                date: "2023-10-05",
-                type: "Consultation",
-                doctor: "Dr. Jones",
-                diagnosis: "High Cholesterol",
-                notes: "Started on statin therapy",
-            },
-        ],
-        labReports: [
-            {
-                date: "2024-01-05",
-                test: "Lipid Profile",
-                result: "Improving",
-                file: "LIPID_003.pdf",
-            },
-            {
-                date: "2024-01-12",
-                test: "Pre-operative Panel",
-                result: "Normal",
-                file: "PREOP_003.pdf",
-            },
-        ],
-        immunizations: [
-            { vaccine: "COVID-19", date: "2023-05-10", nextDue: "2024-05-10" },
-            {
-                vaccine: "Hepatitis B",
-                date: "2023-01-15",
-                nextDue: "Completed",
-            },
-        ],
-    },
-];
-let invoices = [
-    {
-        id: "P069",
-        name: "Raj Kumar",
         age: 35,
         gender: "M",
         phone: "9876543210",
-        email: "rajkumar@email.com",
-        bloodGroup: "O+",
         address: "123 Main Street, Ahmedabad",
-        emergencyContact: "9876543211",
-        allergies: ["Penicillin", "Peanuts"],
-        chronicConditions: ["Hypertension", "Type 2 Diabetes"],
-        currentMedications: [
-            { name: "Metformin", dose: "500mg", frequency: "Twice daily" },
-            { name: "Lisinopril", dose: "10mg", frequency: "Once daily" },
-        ],
         medicalHistory: [
             {
                 date: "2024-01-10",
@@ -300,6 +14,18 @@ let invoices = [
                 doctor: "Dr. Smith",
                 diagnosis: "Hypertension",
                 notes: "Blood pressure elevated, started on Lisinopril",
+                medications: [
+                    {
+                        name: "Lisinopril",
+                        dose: "10mg",
+                        frequency: "Once daily",
+                    },
+                    {
+                        name: "Metformin",
+                        dose: "500mg",
+                        frequency: "Twice daily",
+                    },
+                ],
             },
             {
                 date: "2023-12-15",
@@ -307,6 +33,13 @@ let invoices = [
                 doctor: "Dr. Jones",
                 diagnosis: "Acute Bronchitis",
                 notes: "Prescribed antibiotics and rest",
+                medications: [
+                    {
+                        name: "Amoxicillin 500mg",
+                        dose: "500mg",
+                        frequency: "Thrice daily",
+                    },
+                ],
             },
             {
                 date: "2023-11-20",
@@ -314,6 +47,7 @@ let invoices = [
                 doctor: "Dr. Smith",
                 diagnosis: "Routine Check-up",
                 notes: "All vitals normal",
+                medications: [],
             },
         ],
         labReports: [
@@ -323,37 +57,15 @@ let invoices = [
                 result: "Normal",
                 file: "CBC_001.pdf",
             },
-            {
-                date: "2024-01-10",
-                test: "Lipid Profile",
-                result: "High Cholesterol",
-                file: "LIPID_001.pdf",
-            },
-        ],
-        immunizations: [
-            { vaccine: "COVID-19", date: "2023-03-15", nextDue: "2024-03-15" },
-            { vaccine: "Influenza", date: "2023-10-01", nextDue: "2024-10-01" },
         ],
     },
     {
-        id: "P002",
+        id: "PT1235",
         name: "Jane Smith",
         age: 28,
         gender: "F",
         phone: "9876543211",
-        email: "jane@email.com",
-        bloodGroup: "A+",
         address: "456 Park Avenue, Ahmedabad",
-        emergencyContact: "9876543212",
-        allergies: ["Sulfa drugs"],
-        chronicConditions: ["Asthma"],
-        currentMedications: [
-            {
-                name: "Albuterol Inhaler",
-                dose: "90mcg",
-                frequency: "As needed",
-            },
-        ],
         medicalHistory: [
             {
                 date: "2024-01-08",
@@ -361,6 +73,13 @@ let invoices = [
                 doctor: "Dr. Williams",
                 diagnosis: "Asthma Management",
                 notes: "Well controlled on current medication",
+                medications: [
+                    {
+                        name: "Albuterol Inhaler",
+                        dose: "90mcg",
+                        frequency: "As needed",
+                    },
+                ],
             },
             {
                 date: "2023-09-10",
@@ -368,6 +87,13 @@ let invoices = [
                 doctor: "Dr. Smith",
                 diagnosis: "Migraine",
                 notes: "Prescribed Sumatriptan for acute episodes",
+                medications: [
+                    {
+                        name: "Sumatriptan",
+                        dose: "50mg",
+                        frequency: "As needed",
+                    },
+                ],
             },
         ],
         labReports: [
@@ -378,10 +104,187 @@ let invoices = [
                 file: "THYROID_002.pdf",
             },
         ],
-        immunizations: [
-            { vaccine: "COVID-19", date: "2023-04-20", nextDue: "2024-04-20" },
-            { vaccine: "Tetanus", date: "2022-06-15", nextDue: "2032-06-15" },
+    },
+    {
+        id: "PT1236",
+        name: "Robert Johnson",
+        age: 42,
+        gender: "M",
+        phone: "9876543212",
+        address: "789 Lake Road, Ahmedabad",
+        medicalHistory: [
+            {
+                date: "2024-01-12",
+                type: "Admission",
+                doctor: "Dr. Williams",
+                diagnosis: "Appendicitis",
+                notes: "Appendectomy performed, recovery ongoing",
+                medications: [
+                    {
+                        name: "Ceftriaxone",
+                        dose: "1g",
+                        frequency: "Twice daily",
+                    },
+                    {
+                        name: "Paracetamol",
+                        dose: "500mg",
+                        frequency: "Thrice daily",
+                    },
+                ],
+            },
+            {
+                date: "2023-10-05",
+                type: "Consultation",
+                doctor: "Dr. Jones",
+                diagnosis: "High Cholesterol",
+                notes: "Started on statin therapy",
+                medications: [
+                    {
+                        name: "Atorvastatin",
+                        dose: "20mg",
+                        frequency: "Once daily",
+                    },
+                ],
+            },
         ],
+        labReports: [
+            {
+                date: "2024-01-05",
+                test: "Lipid Profile",
+                result: "Improving",
+                file: "LIPID_003.pdf",
+            },
+            {
+                date: "2024-01-12",
+                test: "Pre-operative Panel",
+                result: "Normal",
+                file: "PREOP_003.pdf",
+            },
+        ],
+    },
+];
+
+// --- PROCEDURES (Master List) ---
+const procedures = [
+    { id: 1, name: "Ear Piercing under LA", price: 500 },
+    { id: 2, name: "Mastoidectomy with Tympanoplasty under GA", price: 2500 },
+    { id: 3, name: "Injection for vomiting relief", price: 300 },
+    { id: 4, name: "Trachestomy Closure", price: 2000 },
+    { id: 5, name: "Ear Wick insertion", price: 300 },
+    { id: 6, name: "Anaestheist's charges", price: 700 },
+    { id: 7, name: "Room Charges", price: 1500 },
+    {
+        id: 8,
+        name: "Septoplasty with Bilateral Turbinate Reduction under GA",
+        price: 1000,
+    },
+    { id: 9, name: "Injection for Pain relief", price: 600 },
+];
+
+// --- INVENTORY (Master Medicines List) ---
+let inventory = [
+    {
+        code: "MED001",
+        name: "Paracetamol",
+        category: "Pain-Relief",
+        quantity: 45,
+        unitPrice: 30,
+        status: "In Stock",
+        expiryDate: "2026-11-20",
+    },
+    {
+        code: "MED002",
+        name: "Amoxicillin 500mg",
+        category: "Antibiotics",
+        quantity: 250,
+        unitPrice: 420,
+        status: "Low Stock",
+        expiryDate: "2027-03-14",
+    },
+    {
+        code: "DIAB001",
+        name: "Metformin 500mg",
+        category: "Diabetes",
+        quantity: 120,
+        unitPrice: 85,
+        status: "In Stock",
+        expiryDate: "2027-08-25",
+    },
+    {
+        code: "CARD001",
+        name: "Atorvastatin 20mg",
+        category: "Cardiovascular",
+        quantity: 200,
+        unitPrice: 150,
+        status: "In Stock",
+        expiryDate: "2027-09-05",
+    },
+];
+
+// --- INVOICES (Billing Data Only) ---
+let invoices = [
+    {
+        id: "INV1234",
+        patientId: "PT1234",
+        date: "2025-10-17",
+        proceduresPerformed: [
+            { name: "Ear Piercing under LA", price: 500 },
+            { name: "Room Charges", price: 1500 },
+        ],
+        medicationsBilled: [
+            {
+                name: "Lisinopril 10mg",
+                quantity: 10,
+                unitPrice: 85,
+                total: 850,
+            },
+            {
+                name: "Metformin 500mg",
+                quantity: 20,
+                unitPrice: 85,
+                total: 1700,
+            },
+        ],
+        totalAmount: 500 + 1500 + 850 + 1700, // 4550
+        status: "Paid",
+    },
+    {
+        id: "INV1235",
+        patientId: "PT1235",
+        date: "2025-10-19",
+        proceduresPerformed: [
+            { name: "Injection for Pain relief", price: 600 },
+        ],
+        medicationsBilled: [
+            {
+                name: "Sumatriptan 50mg",
+                quantity: 5,
+                unitPrice: 120,
+                total: 600,
+            },
+        ],
+        totalAmount: 600 + 600, // 1200
+        status: "Pending",
+    },
+    {
+        id: "INV1236",
+        patientId: "PT1236",
+        date: "2025-10-21",
+        proceduresPerformed: [
+            { name: "Trachestomy Closure", price: 2000 },
+            { name: "Anaestheist's charges", price: 700 },
+        ],
+        medicationsBilled: [
+            { name: "Paracetamol", quantity: 15, unitPrice: 30, total: 450 },
+            {
+                name: "Atorvastatin 20mg",
+                quantity: 10,
+                unitPrice: 150,
+                total: 1500,
+            },
+        ],
+        totalAmount: 2000 + 700 + 450 + 1500, // 4650
+        status: "Paid",
     },
 ];
 
@@ -403,133 +306,6 @@ let bills = [
     },
 ];
 
-/** @typedef {Object} Inventory
- *  @param {string} code
- *  @param {string} name
- *  @param {string} category
- *  @param {string} quantity
- *  @param {string} unitPrice
- *  @param {string} status
- *  @param {string} expiryDate
- */
-
-/** The pharmacy inventory
- * @type {Inventory[]}*/
-let inventory = [
-    {
-        code: "MED001",
-        name: "Paracetamol",
-        category: "Pain-Relief",
-        quantity: 45,
-        unitPrice: "₹30",
-        status: "In Stock",
-        expiryDate: "2026-11-20",
-    },
-    {
-        code: "MED002",
-        name: "Amoxicillin 500mg",
-        category: "Anti-Biotics",
-        quantity: 250,
-        unitPrice: "₹420",
-        status: "Low Stock",
-        expiryDate: "2027-03-14",
-    },
-    {
-        code: "MED003",
-        name: "Vitamin C 1000mg",
-        category: "Vitamins",
-        quantity: 5,
-        unitPrice: "₹4500",
-        status: "Out of Stock",
-        expiryDate: "2025-12-08",
-    },
-    {
-        code: "DIAB001",
-        name: "Metformin 500mg",
-        category: "Diabetes",
-        quantity: 120,
-        unitPrice: "₹85",
-        status: "In Stock",
-        expiryDate: "2027-08-25",
-    },
-    {
-        code: "DIAB002",
-        name: "Glimepiride 2mg",
-        category: "Diabetes",
-        quantity: 40,
-        unitPrice: "₹110",
-        status: "Low Stock",
-        expiryDate: "2026-06-30",
-    },
-    {
-        code: "DIAB003",
-        name: "Insulin Glargine (Lantus)",
-        category: "Diabetes",
-        quantity: 10,
-        unitPrice: "₹750",
-        status: "Out of Stock",
-        expiryDate: "2025-11-10",
-    },
-    {
-        code: "DIAB004",
-        name: "Dapagliflozin 10mg",
-        category: "Diabetes",
-        quantity: 65,
-        unitPrice: "₹380",
-        status: "In Stock",
-        expiryDate: "2028-02-19",
-    },
-    {
-        code: "CARD001",
-        name: "Atorvastatin 20mg",
-        category: "Cardiovascular",
-        quantity: 200,
-        unitPrice: "₹150",
-        status: "In Stock",
-        expiryDate: "2027-09-05",
-    },
-    {
-        code: "CARD002",
-        name: "Amlodipine 5mg",
-        category: "Cardiovascular",
-        quantity: 30,
-        unitPrice: "₹60",
-        status: "Low Stock",
-        expiryDate: "2026-03-22",
-    },
-    {
-        code: "CARD003",
-        name: "Losartan 50mg",
-        category: "Cardiovascular",
-        quantity: 90,
-        unitPrice: "₹95",
-        status: "In Stock",
-        expiryDate: "2028-07-11",
-    },
-    {
-        code: "CARD004",
-        name: "Clopidogrel 75mg",
-        category: "Cardiovascular",
-        quantity: 8,
-        unitPrice: "₹230",
-        status: "Out of Stock",
-        expiryDate: "2025-10-28",
-    },
-];
-
-/** @typedef {Object} Sales
- * @param {string} id
- * @param {string} date
- * @param {string} customerName
- * @param {string} prescriptionNumber
- * @param {string} medicine
- * @param {number} quantity
- * @param {string[]} modeOfPatment
- * @param {string} totalPrice
- * @param {string} status
- * */
-
-/** @type {Sales[]} */
 let sales = [
     {
         id: "SL001",

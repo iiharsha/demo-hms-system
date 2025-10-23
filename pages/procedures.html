@@ -1,0 +1,32 @@
+<!-- Appointments Page -->
+<div class="page-content" id="procedures-page">
+  <div class="search-bar">
+    <div class="search-container">
+      <input
+        type="text"
+        placeholder="Search Patient Name, ID or Phone..."
+        id="patientSearch"
+        oninput="searchProcedures()"
+      />
+    </div>
+
+    <button class="btn btn-secondary" onclick="openAddAppointmentModal()">
+      Manage Procedure
+    </button>
+  </div>
+
+  <div class="card">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>SL</th>
+          <th>Procedure Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="proceduresTable">
+        <!-- Dynamic content -->
+      </tbody>
+    </table>
+  </div>
+</div>

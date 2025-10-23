@@ -20,14 +20,13 @@ function initializeDashboard() {
 /* loads the recent appointments table */
 function loadTodaysInvoices() {
     const html = invoices
-        .slice(0, 5)
         .map(
-            (patient) => `
+            (invoice) => `
                 <tr>
-                    <td>${patient.id}</td>
-                    <td>${patient.name}</td>
+                    <td>${invoice.id}</td>
+                    <td>${getPatientName(invoice.patientId)}</td>
                     <td>
-                        <button class="action-btn action-btn-primary" onclick="viewInvoice('${patient.id}')" title="View Invoice">
+                        <button class="action-btn action-btn-primary" onclick="viewInvoice('${invoice.id}')" title="View Invoice">
                             <i class="ri-eye-line"></i>
                         </button>
                 </tr>

@@ -554,3 +554,7 @@
 .sticky {
     position: sticky;
 }
+
+.list-disc {
+    list-style-type: disc;
+}
