@@ -1,5 +1,3 @@
-/* patients page */
-
 /** Initialize Patients Page
  * */
 function loadPatients() {
@@ -20,7 +18,7 @@ function loadPatients() {
                                 <button class="action-btn action-btn-primary" onclick="viewPatient('${patient.id}')" title="View Patient">
                                     <i class="ri-eye-line"></i>
                                 </button>
-                                <button class="action-btn action-btn-primary" onclick="editPatientInQueue('${patient.id}')" title="Edit Patient">
+                                <button class="action-btn action-btn-primary" onclick="openEditPatientPage('${patient.id}')" title="Edit Patient">
                                     <i class="ri-edit-2-line"></i>
                                 </button>
                                 <button class="action-btn action-btn-danger" onclick="deletePatientInQueue('${patient.id}')" title="Delete Patient">
@@ -42,11 +40,8 @@ function loadPatients() {
                         <td> ${getPatientName(invoice.patientId)}</td>
                         <td>
                             <div class="action-buttons">
-                        <button class="action-btn action-btn-primary" onclick="viewPatient('${getPatientName(invoice.patientId)}')" title="View Patient">
+                                <button class="action-btn action-btn-primary" onclick="viewPatient('${invoice.patientId}')" title="View Patient">
                                     <i class="ri-eye-line"></i>
-                                </button>
-                        <button class="action-btn action-btn-primary" onclick="editPatientInQueue('${getPatientName(invoice.patientId)}')" title="Edit Patient">
-                                    <i class="ri-edit-2-line"></i>
                                 </button>
                             </div>
                         </td>
@@ -56,11 +51,6 @@ function loadPatients() {
         .join("");
 
     DOM.setHTML("patientsTodaysInvoiceTable", invoiceTable);
-}
-
-function getPatientName(patientId) {
-    const patient = patients.find((p) => p.id === patientId);
-    return patient ? patient.name : "Unknown";
 }
 
 function renderPatientsTable(patientList) {
@@ -102,66 +92,12 @@ function renderPatientActions(patientId) {
   `;
 }
 
-/**
- * Export Patient Data to CSV
- * TODO need to modify this
- */
-function exportPatientData() {
-    const data = patients.map((p) => ({
-        ID: p.id,
-        Name: p.name,
-        Age: p.age,
-        Gender: p.gender,
-        Phone: p.phone,
-        Email: p.email,
-        BloodGroup: p.bloodGroup || "Unknown",
-        Allergies: p.allergies ? p.allergies.join(", ") : "None",
-        ChronicConditions: p.chronicConditions
-            ? p.chronicConditions.join(", ")
-            : "None",
-    }));
-    exportToCSV(data, "patients_data.csv");
-    showNotification("Patient data exported successfully");
-}
-
 function quickConsultation(patientId) {
     const patient = patients.find((p) => p.id === patientId);
     if (patient) {
         showNotification(`Starting consultation for ${patient.name}`);
         openNewConsultationModal();
     }
-}
-
-/**
- * Save patient from Add Patient Modal
- * (fixed: bloodGroup property name)
- */
-function savePatient() {
-    const newPatient = {
-        id: "PT" + String(patients.length + 1).padStart(3, "0"),
-        name:
-            (document.getElementById("patientFirstName").value || "").trim() +
-            " " +
-            (document.getElementById("patientLastName").value || "").trim(),
-        age: calculateAge(document.getElementById("patientDOB").value),
-        gender: document.getElementById("patientGender").value,
-        phone: document.getElementById("patientPhone").value,
-        email: document.getElementById("patientEmail").value,
-        address: document.getElementById("patientAddress").value,
-        bloodGroup: document.getElementById("patientBloodGroup").value,
-        emergencyContact: document.getElementById("patientEmergency").value,
-    };
-
-    patients.push(newPatient);
-    // Ensure UI updates
-    if (typeof loadPatients === "function") loadPatients();
-    if (typeof loadData === "function") loadData();
-    if (typeof initializeDashboard === "function") initializeDashboard();
-
-    // Close add modal if helper exists
-    if (typeof closeModal === "function") closeModal("addPatientModal");
-
-    showNotification("Patient added successfully!");
 }
 
 /**
@@ -194,10 +130,6 @@ function switchPatientTab(tabName) {
     }
 }
 
-/* ----------------------
-   View renderers (fixed)
-   ---------------------- */
-
 /**
  * Renders the patient basic info tab
  * @param {Object} patient
@@ -224,6 +156,7 @@ function viewPatientInfo(patient) {
     setText("patientIdDisplay", patient.id || "");
     setText("patientAgeDisplay", patient.age ? patient.age + " years" : "—");
     setText("patientGenderDisplay", patient.gender || "NA");
+    setText("patientWeightDisplay", patient.medicalHistory[0].weight || "NA");
     setText("patientPhoneDisplay", patient.phone || "NA");
     setText("patientEmailDisplay", patient.email || "NA");
     setText("patientAddressDisplay", patient.address || "Not provided");
@@ -287,17 +220,27 @@ function viewPatientMedicalHistory(patient) {
                           `
                         : "";
 
+                const complainsHTML = h.complains
+                    ? `
+                        <div class="mt-2">
+                            <h5 class="font-semibold mb-1 text-sm">Complains:</h5>
+                            <p class="text-sm text-gray-700">${h.complains}</p>
+                        </div>
+                      `
+                    : "";
+
                 return `
                     <div class="card mb-3 p-3">
                         <div class="flex justify-between items-start">
                             <div>
                                 <div class="flex items-center gap-2">
-                                    <span class="uppercase font-semibold">${h.type}</span>
-                                    <span class="text-gray-400 text-xs">${formatDate(h.date)}</span>
+                                    <span class="uppercase font-semibold">${formatDate(h.date)}</span>
+                                    <span class="text-xs text-gray-500">${h.type || "—"}</span>
                                 </div>
                                 <div class="pl-2 mt-1">
                                     <h4 class="font-semibold">${h.diagnosis || "—"}</h4>
                                     <p class="text-sm text-gray-700">${h.notes || ""}</p>
+                                    ${complainsHTML}
                                     ${medsHTML}
                                 </div>
                             </div>
@@ -404,10 +347,6 @@ function viewPatientImmunizations(patient) {
     }
 }
 
-/* ----------------------
-   Page switching helpers
-   ---------------------- */
-
 /**
  * Show the view-patient page and hide the patients list page.
  * Keeps browser history so back button returns to list.
@@ -435,36 +374,6 @@ function viewPatient(id) {
     if (viewPage) viewPage.classList.add("active");
 }
 
-/**
- * Go back to patients list view from the patient detail view.
- * If called via browser back button, history.popstate handler should call this.
- */
-function backToPatients() {
-    const viewPage = document.getElementById("view-patient-page");
-    if (viewPage) viewPage.classList.remove("active");
-
-    const patientsPage = document.getElementById("patients-page");
-    if (patientsPage) patientsPage.classList.remove("hide");
-
-    // Normalize URL
-    try {
-        if (location.hash && location.hash.startsWith("#/patient/")) {
-            history.pushState({}, "", location.pathname + location.search);
-        }
-    } catch (e) {}
-}
-
-/* Keep browser back behavior working: when user presses back, go back to patients list */
-window.addEventListener("popstate", (ev) => {
-    const state = ev.state;
-    if (!state || state.page !== "view-patient") {
-        // show patients list
-        backToPatients();
-    } else {
-        // show the patient id if present
-        if (state.id) viewPatient(state.id);
-    }
-});
 /* Keep browser back behavior working: when user presses back, go back to patients list */
 window.addEventListener("popstate", (ev) => {
     const state = ev.state;
@@ -492,16 +401,22 @@ function searchPatients() {
     const table = document.getElementById("patientsInQueueTable");
     table.innerHTML = filtered
         .map((patient) => {
-            const lastVisit =
-                patient.medicalHistory && patient.medicalHistory.length > 0
-                    ? patient.medicalHistory[0].date
-                    : "No visits";
             return `
               <tr>
               <td>${patient.id}</td>
               <td>${patient.name}</td>
               <td>
-              <button class="btn btn-primary" onclick="viewPatient('${patient.id}')" style="padding: 6px 12px; font-size: 12px;">View</button>
+                <div class="action-buttons">
+                    <button class="action-btn action-btn-primary" onclick="viewPatient('${patient.id}')" title="View Patient">
+                        <i class="ri-eye-line"></i>
+                    </button>
+                    <button class="action-btn action-btn-primary" onclick="openEditPatientPage('${patient.id}')" title="Edit Patient">
+                        <i class="ri-edit-2-line"></i>
+                    </button>
+                    <button class="action-btn action-btn-danger" onclick="deletePatientInQueue('${patient.id}')" title="Delete Patient">
+                        <i class="ri-delete-bin-6-line"></i>
+                    </button>
+                </div>
               </td>
               </tr>
               `;
@@ -509,32 +424,137 @@ function searchPatients() {
         .join("");
 }
 
-function printPatientList() {
-    window.print();
-    showNotification("Patient list sent to printer");
-}
+let currentEditingPatientId = null;
 
-function openAddPatientModal() {
-    openModal("addPatientModal");
-}
+/**
+ * Opens the Edit Patient page with prefilled data.
+ */
+function openEditPatientPage(patientId) {
+    const patient = patients.find((p) => p.id === patientId);
+    if (!patient) return showNotification("Patient not found");
 
-function printPatientRecord() {
-    window.print();
-    showNotification("Patient record sent to printer");
+    currentEditingPatientId = patientId;
+
+    // Hide other sections
+    document.getElementById("patients-page")?.classList.add("hide");
+    document.getElementById("view-patient-page")?.classList.remove("active");
+    document.getElementById("edit-patient-page")?.classList.add("active");
+
+    // Prefill fields
+    const [firstName, ...lastParts] = (patient.name || "").split(" ");
+    document.getElementById("editPatientFirstName").value = firstName || "";
+    document.getElementById("editPatientLastName").value =
+        lastParts.join(" ") || "";
+    document.getElementById("editPatientAge").value = patient.age || "";
+    document.getElementById("editPatientGender").value = patient.gender || "";
+    document.getElementById("editPatientPhone").value = patient.phone || "";
+    document.getElementById("editPatientEmail").value = patient.email || "";
+    document.getElementById("editPatientAddress").value = patient.address || "";
 }
 
 /**
- * Edit patient while in view page: hide detail page and open add modal for editing
+ * Save edited patient data and refresh UI
  */
-function editPatient() {
-    // hide detail page
-    const viewPage = document.getElementById("view-patient-page");
-    if (viewPage) viewPage.classList.remove("active");
+function saveEditedPatient(event) {
+    event.preventDefault();
+    if (!currentEditingPatientId) return;
 
-    // open add modal so user can edit (existing function)
-    if (typeof openModal === "function") openModal("addPatientModal");
+    const patient = patients.find((p) => p.id === currentEditingPatientId);
+    if (!patient) return showNotification("Patient not found");
 
-    showNotification("Edit patient functionality would be implemented here");
+    // Update fields
+    patient.name =
+        document.getElementById("editPatientFirstName").value.trim() +
+        " " +
+        document.getElementById("editPatientLastName").value.trim();
+    patient.age = parseInt(
+        document.getElementById("editPatientAge").value.trim(),
+    );
+    patient.gender = document.getElementById("editPatientGender").value;
+    patient.phone = document.getElementById("editPatientPhone").value.trim();
+    patient.email = document.getElementById("editPatientEmail").value.trim();
+    patient.address = document
+        .getElementById("editPatientAddress")
+        .value.trim();
+
+    showNotification("Patient details updated successfully!");
+
+    // Refresh data and UI
+    loadPatients();
+    initializeDashboard?.();
+
+    // Return to view mode
+    backToPatients();
+}
+
+/**
+ * Save a new patient from the Add Patient Queue form
+ */
+function saveDashboardPatient() {
+    const name = document.getElementById("addPatientQueueName").value.trim();
+    const age = parseInt(document.getElementById("addPatientQueueAge").value);
+    const weight = parseFloat(
+        document.getElementById("addPatientQueueWeight").value,
+    );
+    const gender = document.getElementById("addPatientQueueSex").value;
+    const phone = document.getElementById("addPatientQueuePhone").value.trim();
+    const address = document
+        .getElementById("addPatientQueueAddress")
+        .value.trim();
+
+    const complainInputs = document.querySelectorAll(
+        'input[name="complain"]:checked',
+    );
+    const complains = Array.from(complainInputs).map((input) => input.value);
+
+    // Validation
+    if (!name || !age || !gender || !phone) {
+        showNotification("Please fill in all required fields.", "error");
+        return;
+    }
+
+    // Create a new patient object
+    const newPatient = {
+        id: "PT" + String(patients.length + 1).padStart(3, "0"),
+        name,
+        age,
+        gender,
+        phone,
+        address,
+        medicalHistory: [
+            {
+                date: new Date().toISOString().split("T")[0],
+                type: "Consultation",
+                doctor: "Dr. Smith",
+                diagnosis: "General Checkup",
+                complains: complains.length ? complains.join(", ") : "None",
+                weight: weight ? `${weight}kg` : "NA",
+                notes: "",
+                medications: [],
+            },
+        ],
+        labReports: [],
+    };
+
+    // Add to global patients list
+    patients.push(newPatient);
+
+    // Re-render patient tables
+    if (typeof loadPatients === "function") loadPatients();
+
+    // Reset form fields
+    resetAddPatientQueueForm();
+
+    showNotification(`Patient ${name} added successfully!`);
+}
+
+/**
+ * Go back from edit/view page to patient list.
+ */
+function backToPatients() {
+    document.getElementById("edit-patient-page")?.classList.remove("active");
+    document.getElementById("view-patient-page")?.classList.remove("active");
+    document.getElementById("patients-page")?.classList.remove("hide");
 }
 
 function resetAddPatientQueueForm() {
@@ -551,4 +571,46 @@ function resetAddPatientQueueForm() {
     complains.forEach((checkbox) => {
         checkbox.checked = false;
     });
+}
+
+function getPatientDetails(patientId) {
+    return patients.find((p) => p.id === patientId) || null;
+}
+
+function getPatientName(patientId) {
+    const patient = getPatientDetails(patientId);
+    return patient ? patient.name : "Unknown";
+}
+
+function printPatientList() {
+    window.print();
+    showNotification("Patient list sent to printer");
+}
+
+function openAddPatientModal() {
+    openModal("addPatientModal");
+}
+
+function printPatientRecord() {
+    window.print();
+    showNotification("Patient record sent to printer");
+}
+
+// TODO look into this
+function exportPatientData() {
+    const data = patients.map((p) => ({
+        ID: p.id,
+        Name: p.name,
+        Age: p.age,
+        Gender: p.gender,
+        Phone: p.phone,
+        Email: p.email,
+        BloodGroup: p.bloodGroup || "Unknown",
+        Allergies: p.allergies ? p.allergies.join(", ") : "None",
+        ChronicConditions: p.chronicConditions
+            ? p.chronicConditions.join(", ")
+            : "None",
+    }));
+    exportToCSV(data, "patients_data.csv");
+    showNotification("Patient data exported successfully");
 }

@@ -1,4 +1,4 @@
-const procedures = [
+let procedures = [
     {
         id: 1,
         name: "Ear Piercing under LA",
@@ -41,12 +41,16 @@ const procedures = [
 ];
 
 function loadProcedures() {
+    console.log("haha");
     renderProcedures();
 }
 
 function renderProcedures(list = procedures) {
     const table = document.getElementById("proceduresTable");
-    if (!table) return;
+    if (!table) {
+        console.log("not found");
+        return;
+    }
 
     if (list.length === 0) {
         table.innerHTML = `

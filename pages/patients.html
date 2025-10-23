@@ -38,6 +38,10 @@
               <td id="patientGenderDisplay">Male</td>
             </tr>
             <tr>
+              <td class="w-3xs font-semibold">Weight</td>
+              <td id="patientWeightDisplay"></td>
+            </tr>
+            <tr>
               <td class="font-semibold">Phone</td>
               <td id="patientPhoneDisplay">9876543210</td>
             </tr>
@@ -57,6 +61,70 @@
           <tbody id="labReportsTable"></tbody>
         </table>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Patient Section -->
+<div class="page-section" id="edit-patient-page">
+  <div class="card">
+    <div class="card-header flex justify-between items-center">
+      <h3>Edit Patient Details</h3>
+      <button class="btn btn-outline" onclick="backToPatients()">← Back</button>
+    </div>
+    <div class="card-body">
+      <form id="editPatientForm" onsubmit="saveEditedPatient(event)">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="font-semibold">First Name</label>
+            <input
+              type="text"
+              id="editPatientFirstName"
+              class="input"
+              required
+            />
+          </div>
+          <div>
+            <label class="font-semibold">Last Name</label>
+            <input type="text" id="editPatientLastName" class="input" />
+          </div>
+          <div>
+            <label class="font-semibold">Age</label>
+            <input type="number" id="editPatientAge" class="input" required />
+          </div>
+          <div>
+            <label class="font-semibold">Gender</label>
+            <select id="editPatientGender" class="input">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="font-semibold">Phone</label>
+            <input type="text" id="editPatientPhone" class="input" required />
+          </div>
+          <div>
+            <label class="font-semibold">Email</label>
+            <input type="email" id="editPatientEmail" class="input" />
+          </div>
+          <div class="col-span-2">
+            <label class="font-semibold">Address</label>
+            <textarea id="editPatientAddress" class="input"></textarea>
+          </div>
+        </div>
+
+        <div class="mt-4 flex justify-end gap-3">
+          <button
+            type="button"
+            class="btn btn-outline"
+            onclick="backToPatients()"
+          >
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

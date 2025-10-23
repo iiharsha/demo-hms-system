@@ -13,6 +13,8 @@ let patients = [
                 type: "Consultation",
                 doctor: "Dr. Smith",
                 diagnosis: "Hypertension",
+                complains: "Ear, Nose, Throat",
+                weight: "80kg",
                 notes: "Blood pressure elevated, started on Lisinopril",
                 medications: [
                     {
@@ -32,6 +34,8 @@ let patients = [
                 type: "Emergency",
                 doctor: "Dr. Jones",
                 diagnosis: "Acute Bronchitis",
+                complains: "Ear, Nose, Throat",
+                weight: "80kg",
                 notes: "Prescribed antibiotics and rest",
                 medications: [
                     {
@@ -46,6 +50,8 @@ let patients = [
                 type: "Check-up",
                 doctor: "Dr. Smith",
                 diagnosis: "Routine Check-up",
+                complains: "Ear, Nose, Throat",
+                weight: "80kg",
                 notes: "All vitals normal",
                 medications: [],
             },
@@ -72,6 +78,8 @@ let patients = [
                 type: "Follow-up",
                 doctor: "Dr. Williams",
                 diagnosis: "Asthma Management",
+                complains: "Ear",
+                weight: "80kg",
                 notes: "Well controlled on current medication",
                 medications: [
                     {
@@ -86,6 +94,8 @@ let patients = [
                 type: "Consultation",
                 doctor: "Dr. Smith",
                 diagnosis: "Migraine",
+                complains: "Ear",
+                weight: "80kg",
                 notes: "Prescribed Sumatriptan for acute episodes",
                 medications: [
                     {
@@ -118,6 +128,8 @@ let patients = [
                 type: "Admission",
                 doctor: "Dr. Williams",
                 diagnosis: "Appendicitis",
+                complains: "Ear, Throat",
+                weight: "80kg",
                 notes: "Appendectomy performed, recovery ongoing",
                 medications: [
                     {
@@ -137,6 +149,8 @@ let patients = [
                 type: "Consultation",
                 doctor: "Dr. Jones",
                 diagnosis: "High Cholesterol",
+                complains: "Ear",
+                weight: "80kg",
                 notes: "Started on statin therapy",
                 medications: [
                     {
