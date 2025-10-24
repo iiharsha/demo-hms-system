@@ -1,323 +1,224 @@
 <div class="page-section" id="view-consultation-page">
-    <div class="card">
-        <div class="card-header flex justify-between items-center">
-            <div>
-                <h3 id="patientNameDisplay" style="margin-bottom: 5px">John Doe</h3>
-                <span class="text-gray-500 text-sm">
-                    Patient ID:
-                    <span id="patientIdDisplay" class="text-gray-500 text-sm"></span>
-                </span>
-            </div>
-            <button class="btn btn-outline" onclick="backToConsultation()">← Back</button>
-        </div>
-
-        <div class="card-body">
-            <div class="tab-buttons">
-                <button class="tab-btn active" onclick="switchTab('patient', this)">
-                    Patient
-                </button>
-                <button class="tab-btn" onclick="switchTab('vitals', this)">
-                    Vitals
-                </button>
-                <button class="tab-btn" onclick="switchTab('symptoms', this)">
-                    Symptoms
-                </button>
-                <button class="tab-btn" onclick="switchTab('diagnosis', this)">
-                    Diagnosis
-                </button>
-                <button class="tab-btn" onclick="switchTab('prescription', this)">
-                    Prescription
-                </button>
-            </div>
-
-            <div class="tab-content active" id="patient-tab">
-                <!-- Patient Information -->
-                <div class="form-group">
-                    <label>Patient Information</label>
-                    <h3 id="consultationPatientName"></h3>
-                </div>
-            </div>
-
-            <div class="tab-content" id="vitals-tab">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Blood Pressure</label>
-                        <input type="text" placeholder="120/80" id="bloodPressure" />
-                    </div>
-                    <div class="form-group">
-                        <label>Heart Rate</label>
-                        <input type="text" placeholder="72 bpm" id="heartRate" />
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Temperature</label>
-                        <input type="text" placeholder="98.6°F" id="temperature" />
-                    </div>
-                    <div class="form-group">
-                        <label>Weight</label>
-                        <input type="text" placeholder="70 kg" id="weight" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-content" id="symptoms-tab">
-                <div class="form-group">
-                    <label>Chief Complaint</label>
-                    <textarea id="chiefComplaint" rows="3" placeholder="Enter patient's main complaint..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>History of Present Illness</label>
-                    <textarea id="historyIllness" rows="3" placeholder="Detailed history of current illness..."></textarea>
-                </div>
-            </div>
-
-            <div class="tab-content" id="diagnosis-tab">
-                <div class="form-group">
-                    <label>Physical Examination</label>
-                    <textarea id="physicalExam" rows="3" placeholder="Physical examination findings..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Diagnosis *</label>
-                    <textarea id="diagnosis" rows="3" placeholder="Enter diagnosis..." required></textarea>
-                </div>
-            </div>
-
-            <div class="tab-content" id="prescription-tab">
-                <div class="form-group">
-                    <label>Procedures Performed</label>
-                    <select id="consultationsAddProcedures" multiple style="height: 120px;">
-                        <!-- Populated dynamically -->
-                    </select>
-                    <small class="text-gray-500">Hold Ctrl (Cmd on Mac) to select multiple procedures</small>
-                </div>
-                <div class="form-group">
-                    <label>Medicines Prescribed</label>
-                    <select id="consultationsAddMedications" multiple style="height: 120px;">
-                        <!-- Populated dynamically -->
-                    </select>
-                    <small class="text-gray-500">Hold Ctrl (Cmd on Mac) to select multiple medicines</small>
-                </div>
-            </div>
-        </div>
-
-        <!-- Save Button Footer -->
-        <div class="card-footer" style="display: flex; justify-content: flex-end; gap: 10px; padding: 20px; border-top: 1px solid #e5e7eb;">
-            <button class="btn btn-outline" onclick="backToConsultation()">
-                Cancel
-            </button>
-            <button class="btn btn-primary" onclick="saveConsultationData()">
-                Save Consultation & Create Invoice
-            </button>
-        </div>
+  <div class="card">
+    <div class="card-header flex justify-between items-center">
+      <div>
+        <h3 id="patientNameDisplay" style="margin-bottom: 5px">John Doe</h3>
+        <span class="text-gray-500 text-sm">
+          Patient ID:
+          <span id="patientIdDisplay" class="text-gray-500 text-sm"></span>
+        </span>
+      </div>
+      <button class="btn btn-outline" onclick="backToConsultation()">
+        ← Back
+      </button>
     </div>
+
+    <div class="card-body">
+      <div class="tab-buttons">
+        <button class="tab-btn active" onclick="switchTab('patient', this)">
+          Patient
+        </button>
+        <button class="tab-btn" onclick="switchTab('vitals', this)">
+          Vitals
+        </button>
+        <button class="tab-btn" onclick="switchTab('symptoms', this)">
+          Symptoms
+        </button>
+        <button class="tab-btn" onclick="switchTab('diagnosis', this)">
+          Diagnosis
+        </button>
+        <button class="tab-btn" onclick="switchTab('prescription', this)">
+          Prescription
+        </button>
+      </div>
+
+      <div class="tab-content active" id="patient-tab">
+        <!-- Patient Information -->
+        <div class="form-group">
+          <label>Patient Information</label>
+          <h3 id="consultationPatientName"></h3>
+        </div>
+      </div>
+
+      <div class="tab-content" id="vitals-tab">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Blood Pressure</label>
+            <input type="text" placeholder="120/80" id="bloodPressure" />
+          </div>
+          <div class="form-group">
+            <label>Heart Rate</label>
+            <input type="text" placeholder="72 bpm" id="heartRate" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Temperature</label>
+            <input type="text" placeholder="98.6°F" id="temperature" />
+          </div>
+          <div class="form-group">
+            <label>Weight</label>
+            <input type="text" placeholder="70 kg" id="weight" />
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="symptoms-tab">
+        <div class="form-group">
+          <label>Chief Complaint</label>
+          <textarea
+            id="chiefComplaint"
+            rows="3"
+            placeholder="Enter patient's main complaint..."
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label>History of Present Illness</label>
+          <textarea
+            id="historyIllness"
+            rows="3"
+            placeholder="Detailed history of current illness..."
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="tab-content" id="diagnosis-tab">
+        <div class="form-group">
+          <label>Physical Examination</label>
+          <textarea
+            id="physicalExam"
+            rows="3"
+            placeholder="Physical examination findings..."
+          ></textarea>
+        </div>
+        <div class="form-group">
+          <label>Diagnosis *</label>
+          <textarea
+            id="diagnosis"
+            rows="3"
+            placeholder="Enter diagnosis..."
+            required
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="tab-content" id="prescription-tab">
+        <div class="form-group">
+          <label>Procedures Performed</label>
+          <select
+            id="consultationsAddProcedures"
+            multiple
+            style="height: 120px"
+          >
+            <!-- Populated dynamically -->
+          </select>
+          <small class="text-gray-500"
+            >Hold Ctrl (Cmd on Mac) to select multiple procedures</small
+          >
+        </div>
+        <div class="form-group">
+          <label>Medicines Prescribed</label>
+          <select
+            id="consultationsAddMedications"
+            multiple
+            style="height: 120px"
+          >
+            <!-- Populated dynamically -->
+          </select>
+          <small class="text-gray-500"
+            >Hold Ctrl (Cmd on Mac) to select multiple medicines</small
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- Save Button Footer -->
+    <div
+      class="card-footer"
+      style="
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding: 20px;
+        border-top: 1px solid #e5e7eb;
+      "
+    >
+      <button class="btn btn-outline" onclick="backToConsultation()">
+        Cancel
+      </button>
+      <button class="btn btn-primary" onclick="saveConsultationData()">
+        Save Consultation & Create Invoice
+      </button>
+    </div>
+  </div>
 </div>
 
 <!-- Consultations Page -->
+<!-- Consultations Page -->
 <div class="page-content" id="consultations-page">
-    <div class="search-bar">
-        <div class="search-container">
-            <input
-                type="text"
-                placeholder="Search..."
-                id="consultationSearch"
-                oninput="searchConsultations()"
-            />
-        </div>
-        <button class="btn btn-secondary" onclick="openNewConsultationModal()">
-            + Consultation
-        </button>
+  <div class="search-bar">
+    <div class="search-container">
+      <input
+        type="text"
+        placeholder="Search..."
+        id="consultationSearch"
+        oninput="searchConsultations()"
+      />
+    </div>
+    <button class="btn btn-secondary" onclick="openNewConsultationModal()">
+      + Consultation
+    </button>
+  </div>
+
+  <div class="flex-col items-center justify-center gap-4">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-header-title">Manage Patient Queue</h3>
+        <small style="color: #6b7280">Patients waiting for consultation</small>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Patient ID</th>
+              <th>Patient Name</th>
+              <th>Mobile</th>
+              <th>Weight</th>
+              <th>Gender</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="consultationsManagePatientsQueue">
+            <!-- Dynamic content -->
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <div class="flex-col items-center justify-center gap-4">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-header-title">Manage Patient Queue</h3>
-            </div>
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Patient ID</th>
-                            <th>Patient Name</th>
-                            <th>Mobile</th>
-                            <th>Age</th>
-                            <th>Sex</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="consultationsManagePatientsQueue">
-                        <!-- Dynamic content -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-header-title">Today's Invoice</h3>
-            </div>
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Patient ID</th>
-                            <th>Patient Name</th>
-                            <th>Mobile</th>
-                            <th>Age</th>
-                            <th>Sex</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="consultationsTodaysInvoice">
-                        <!-- Dynamic content -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-header-title">Today's Consultations</h3>
+        <small style="color: #6b7280"
+          >Completed consultations with invoices</small
+        >
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Invoice ID</th>
+              <th>Patient Name</th>
+              <th>Mobile</th>
+              <th>Age</th>
+              <th>Gender</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="consultationsTodaysInvoice">
+            <!-- Dynamic content -->
+          </tbody>
+        </table>
+      </div>
     </div>
-</div>
-
-<!-- View Consulation Details Modal -->
-<div class="modal" id="viewConsultationModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>Consultation Details</h3>
-            <button
-                class="close-btn"
-                onclick="closeModal('viewConsultationModal')"
-            >
-                <i class="ri-close-line"></i>
-            </button>
-        </div>
-        <!-- the admission details will be injected here-->
-        <div class="modal-body" id="viewConsultationModalBody"></div>
-        <div class="modal-footer">
-            <button
-                class="btn btn-outline"
-                onclick="closeModal('viewConsultationModal')"
-            >
-                Cancel
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- New Consultation Modal -->
-<div class="modal" id="newConsultationModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>New Consultation</h3>
-            <button
-                class="close-btn"
-                onclick="closeModal('newConsultationModal')"
-            >
-                <i class="ri-close-line"></i>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="tab-buttons">
-                <button class="tab-btn active" onclick="switchTab('patient', this)">
-                    Patient
-                </button>
-                <button class="tab-btn" onclick="switchTab('vitals', this)">
-                    Vitals
-                </button>
-                <button class="tab-btn" onclick="switchTab('symptoms', this)">
-                    Symptoms
-                </button>
-                <button class="tab-btn" onclick="switchTab('diagnosis', this)">
-                    Diagnosis
-                </button>
-                <button class="tab-btn" onclick="switchTab('prescription', this)">
-                    Prescription
-                </button>
-            </div>
-
-            <div class="tab-content active" id="patient-tab">
-                <!-- Patient Search or Add -->
-                <div class="form-group">
-                    <label>Patient</label>
-                    <h3 id="consultationPatientName"></h3>
-                </div>
-            </div>
-
-            <div class="tab-content" id="vitals-tab">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Blood Pressure</label>
-                        <input type="text" placeholder="120/80" id="bloodPressure" />
-                    </div>
-                    <div class="form-group">
-                        <label>Heart Rate</label>
-                        <input type="text" placeholder="72 bpm" id="heartRate" />
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Temperature</label>
-                        <input type="text" placeholder="98.6°F" id="temperature" />
-                    </div>
-                    <div class="form-group">
-                        <label>Weight</label>
-                        <input type="text" placeholder="70 kg" id="weight" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-content" id="symptoms-tab">
-                <div class="form-group">
-                    <label>Chief Complaint</label>
-                    <textarea id="chiefComplaint" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>History of Present Illness</label>
-                    <textarea id="historyIllness" rows="3"></textarea>
-                </div>
-            </div>
-
-            <div class="tab-content" id="diagnosis-tab">
-                <div class="form-group">
-                    <label>Physical Examination</label>
-                    <textarea id="physicalExam" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Diagnosis</label>
-                    <textarea id="diagnosis" rows="3"></textarea>
-                </div>
-            </div>
-
-            <div class="tab-content" id="prescription-tab">
-                <div class="form-group">
-                    <label>Medications</label>
-                    <textarea
-                        id="medications"
-                        rows="4"
-                        placeholder="Medicine name - Dosage - Frequency - Duration"
-                    ></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Lab Tests</label>
-                    <textarea id="labTests" rows="2"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Follow-up</label>
-                    <input type="date" id="followUpDate" />
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button
-                class="btn btn-outline"
-                onclick="closeModal('newConsultationModal')"
-            >
-                Cancel
-            </button>
-            <button class="btn btn-primary" onclick="saveConsultation()">
-                Save Consultation
-            </button>
-        </div>
-    </div>
-</div>
-</div>
+  </div>
 </div>
