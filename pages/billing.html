@@ -1,35 +1,57 @@
+<!-- Billing details for patient Page -->
+<div class="page-section" id="view-billing-page">
+    <div class="card">
+        <div class="card-header flex justify-between items-center">
+            <div>
+                <h3 id="patientNameDisplayBilling" style="margin-bottom: 5px">John Doe</h3>
+                <span class="text-gray-500 text-sm">
+                    Patient ID:
+                    <span id="patientIdDisplay" class="text-gray-500 text-sm"></span>
+                </span>
+            </div>
+            <button class="btn btn-outline" onclick="backToBillings()">← Back</button>
+        </div>
+
+        <div class="card-body" id="billingDetailsContainer">
+            <!-- Invoice details dynamically inserted here -->
+        </div>
+    </div>
+</div>
+
+
 <!-- Billing Page -->
 <div class="page-content" id="billing-page">
-  <div class="search-bar">
-    <div class="search-container">
-      <input type="text" placeholder="Search bills..." id="consultationSearch" oninput="searchConsultations()">
-      <span class="clear-icon" onclick="clearPatientSearchBar('consultationSearch', 'billing')">&#10006;</span>
+    <div class="search-bar">
+        <div class="search-container">
+            <input type="text" placeholder="Search bills..." id="consultationSearch" oninput="searchConsultations()">
+            <span class="clear-icon" onclick="clearPatientSearchBar('consultationSearch', 'billing')">&#10006;</span>
+        </div>
+        <select id="billStatusFilter" class="select-filter">
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="paid">Paid</option>
+            <option value="partial">Partial</option>
+        </select>
+        <button class="btn btn-secondary" onclick="openNewConsultationModal()">+ Create Bill</button>
     </div>
-    <select id="billStatusFilter" class="select-filter">
-      <option value="">All Status</option>
-      <option value="pending">Pending</option>
-      <option value="paid">Paid</option>
-      <option value="partial">Partial</option>
-    </select>
-    <button class="btn btn-secondary" onclick="openNewConsultationModal()">+ Create Bill</button>
-  </div>
 
 
-  <div class="card">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Bill ID</th>
-          <th>Patient</th>
-          <th>Date</th>
-          <th>Amount</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="billsTable">
-        <!-- Dynamic content
-      </tbody>
-    </table>
-  </div>
+    <div class="card">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Bill ID</th>
+                    <th>Patient</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Paid</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="billsTable">
+                <!-- Dynamic content
+            </tbody>
+        </table>
+    </div>
 </div>

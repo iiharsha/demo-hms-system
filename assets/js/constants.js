@@ -260,7 +260,7 @@ let invoices = [
             },
         ],
         totalAmount: 500 + 1500 + 850 + 1700, // 4550
-        status: "Paid",
+        paidAmount: 4550, // full paid
     },
     {
         id: "INV1235",
@@ -278,7 +278,7 @@ let invoices = [
             },
         ],
         totalAmount: 600 + 600, // 1200
-        status: "Pending",
+        paidAmount: 800, // partial
     },
     {
         id: "INV1236",
@@ -298,7 +298,7 @@ let invoices = [
             },
         ],
         totalAmount: 2000 + 700 + 450 + 1500, // 4650
-        status: "Paid",
+        paidAmount: 0, // unpaid
     },
 ];
 

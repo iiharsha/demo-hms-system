@@ -173,7 +173,7 @@ function loadPageData(pageName) {
             loadAdmissions();
             break;
         case "procedures":
-            if (typeof loadProcedures === "function") loadProcedures();
+            loadProcedures();
             break;
         case "rooms":
             loadRooms();

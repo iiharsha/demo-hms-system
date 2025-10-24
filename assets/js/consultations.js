@@ -15,6 +15,9 @@ function loadConsultations() {
                         <button class="action-btn action-btn-primary" onclick="viewConsultation('${patient.id}')" title="View Patient In Queue">
                             <i class="ri-eye-line"></i>
                         </button>
+                        <button class="action-btn action-btn-danger" onclick="deleteConsultingPatientInQueue('${patient.id}')" title="Delete Patient">
+                            <i class="ri-delete-bin-6-line"></i>
+                        </button>
                     </td>
                 </tr>
             `,
@@ -37,6 +40,9 @@ function loadConsultations() {
                         </button>
                         <button class="action-btn action-btn-primary" onclick="viewPatientInQueue('${invoice.id}')" title="View Patient In Queue">
                             <i class="ri-eye-line"></i>
+                        </button>
+                        <button class="action-btn action-btn-danger" onclick="deleteConsultingPatient('${patient.id}')" title="Delete Patient">
+                            <i class="ri-delete-bin-6-line"></i>
                         </button>
                     </td>
                 </tr>

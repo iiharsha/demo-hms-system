@@ -1,47 +1,4 @@
-let procedures = [
-    {
-        id: 1,
-        name: "Ear Piercing under LA",
-        price: 500,
-    },
-    {
-        id: 2,
-        name: "Mastoidectomy with Tympanoplasty under GA",
-        price: 500,
-    },
-    {
-        id: 3,
-        name: "Injection for vomiting relief",
-        price: 500,
-    },
-    {
-        id: 4,
-        name: "Trachestomy Closure",
-    },
-    {
-        id: 5,
-        name: "Ear Wick insertion",
-    },
-    {
-        id: 6,
-        name: "Anaestheist's charges",
-    },
-    {
-        id: 7,
-        name: "Room Charges",
-    },
-    {
-        id: 8,
-        name: "Septoplasty with Bilateral Turbinate Reduction under GA",
-    },
-    {
-        id: 9,
-        name: "Injection for Pain relief",
-    },
-];
-
 function loadProcedures() {
-    console.log("haha");
     renderProcedures();
 }
 
