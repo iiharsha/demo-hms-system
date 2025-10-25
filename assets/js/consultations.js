@@ -1,57 +1,80 @@
+// ==========================
+// Queue and Consultation Data
+// ==========================
+
+// Keep a separate patient queue for "waiting patients"
+let patientQueue = [...patients]; // Initially all patients, can filter for today if needed
+
+// ==========================
+// Load Consultations Page
+// ==========================
 function loadConsultations() {
-    const htmlPatientQueue = patients
-        .map(
-            (patient) => `
-                <tr>
-                    <td>${patient.id}</td>
-                    <td>${patient.name}</td>
-                    <td>${patient.phone}</td>
-                    <td>${patient.medicalHistory?.[0]?.weight || "—"}</td>
-                    <td>${patient.gender}</td>
-                    <td>
-                        <button class="action-btn action-btn-primary" onclick="editPatientInQueue('${patient.id}')" title="Edit Patient In Queue">
-                          <i class="ri-edit-2-line"></i>
-                        </button>
-                        <button class="action-btn action-btn-primary" onclick="viewConsultation('${patient.id}')" title="View Patient In Queue">
-                            <i class="ri-eye-line"></i>
-                        </button>
-                        <button class="action-btn action-btn-danger" onclick="deleteConsultingPatientInQueue('${patient.id}')" title="Delete Patient">
-                            <i class="ri-delete-bin-6-line"></i>
-                        </button>
-                    </td>
-                </tr>
-            `,
-        )
-        .join("");
+    // --- Patient Queue Table ---
+    const htmlPatientQueue =
+        patientQueue.length > 0
+            ? patientQueue
+                  .map(
+                      (patient) => `
+        <tr>
+            <td>${patient.id}</td>
+            <td>${patient.name}</td>
+            <td>${patient.phone}</td>
+            <td>${patient.medicalHistory?.[0]?.weight || "—"}</td>
+            <td>${patient.gender}</td>
+            <td>
+                <button class="action-btn action-btn-primary" onclick="editPatientInQueue('${patient.id}')" title="Edit Patient In Queue">
+                    <i class="ri-edit-2-line"></i>
+                </button>
+                <button class="action-btn action-btn-primary" onclick="viewConsultation('${patient.id}')" title="View Patient In Queue">
+                    <i class="ri-eye-line"></i>
+                </button>
+                <button class="action-btn action-btn-danger" onclick="deleteConsultingPatientInQueue('${patient.id}')" title="Delete Patient">
+                    <i class="ri-delete-bin-6-line"></i>
+                </button>
+            </td>
+        </tr>
+    `,
+                  )
+                  .join("")
+            : `<tr><td colspan="6" style="text-align:center;">No patients in queue</td></tr>`;
 
-    const htmlTodaysInvoice = invoices
-        .map((invoice) => {
-            const patient = getPatientDetails(invoice.patientId);
-            return `
-                <tr>
-                    <td>${invoice.id}</td>
-                    <td>${patient ? patient.name : "Unknown"}</td>
-                    <td>${patient ? patient.phone : "—"}</td>
-                    <td>${patient ? patient.age : "—"}</td>
-                    <td>${patient ? patient.gender : "—"}</td>
-                    <td>
-                        <button class="action-btn action-btn-primary" onclick="editPatientInQueue('${invoice.id}')" title="Edit Patient In Queue">
-                          <i class="ri-edit-2-line"></i>
-                        </button>
-                        <button class="action-btn action-btn-primary" onclick="viewPatientInQueue('${invoice.id}')" title="View Patient In Queue">
-                            <i class="ri-eye-line"></i>
-                        </button>
-                        <button class="action-btn action-btn-danger" onclick="deleteConsultingPatient('${patient.id}')" title="Delete Patient">
-                            <i class="ri-delete-bin-6-line"></i>
-                        </button>
-                    </td>
-                </tr>
-            `;
-        })
-        .join("");
+    const tbodyQueue = document.getElementById(
+        "consultationsManagePatientsQueue",
+    );
+    if (tbodyQueue) tbodyQueue.innerHTML = htmlPatientQueue;
 
-    DOM.setHTML("consultationsManagePatientsQueue", htmlPatientQueue);
-    DOM.setHTML("consultationsTodaysInvoice", htmlTodaysInvoice);
+    // --- Today's Invoice Table ---
+    const htmlTodaysInvoice =
+        invoices.length > 0
+            ? invoices
+                  .map((invoice) => {
+                      const patient = getPatientDetails(invoice.patientId);
+                      return `
+        <tr>
+            <td>${invoice.id}</td>
+            <td>${patient ? patient.name : "Unknown"}</td>
+            <td>${patient ? patient.phone : "—"}</td>
+            <td>${patient ? patient.age : "—"}</td>
+            <td>${patient ? patient.gender : "—"}</td>
+            <td>
+                <button class="action-btn action-btn-primary" onclick="editPatientInQueue('${invoice.patientId}')" title="Edit Patient In Queue">
+                    <i class="ri-edit-2-line"></i>
+                </button>
+                <button class="action-btn action-btn-primary" onclick="viewPatientInQueue('${invoice.id}')" title="View Patient Invoice">
+                    <i class="ri-eye-line"></i>
+                </button>
+                <button class="action-btn action-btn-danger" onclick="deleteConsultingPatient('${invoice.patientId}')" title="Delete Consultation">
+                    <i class="ri-delete-bin-6-line"></i>
+                </button>
+            </td>
+        </tr>
+    `;
+                  })
+                  .join("")
+            : `<tr><td colspan="6" style="text-align:center;">No consultations today</td></tr>`;
+
+    const tbodyInvoices = document.getElementById("consultationsTodaysInvoice");
+    if (tbodyInvoices) tbodyInvoices.innerHTML = htmlTodaysInvoice;
 }
 
 // Global variable to track current consultation
@@ -495,51 +518,42 @@ function savePatientEdit(patientId) {
 }
 
 // Delete Patient from Consulting Queue
-function deleteConsultingPatientInQueue(patientId) {
-    const patient = patients.find((p) => p.id === patientId);
 
-    if (!patient) {
-        showNotification("Patient not found!", "error");
+// ==========================
+// Delete from Patient Queue
+// ==========================
+function deleteConsultingPatientInQueue(patientId) {
+    const index = patientQueue.findIndex((p) => p.id === patientId);
+    if (index === -1) {
+        showNotification("Patient not found in queue!", "error");
         return;
     }
 
-    // Show confirmation dialog
-    const confirmed = confirm(
-        `Are you sure you want to remove ${patient.name} from the consultation queue?\n\n` +
-            `This will NOT delete the patient record, only remove them from today's queue.`,
-    );
+    const removed = patientQueue.splice(index, 1)[0];
+    showNotification(`${removed.name} removed from consultation queue.`);
 
-    if (!confirmed) return;
-
-    // Remove patient from the patients array (consultation queue)
-    const index = patients.findIndex((p) => p.id === patientId);
-    if (index !== -1) {
-        patients.splice(index, 1);
-        showNotification(`${patient.name} removed from consultation queue.`);
-        loadConsultations();
-    }
+    // Refresh table
+    loadConsultations();
 }
 
-// Delete Patient from Invoice (Today's Consultation)
+// ==========================
+// Delete from Invoice Table
+// ==========================
 function deleteConsultingPatient(patientId) {
-    const patient = patients.find((p) => p.id === patientId);
-
+    const patient = getPatientDetails(patientId);
     if (!patient) {
         showNotification("Patient not found!", "error");
         return;
     }
 
-    // Find related invoices
     const relatedInvoices = invoices.filter(
         (inv) => inv.patientId === patientId,
     );
-
     if (relatedInvoices.length === 0) {
         showNotification("No invoices found for this patient!", "error");
         return;
     }
 
-    // Show confirmation with invoice details
     const invoiceIds = relatedInvoices.map((inv) => inv.id).join(", ");
     const confirmed = confirm(
         `Are you sure you want to delete consultations for ${patient.name}?\n\n` +
@@ -549,37 +563,30 @@ function deleteConsultingPatient(patientId) {
 
     if (!confirmed) return;
 
-    // Return medications to inventory before deleting
+    // Return medications to inventory
     relatedInvoices.forEach((invoice) => {
-        if (invoice.medicationsBilled && invoice.medicationsBilled.length > 0) {
+        if (invoice.medicationsBilled) {
             invoice.medicationsBilled.forEach((med) => {
-                const inventoryItem = inventory.find(
-                    (item) => item.code === med.code || item.name === med.name,
+                const item = inventory.find(
+                    (inv) => inv.code === med.code || inv.name === med.name,
                 );
-                if (inventoryItem) {
-                    inventoryItem.quantity += med.quantity;
-                    // Update status
-                    if (inventoryItem.quantity > 10) {
-                        inventoryItem.status = "In Stock";
-                    } else if (inventoryItem.quantity > 0) {
-                        inventoryItem.status = "Low Stock";
-                    }
+                if (item) {
+                    item.quantity += med.quantity;
+                    if (item.quantity > 10) item.status = "In Stock";
+                    else if (item.quantity > 0) item.status = "Low Stock";
                 }
             });
         }
     });
 
-    // Remove invoices
-    relatedInvoices.forEach((invoice) => {
-        const invIndex = invoices.findIndex((inv) => inv.id === invoice.id);
-        if (invIndex !== -1) {
-            invoices.splice(invIndex, 1);
-        }
-    });
+    // Delete invoices
+    invoices = invoices.filter((inv) => inv.patientId !== patientId);
 
     showNotification(
         `Consultation records deleted for ${patient.name}. Medications returned to inventory.`,
     );
+
+    // Refresh table
     loadConsultations();
 }
 
